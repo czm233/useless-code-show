@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>弹跳球 - 无用代码画廊</title>
+  <style>
+    /* 全局重置 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0f;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    // ==================== 弹跳球效果 ====================
+    // 全屏深色背景，多个彩色渐变圆球在画布中弹跳
+    // 球之间碰到边界会反弹，带运动拖尾效果
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // 设备像素比，保证高清屏显示清晰
+    const dpr = window.devicePixelRatio || 1;
+    let width, height;
+
+    /** 调整画布尺寸 */
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // ==================== 配置参数 ====================
+    const BALL_COUNT = 18;           // 球的数量
+    const MIN_RADIUS = 20;          // 最小半径
+    const MAX_RADIUS = 60;          // 最大半径
+    const MAX_SPEED = 3.5;          // 最大速度
+    const TRAIL_ALPHA = 0.08;       // 拖尾透明度（越小拖尾越长）
+    const GLOW_BLUR = 30;           // 光晕模糊半径
+
+    // 预设的球体颜色方案（渐变色对）
+    const COLOR_PALETTES = [
+      ['#ff6b6b', '#ee5a24'],       // 红橙
+      ['#feca57', '#ff9f43'],       // 金黄
+      ['#48dbfb', '#0abde3'],       // 天蓝
+      ['#ff9ff3', '#f368e0'],       // 粉紫
+      ['#54a0ff', '#2e86de'],       // 蓝色
+      ['#5f27cd', '#341f97'],       // 深紫
+      ['#01a3a4', '#00d2d3'],       // 青色
+      ['#ff6348', '#eb4d4b'],       // 珊瑚红
+      ['#7bed9f', '#2ed573'],       // 翠绿
+      ['#eccc68', '#ffa502'],       // 橙黄
+      ['#a29bfe', '#6c5ce7'],       // 薰衣草紫
+      ['#fd79a8', '#e84393'],       // 玫红
+      ['#00cec9', '#55efc4'],       // 薄荷绿
+      ['#fdcb6e', '#f39c12'],       // 琥珀
+      ['#e17055', '#d63031'],       // 砖红
+      ['#74b9ff', '#0984e3'],       // 亮蓝
+      ['#b2bec3', '#636e72'],       // 银灰
+      ['#ffeaa7', '#fdcb6e'],       // 柠檬黄
+    ];
+
+    // ==================== 球体类 ====================
+    class Ball {
+      constructor() {
+        this.radius = Math.random() * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS;
+        this.x = Math.random() * (width - this.radius * 2) + this.radius;
+        this.y = Math.random() * (height - this.radius * 2) + this.radius;
+        // 随机方向和速度
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * MAX_SPEED + 1;
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+        // 随机选择一个颜色方案
+        const palette = COLOR_PALETTES[Math.floor(Math.random() * COLOR_PALETTES.length)];
+        this.color1 = palette[0];
+        this.color2 = palette[1];
+        // 球体的脉动相位
+        this.pulsePhase = Math.random() * Math.PI * 2;
+        this.pulseSpeed = 0.02 + Math.random() * 0.02;
+      }
+
+      /** 更新位置和速度 */
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // 碰到边界反弹
+        if (this.x - this.radius <= 0) {
+          this.x = this.radius;
+          this.vx = Math.abs(this.vx);
+        }
+        if (this.x + this.radius >= width) {
+          this.x = width - this.radius;
+          this.vx = -Math.abs(this.vx);
+        }
+        if (this.y - this.radius <= 0) {
+          this.y = this.radius;
+          this.vy = Math.abs(this.vy);
+        }
+        if (this.y + this.radius >= height) {
+          this.y = height - this.radius;
+          this.vy = -Math.abs(this.vy);
+        }
+
+        // 脉动效果
+        this.pulsePhase += this.pulseSpeed;
+      }
+
+      /** 绘制球体 */
+      draw(ctx) {
+        const pulseFactor = 1 + Math.sin(this.pulsePhase) * 0.05;
+        const r = this.radius * pulseFactor;
+
+        // 创建径向渐变（从球心偏移位置开始，模拟光照效果）
+        const gradient = ctx.createRadialGradient(
+          this.x - r * 0.3, this.y - r * 0.3, r * 0.1,
+          this.x, this.y, r
+        );
+        gradient.addColorStop(0, this.color1);
+        gradient.addColorStop(0.7, this.color2);
+        gradient.addColorStop(1, 'rgba(0,0,0,0.3)');
+
+        // 绘制光晕
+        ctx.save();
+        ctx.globalAlpha = 0.3;
+        ctx.shadowColor = this.color1;
+        ctx.shadowBlur = GLOW_BLUR;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        ctx.restore();
+
+        // 绘制球体本体
+        ctx.save();
+        ctx.globalAlpha = 0.9;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+
+        // 高光效果
+        const highlight = ctx.createRadialGradient(
+          this.x - r * 0.3, this.y - r * 0.3, 0,
+          this.x - r * 0.3, this.y - r * 0.3, r * 0.5
+        );
+        highlight.addColorStop(0, 'rgba(255,255,255,0.4)');
+        highlight.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = highlight;
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    // ==================== 初始化球体 ====================
+    const balls = [];
+    for (let i = 0; i < BALL_COUNT; i++) {
+      balls.push(new Ball());
+    }
+
+    // ==================== 动画循环 ====================
+    function animate() {
+      // 半透明覆盖实现拖尾效果
+      ctx.fillStyle = `rgba(10, 10, 15, ${TRAIL_ALPHA})`;
+      ctx.fillRect(0, 0, width, height);
+
+      // 更新并绘制每个球
+      for (const ball of balls) {
+        ball.update();
+        ball.draw(ctx);
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    // 启动动画
+    animate();
+  </script>
+</body>
+</html>

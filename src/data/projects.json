@@ -1,0 +1,26 @@
+[
+  {
+    "id": "bouncing-balls",
+    "title": "弹跳球",
+    "description": "一群永远停不下来的弹跳球，碰撞反弹，色彩斑斓",
+    "preview": { "type": "gradient", "colors": ["#ff6b6b", "#feca57"] },
+    "tags": ["Canvas", "物理"],
+    "path": "bouncing-balls"
+  },
+  {
+    "id": "matrix-rain",
+    "title": "矩阵代码雨",
+    "description": "经典的绿色字符瀑布效果",
+    "preview": { "type": "gradient", "colors": ["#00ff41", "#0d3b0d"] },
+    "tags": ["Canvas", "动画"],
+    "path": "matrix-rain"
+  },
+  {
+    "id": "useless-button",
+    "title": "无用按钮",
+    "description": "一个点了什么也不会发生的按钮",
+    "preview": { "type": "gradient", "colors": ["#a29bfe", "#6c5ce7"] },
+    "tags": ["交互", "哲学"],
+    "path": "useless-button"
+  }
+]
