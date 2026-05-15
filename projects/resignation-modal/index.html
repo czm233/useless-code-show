@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>辞职申请 - 无用代码画廊</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      color-scheme: dark;
+      --ink: #1e293b;
+      --paper: #fff8e6;
+      --paper-deep: #f5e6c2;
+      --stamp: #cf1f3f;
+      --green: #24a06b;
+      --green-deep: #14734a;
+      --charcoal: #151923;
+      --steel: #596477;
+      --cream: #ffe9b6;
+    }
+
+    body {
+      width: 100vw;
+      min-height: 100vh;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        radial-gradient(circle at 14% 18%, rgba(255, 233, 182, 0.24), transparent 28%),
+        radial-gradient(circle at 84% 78%, rgba(207, 31, 63, 0.2), transparent 30%),
+        linear-gradient(145deg, #0f141d 0%, #202532 52%, #101319 100%);
+      background-size: 48px 48px, 48px 48px, auto, auto, auto;
+      color: var(--ink);
+      font-family: "Baskerville", "Songti SC", "STSong", "Times New Roman", serif;
+    }
+
+    .office {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+    }
+
+    .desk {
+      position: absolute;
+      inset: auto 4vw -18vh 4vw;
+      height: 42vh;
+      border-radius: 50% 50% 0 0 / 28% 28% 0 0;
+      background:
+        linear-gradient(100deg, rgba(255,255,255,0.08), transparent 38%),
+        repeating-linear-gradient(88deg, #624328 0 34px, #704d2f 34px 66px, #58381f 66px 96px);
+      box-shadow: 0 -18px 90px rgba(0,0,0,0.48);
+      transform: perspective(680px) rotateX(56deg);
+      transform-origin: bottom center;
+    }
+
+    .lamp {
+      position: absolute;
+      right: clamp(22px, 8vw, 120px);
+      top: clamp(20px, 8vh, 76px);
+      width: 118px;
+      height: 118px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255, 226, 143, 0.72), rgba(255, 226, 143, 0.08) 54%, transparent 70%);
+      filter: blur(1px);
+      opacity: 0.72;
+      pointer-events: none;
+    }
+
+    .pin {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      border-radius: 999px;
+      background: #cf1f3f;
+      box-shadow: 0 3px 0 #821225, 0 10px 20px rgba(0,0,0,0.28);
+    }
+
+    .pin.one { left: 11vw; top: 18vh; }
+    .pin.two { right: 14vw; bottom: 24vh; }
+
+    .dialog {
+      position: fixed;
+      width: min(560px, calc(100vw - 28px));
+      max-height: calc(100vh - 28px);
+      overflow: auto;
+      border: 1px solid rgba(255, 244, 207, 0.82);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.72), transparent 35%),
+        repeating-linear-gradient(0deg, rgba(123, 91, 43, 0.055) 0 1px, transparent 1px 32px),
+        var(--paper);
+      box-shadow:
+        0 28px 86px rgba(0,0,0,0.46),
+        0 3px 0 rgba(111, 69, 28, 0.42),
+        inset 0 0 0 1px rgba(255,255,255,0.8);
+      transition:
+        left 260ms cubic-bezier(.16, 1, .3, 1),
+        top 260ms cubic-bezier(.16, 1, .3, 1),
+        transform 180ms ease,
+        box-shadow 180ms ease;
+      will-change: left, top;
+    }
+
+    .dialog.dodging {
+      transform: rotate(var(--tilt, -1.2deg)) scale(1.01);
+      box-shadow:
+        0 36px 96px rgba(0,0,0,0.56),
+        0 3px 0 rgba(111, 69, 28, 0.42),
+        inset 0 0 0 1px rgba(255,255,255,0.8);
+    }
+
+    .dialog::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(91, 66, 33, 0.2);
+      pointer-events: none;
+    }
+
+    .dialog__bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(91, 66, 33, 0.22);
+      background: rgba(116, 81, 38, 0.08);
+      font-family: "Gill Sans", "Trebuchet MS", sans-serif;
+      color: #5b442c;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .lights {
+      display: flex;
+      gap: 7px;
+    }
+
+    .lights span {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #d8b67a;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.22);
+    }
+
+    .serial {
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(91, 68, 44, 0.66);
+    }
+
+    .content {
+      position: relative;
+      padding: clamp(26px, 5vw, 42px);
+    }
+
+    .kicker {
+      margin-bottom: 12px;
+      font-family: "Gill Sans", "Trebuchet MS", sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--stamp);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin-bottom: 18px;
+      font-size: clamp(34px, 7vw, 64px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: 0;
+      color: #222734;
+    }
+
+    .copy {
+      max-width: 34em;
+      margin-bottom: 24px;
+      color: rgba(30, 41, 59, 0.78);
+      font-size: clamp(16px, 2.6vw, 19px);
+      line-height: 1.75;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 12px;
+      align-items: center;
+      margin: 10px 0;
+      font-family: "Gill Sans", "Trebuchet MS", sans-serif;
+      color: rgba(30, 41, 59, 0.78);
+      font-size: 14px;
+    }
+
+    .line {
+      height: 1px;
+      background: linear-gradient(90deg, rgba(30,41,59,0.48), rgba(30,41,59,0.1));
+    }
+
+    .stamp {
+      position: absolute;
+      right: clamp(22px, 6vw, 58px);
+      top: clamp(70px, 18vw, 118px);
+      width: 114px;
+      height: 114px;
+      display: grid;
+      place-items: center;
+      border: 7px double rgba(207, 31, 63, 0.82);
+      border-radius: 999px;
+      color: rgba(207, 31, 63, 0.8);
+      font-family: "Gill Sans", "Trebuchet MS", sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-align: center;
+      transform: rotate(-14deg);
+      opacity: 0.84;
+      pointer-events: none;
+    }
+
+    .actions {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+      padding-top: 18px;
+      border-top: 1px dashed rgba(91, 66, 33, 0.26);
+      font-family: "Gill Sans", "Trebuchet MS", sans-serif;
+    }
+
+    button {
+      border: 0;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .approve {
+      min-width: 148px;
+      padding: 15px 22px;
+      color: #f8fff7;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.18), transparent),
+        linear-gradient(135deg, var(--green), var(--green-deep));
+      box-shadow: 0 12px 24px rgba(20, 115, 74, 0.28);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .approve:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 28px rgba(20, 115, 74, 0.34);
+    }
+
+    .approve:active {
+      transform: translateY(1px);
+    }
+
+    .reject {
+      min-width: 148px;
+      padding: 15px 22px;
+      color: #fff7f2;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.14), transparent),
+        linear-gradient(135deg, #cf1f3f, #7f1529);
+      box-shadow: 0 12px 24px rgba(127, 21, 41, 0.24);
+    }
+
+    .reject:focus-visible {
+      outline: 3px solid rgba(207, 31, 63, 0.38);
+      outline-offset: 4px;
+    }
+
+    .status {
+      margin-top: 18px;
+      min-height: 24px;
+      color: rgba(30, 41, 59, 0.56);
+      font-family: "Gill Sans", "Trebuchet MS", sans-serif;
+      font-size: 14px;
+    }
+
+    .thank-you {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(15, 20, 29, 0.66);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease;
+    }
+
+    .thank-you.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .receipt {
+      width: min(430px, 100%);
+      padding: 32px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.56)),
+        var(--paper);
+      box-shadow: 0 26px 80px rgba(0,0,0,0.5);
+      text-align: center;
+      transform: translateY(12px) scale(0.96);
+      transition: transform 220ms cubic-bezier(.16, 1, .3, 1);
+    }
+
+    .thank-you.visible .receipt {
+      transform: translateY(0) scale(1);
+    }
+
+    .receipt__mark {
+      width: 82px;
+      height: 82px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 18px;
+      border: 5px double var(--green);
+      border-radius: 999px;
+      color: var(--green);
+      font-family: "Gill Sans", "Trebuchet MS", sans-serif;
+      font-size: 34px;
+      font-weight: 900;
+    }
+
+    .receipt h2 {
+      margin-bottom: 12px;
+      color: #202532;
+      font-size: 32px;
+      line-height: 1.1;
+    }
+
+    .receipt p {
+      color: rgba(30, 41, 59, 0.68);
+      font-family: "Gill Sans", "Trebuchet MS", sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .close {
+      margin-top: 22px;
+      padding: 12px 18px;
+      color: #f8fff7;
+      background: #202532;
+    }
+
+    .trail {
+      position: fixed;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--cream);
+      box-shadow: 0 0 18px var(--cream);
+      opacity: 0.8;
+      pointer-events: none;
+      animation: fadeTrail 520ms ease forwards;
+    }
+
+    @keyframes fadeTrail {
+      to {
+        transform: scale(2.8);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .office {
+        padding: 14px;
+      }
+
+      .dialog__bar {
+        padding: 12px 14px;
+      }
+
+      .content {
+        padding: 24px 20px 22px;
+      }
+
+      .stamp {
+        width: 84px;
+        height: 84px;
+        border-width: 5px;
+        font-size: 14px;
+        right: 18px;
+        top: 78px;
+      }
+
+      .form-row {
+        grid-template-columns: 68px 1fr;
+      }
+
+      .actions {
+        display: grid;
+      }
+
+      .approve,
+      .reject {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .dialog,
+      .receipt,
+      .thank-you {
+        transition-duration: 1ms;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="office" aria-label="辞职申请模拟器">
+    <div class="lamp"></div>
+    <div class="pin one"></div>
+    <div class="pin two"></div>
+    <div class="desk"></div>
+
+    <section class="dialog" id="dialog" role="dialog" aria-labelledby="title" aria-describedby="description">
+      <div class="dialog__bar">
+        <div class="lights" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="serial">HR-SYSTEM / FINAL_APPROVAL</div>
+      </div>
+
+      <div class="content">
+        <div class="kicker">Pending resignation request</div>
+        <h1 id="title">辞职申请</h1>
+        <div class="stamp" aria-hidden="true">等待<br>审批</div>
+        <p class="copy" id="description">
+          申请人因长期被需求、会议与临时改稿追赶，现申请立刻退出当前人生分支。请审批人选择处理意见。
+        </p>
+
+        <div class="form-row">
+          <span>申请人</span>
+          <div class="line" aria-hidden="true"></div>
+        </div>
+        <div class="form-row">
+          <span>离职日期</span>
+          <div class="line" aria-hidden="true"></div>
+        </div>
+        <div class="form-row">
+          <span>审批意见</span>
+          <div class="line" aria-hidden="true"></div>
+        </div>
+
+        <div class="actions">
+          <button class="approve" id="approve" type="button">批准</button>
+          <button class="reject" id="reject" type="button">不批准</button>
+        </div>
+        <p class="status" id="status">提示：审批系统非常尊重你的鼠标轨迹。</p>
+      </div>
+    </section>
+  </main>
+
+  <aside class="thank-you" id="thanks" role="alertdialog" aria-labelledby="thanksTitle" aria-modal="true">
+    <div class="receipt">
+      <div class="receipt__mark">批</div>
+      <h2 id="thanksTitle">谢谢你的批准</h2>
+      <p>系统已自动记录：你做出了唯一可点击的选择。</p>
+      <button class="close" id="closeThanks" type="button">我知道了</button>
+    </div>
+  </aside>
+
+  <script>
+    const dialog = document.getElementById('dialog');
+    const reject = document.getElementById('reject');
+    const approve = document.getElementById('approve');
+    const status = document.getElementById('status');
+    const thanks = document.getElementById('thanks');
+    const closeThanks = document.getElementById('closeThanks');
+
+    let dodgeCount = 0;
+    let current = { x: 0, y: 0 };
+    let dodgeTimer = null;
+    let lastDodgeAt = 0;
+
+    const messages = [
+      '不批准选项已检测到危险接近，正在规避。',
+      '审批系统认为你需要再考虑一下。',
+      '不批准按钮刚刚申请了远程办公。',
+      '这不是 bug，这是组织流程。',
+      '鼠标越坚定，窗口越灵活。',
+      '你可以继续追，但它还有年假。',
+      '拒绝失败：请改用批准流程。'
+    ];
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function getBounds() {
+      const margin = window.innerWidth < 620 ? 14 : 30;
+      const width = dialog.offsetWidth;
+      const height = dialog.offsetHeight;
+      return {
+        margin,
+        width,
+        height,
+        minX: margin,
+        minY: margin,
+        maxX: Math.max(margin, window.innerWidth - width - margin),
+        maxY: Math.max(margin, window.innerHeight - height - margin)
+      };
+    }
+
+    function placeDialog(x, y, instant = false) {
+      const bounds = getBounds();
+      current.x = clamp(x, bounds.minX, bounds.maxX);
+      current.y = clamp(y, bounds.minY, bounds.maxY);
+
+      if (instant) {
+        dialog.style.transitionDuration = '1ms';
+      }
+
+      dialog.style.left = `${current.x}px`;
+      dialog.style.top = `${current.y}px`;
+
+      if (instant) {
+        window.setTimeout(() => {
+          dialog.style.transitionDuration = '';
+        }, 20);
+      }
+    }
+
+    function centerDialog() {
+      const bounds = getBounds();
+      placeDialog(
+        (window.innerWidth - bounds.width) / 2,
+        (window.innerHeight - bounds.height) / 2,
+        true
+      );
+    }
+
+    function scoreCandidate(candidate, pointer) {
+      const bounds = getBounds();
+      const centerX = candidate.x + bounds.width / 2;
+      const centerY = candidate.y + bounds.height / 2;
+      const distance = Math.hypot(centerX - pointer.x, centerY - pointer.y);
+      const movement = Math.hypot(candidate.x - current.x, candidate.y - current.y);
+      const edgePenalty = (
+        Math.abs(candidate.x - bounds.minX) < 8 ||
+        Math.abs(candidate.x - bounds.maxX) < 8 ||
+        Math.abs(candidate.y - bounds.minY) < 8 ||
+        Math.abs(candidate.y - bounds.maxY) < 8
+      ) ? 80 : 0;
+
+      return distance + movement * 0.25 - edgePenalty + Math.random() * 90;
+    }
+
+    function pickPosition(pointer) {
+      const bounds = getBounds();
+      const candidates = [
+        { x: bounds.minX, y: bounds.minY },
+        { x: bounds.maxX, y: bounds.minY },
+        { x: bounds.minX, y: bounds.maxY },
+        { x: bounds.maxX, y: bounds.maxY },
+        { x: (window.innerWidth - bounds.width) / 2, y: bounds.minY },
+        { x: (window.innerWidth - bounds.width) / 2, y: bounds.maxY }
+      ];
+
+      for (let i = 0; i < 28; i += 1) {
+        candidates.push({
+          x: bounds.minX + Math.random() * Math.max(1, bounds.maxX - bounds.minX),
+          y: bounds.minY + Math.random() * Math.max(1, bounds.maxY - bounds.minY)
+        });
+      }
+
+      return candidates
+        .map((candidate) => ({ candidate, score: scoreCandidate(candidate, pointer) }))
+        .sort((a, b) => b.score - a.score)[0].candidate;
+    }
+
+    function createTrail(x, y) {
+      const dot = document.createElement('span');
+      dot.className = 'trail';
+      dot.style.left = `${x}px`;
+      dot.style.top = `${y}px`;
+      document.body.appendChild(dot);
+      window.setTimeout(() => dot.remove(), 540);
+    }
+
+    function dodge(pointer) {
+      const now = performance.now();
+      if (now - lastDodgeAt < 130) return;
+      lastDodgeAt = now;
+      dodgeCount += 1;
+
+      const rect = dialog.getBoundingClientRect();
+      createTrail(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      dialog.style.setProperty('--tilt', `${(Math.random() * 4 - 2).toFixed(2)}deg`);
+      dialog.classList.add('dodging');
+
+      const next = pickPosition(pointer);
+      placeDialog(next.x, next.y);
+
+      status.textContent = messages[(dodgeCount - 1) % messages.length];
+      window.clearTimeout(dodgeTimer);
+      dodgeTimer = window.setTimeout(() => dialog.classList.remove('dodging'), 280);
+    }
+
+    function isPointerNearReject(event) {
+      const rect = reject.getBoundingClientRect();
+      const nearestX = clamp(event.clientX, rect.left, rect.right);
+      const nearestY = clamp(event.clientY, rect.top, rect.bottom);
+      return Math.hypot(event.clientX - nearestX, event.clientY - nearestY) < 86;
+    }
+
+    window.addEventListener('load', centerDialog);
+    window.addEventListener('resize', centerDialog);
+
+    document.addEventListener('pointermove', (event) => {
+      if (thanks.classList.contains('visible')) return;
+      if (event.pointerType === 'mouse' && isPointerNearReject(event)) {
+        dodge({ x: event.clientX, y: event.clientY });
+      }
+    });
+
+    reject.addEventListener('pointerenter', (event) => {
+      dodge({ x: event.clientX, y: event.clientY });
+    });
+
+    reject.addEventListener('pointerdown', (event) => {
+      event.preventDefault();
+      dodge({ x: event.clientX, y: event.clientY });
+    });
+
+    reject.addEventListener('click', (event) => {
+      event.preventDefault();
+      dodge({ x: event.clientX, y: event.clientY });
+    });
+
+    approve.addEventListener('click', () => {
+      thanks.classList.add('visible');
+      closeThanks.focus();
+    });
+
+    closeThanks.addEventListener('click', () => {
+      thanks.classList.remove('visible');
+      approve.focus();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && thanks.classList.contains('visible')) {
+        thanks.classList.remove('visible');
+        approve.focus();
+      }
+    });
+  </script>
+</body>
+</html>

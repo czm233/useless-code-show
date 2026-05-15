@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>永远 99% 加载器 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #07151d;
+      --panel: rgba(8, 27, 37, 0.82);
+      --line: rgba(255, 255, 255, 0.13);
+      --ink: #f7efe4;
+      --muted: rgba(247, 239, 228, 0.58);
+      --gold: #ffd166;
+      --cyan: #40c9d4;
+      --coral: #ef476f;
+      --green: #06d6a0;
+    }
+
+    body {
+      width: 100vw;
+      min-height: 100vh;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 18% 24%, rgba(255, 209, 102, 0.16), transparent 28%),
+        radial-gradient(circle at 82% 76%, rgba(64, 201, 212, 0.18), transparent 30%),
+        linear-gradient(145deg, #07151d 0%, #0c2734 48%, #071015 100%);
+      color: var(--ink);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(circle at center, black, transparent 75%);
+    }
+
+    .loader-shell {
+      width: min(760px, calc(100vw - 32px));
+      padding: clamp(24px, 5vw, 48px);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow:
+        0 28px 80px rgba(0, 0, 0, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px);
+    }
+
+    .label-row,
+    .meta-row,
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: 12px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 18px var(--green);
+      animation: blink 1.2s steps(2, jump-none) infinite;
+    }
+
+    h1 {
+      margin-top: 18px;
+      max-width: 660px;
+      font-size: clamp(38px, 8vw, 76px);
+      line-height: 0.94;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: clamp(14px, 2.6vw, 17px);
+      line-height: 1.7;
+    }
+
+    .progress-wrap {
+      margin-top: clamp(34px, 6vw, 54px);
+    }
+
+    .meta-row {
+      margin-bottom: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .percent {
+      color: var(--ink);
+      font-size: clamp(30px, 7vw, 56px);
+      font-weight: 800;
+      line-height: 1;
+      min-width: 5ch;
+      text-align: right;
+    }
+
+    .track {
+      position: relative;
+      height: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.32);
+    }
+
+    .fill {
+      position: absolute;
+      inset: 3px auto 3px 3px;
+      width: 0%;
+      min-width: 28px;
+      border-radius: 999px;
+      background:
+        linear-gradient(90deg, var(--gold), var(--cyan), var(--coral)),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.2) 0 10px, transparent 10px 20px);
+      box-shadow: 0 0 28px rgba(64, 201, 212, 0.35);
+      transition: width 260ms cubic-bezier(.2, .8, .2, 1);
+    }
+
+    .fill::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.38), transparent);
+      animation: sweep 1.25s linear infinite;
+    }
+
+    .stall-marker {
+      position: absolute;
+      top: -8px;
+      bottom: -8px;
+      left: 99%;
+      width: 2px;
+      background: var(--coral);
+      box-shadow: 0 0 16px var(--coral);
+    }
+
+    .message {
+      min-height: 52px;
+      margin-top: 20px;
+      color: var(--ink);
+      font-size: clamp(16px, 3vw, 21px);
+      line-height: 1.45;
+    }
+
+    .control-row {
+      margin-top: 30px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    button {
+      min-height: 42px;
+      padding: 0 18px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--ink);
+      font: inherit;
+      cursor: pointer;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+      user-select: none;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 209, 102, 0.62);
+      background: rgba(255, 209, 102, 0.12);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .tiny-log {
+      min-height: 18px;
+      margin-top: 22px;
+      color: rgba(247, 239, 228, 0.34);
+      font-size: 12px;
+    }
+
+    .stuck .percent,
+    .stuck .message {
+      animation: tinyShake 520ms steps(2, end) infinite;
+    }
+
+    @keyframes sweep {
+      from { transform: translateX(-120%); }
+      to { transform: translateX(120%); }
+    }
+
+    @keyframes blink {
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes tinyShake {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(1px); }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        align-items: stretch;
+        overflow-y: auto;
+      }
+
+      .loader-shell {
+        width: 100%;
+        min-height: 100vh;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .label-row,
+      .meta-row {
+        align-items: flex-start;
+      }
+
+      .percent {
+        font-size: 38px;
+      }
+
+      button {
+        flex: 1 1 calc(50% - 8px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="loader-shell" id="shell">
+    <div class="label-row">
+      <p class="eyebrow">Definitely Loading</p>
+      <span class="status-dot" aria-hidden="true"></span>
+    </div>
+
+    <h1>永远 99% 加载器</h1>
+    <p class="subtitle">系统正在非常认真地处理一些不重要的事情。请保持耐心，完成只是一个理论概念。</p>
+
+    <section class="progress-wrap" aria-label="加载进度">
+      <div class="meta-row">
+        <span id="phase">初始化空气缓存</span>
+        <strong class="percent" id="percent">0%</strong>
+      </div>
+
+      <div class="track">
+        <div class="fill" id="fill"></div>
+        <span class="stall-marker" aria-hidden="true"></span>
+      </div>
+
+      <p class="message" id="message">正在加载一些不会被使用的资源...</p>
+    </section>
+
+    <div class="control-row">
+      <button type="button" id="speedBtn">加速</button>
+      <button type="button" id="finishBtn">完成</button>
+      <button type="button" id="retryBtn">重试</button>
+      <button type="button" id="pauseBtn">暂停</button>
+    </div>
+
+    <p class="tiny-log" id="log">日志：一切正常，尤其是不正常的部分。</p>
+  </main>
+
+  <script>
+    const shell = document.getElementById('shell');
+    const fill = document.getElementById('fill');
+    const percentEl = document.getElementById('percent');
+    const phaseEl = document.getElementById('phase');
+    const messageEl = document.getElementById('message');
+    const logEl = document.getElementById('log');
+    const speedBtn = document.getElementById('speedBtn');
+    const finishBtn = document.getElementById('finishBtn');
+    const retryBtn = document.getElementById('retryBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+
+    const phases = [
+      '初始化空气缓存',
+      '校准无意义参数',
+      '整理空文件夹',
+      '验证按钮的心理状态',
+      '压缩不存在的数据',
+      '等待服务器先冷静一下',
+      '重新计算 99 的边界',
+    ];
+
+    const messages = [
+      '正在加载一些不会被使用的资源...',
+      '正在检查进度条是否足够像进度条...',
+      '即将完成，但不完全完成。',
+      '系统检测到你开始期待结果，已自动延后。',
+      '正在把最后 1% 交给未来的自己。',
+      '进度已接近成功，因此需要谨慎停住。',
+      '正在同步本地虚无与远程虚无。',
+    ];
+
+    const logs = [
+      '加速请求已收到，速度已礼貌下降。',
+      '完成失败：完成度过高，系统拒绝冒险。',
+      '重试成功：我们从新的角度继续失败。',
+      '暂停成功：进度条假装没有听见。',
+      '最后 1% 正在排队，前面还有 1%。',
+      '没有错误，只是没有结果。',
+    ];
+
+    let progress = 0;
+    let velocity = 0.42;
+    let paused = false;
+    let phaseIndex = 0;
+    let messageIndex = 0;
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function pickNext(list, currentIndex) {
+      return (currentIndex + 1 + Math.floor(Math.random() * (list.length - 1))) % list.length;
+    }
+
+    function render() {
+      const visibleProgress = Math.min(progress, 99);
+      const rounded = Math.floor(visibleProgress);
+
+      fill.style.width = `${visibleProgress}%`;
+      percentEl.textContent = `${rounded}%`;
+      shell.classList.toggle('stuck', rounded >= 99);
+
+      if (rounded >= 99) {
+        phaseEl.textContent = '卡在最后 1%';
+        messageEl.textContent = '99% 已达成。为了保持悬念，加载将不会结束。';
+      }
+    }
+
+    function updateCopy(force) {
+      if (!force && Math.random() > 0.18) return;
+      phaseIndex = pickNext(phases, phaseIndex);
+      messageIndex = pickNext(messages, messageIndex);
+      phaseEl.textContent = phases[phaseIndex];
+      messageEl.textContent = messages[messageIndex];
+    }
+
+    function tick() {
+      if (!paused && progress < 99) {
+        const resistance = progress < 88 ? 1 : Math.max(0.08, (99 - progress) / 18);
+        progress = clamp(progress + velocity * resistance + Math.random() * 0.16, 0, 99);
+        updateCopy(false);
+        render();
+      }
+
+      window.requestAnimationFrame(tick);
+    }
+
+    speedBtn.addEventListener('click', () => {
+      velocity = Math.max(0.04, velocity * 0.62);
+      logEl.textContent = logs[0];
+      updateCopy(true);
+    });
+
+    finishBtn.addEventListener('click', () => {
+      progress = 37 + Math.random() * 8;
+      velocity = Math.max(0.2, velocity);
+      paused = false;
+      pauseBtn.textContent = '暂停';
+      logEl.textContent = logs[1];
+      updateCopy(true);
+      render();
+    });
+
+    retryBtn.addEventListener('click', () => {
+      progress = Math.max(12, progress - 18 - Math.random() * 16);
+      velocity = 0.38;
+      paused = false;
+      pauseBtn.textContent = '暂停';
+      logEl.textContent = logs[2];
+      updateCopy(true);
+      render();
+    });
+
+    pauseBtn.addEventListener('click', () => {
+      paused = !paused;
+      pauseBtn.textContent = paused ? '继续' : '暂停';
+      logEl.textContent = paused ? logs[3] : logs[4];
+      updateCopy(true);
+    });
+
+    setInterval(() => {
+      if (progress >= 99) {
+        logEl.textContent = logs[4 + Math.floor(Math.random() * 2)];
+      }
+    }, 2600);
+
+    render();
+    tick();
+  </script>
+</body>
+</html>

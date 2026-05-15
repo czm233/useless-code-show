@@ -22,5 +22,21 @@
     "preview": { "type": "gradient", "colors": ["#a29bfe", "#6c5ce7"] },
     "tags": ["交互", "哲学"],
     "path": "useless-button"
+  },
+  {
+    "id": "forever-loader",
+    "title": "永远 99% 加载器",
+    "description": "进度条会努力加载到 99%，然后认真地卡住",
+    "preview": { "type": "gradient", "colors": ["#ffd166", "#118ab2"] },
+    "tags": ["交互", "荒诞"],
+    "path": "forever-loader"
+  },
+  {
+    "id": "resignation-modal",
+    "title": "辞职申请",
+    "description": "一个永远点不到“不批准”的模态窗口",
+    "preview": { "type": "gradient", "colors": ["#cf1f3f", "#24a06b"] },
+    "tags": ["交互", "荒诞"],
+    "path": "resignation-modal"
   }
 ]
