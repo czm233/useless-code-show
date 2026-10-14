@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>五百强企业级甩锅引擎 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0b1120;
+      --panel: #131d32;
+      --border: #1e293b;
+      --emerald: #10b981;
+      --slate: #94a3b8;
+      --text: #f8fafc;
+      --purple: #8b5cf6;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+    }
+    .container {
+      width: min(900px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .top-nav {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 17px;
+      color: #fff;
+    }
+    .badge {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 2px 8px;
+      font-size: 11px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .stat-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .stat-title {
+      font-size: 12px;
+      color: var(--slate);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .stat-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      font-family: var(--font-mono);
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: 1fr; }
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    label {
+      font-size: 12px;
+      color: var(--slate);
+      font-weight: 600;
+    }
+    select, input[type=range] {
+      width: 100%;
+    }
+    select {
+      background: #090e1a;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+    select:focus {
+      border-color: var(--emerald);
+    }
+    .intensity-box {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--emerald);
+    }
+    .btn-generate {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+    .btn-generate:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    /* 复盘生成展示区 */
+    .report-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .report-box {
+      flex: 1;
+      background: #080c16;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #cbd5e1;
+      min-height: 240px;
+      max-height: 380px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .report-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .btn-sub {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-copy {
+      background: #1e293b;
+      color: #fff;
+      border: 1px solid #334155;
+    }
+    .btn-copy:hover { background: #334155; }
+    .btn-send {
+      background: #ef4444;
+      color: #fff;
+      border: none;
+    }
+    .btn-send:hover { background: #dc2626; }
+
+    /* 烤打弹窗 */
+    .fired-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .fired-modal.active { display: flex; }
+    .fired-content {
+      background: #1e293b;
+      border: 1px solid #ef4444;
+      border-radius: 12px;
+      padding: 24px;
+      width: min(450px, 100%);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 10px 40px rgba(239, 68, 68, 0.4);
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      background: #10b981;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      display: none;
+      z-index: 200;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-nav">
+      <div class="logo">
+        <svg width="24" height="24" fill="none" stroke="#10b981" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+        <span>BLAME-MATRIX ENTERPRISE 3.0</span>
+      </div>
+      <span class="badge">责任稀释引擎已就绪</span>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-title">责任稀释平均率</span>
+        <span class="stat-val" style="color: #10b981;">99.4%</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-title">全域黑话覆盖深度</span>
+        <span class="stat-val" style="color: #8b5cf6;">100% 闭环</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-title">实习生承担率</span>
+        <span class="stat-val" style="color: #f59e0b;">88.2%</span>
+      </div>
+    </div>
+
+    <div class="main-grid">
+      <!-- 配置侧 -->
+      <div class="card">
+        <div class="card-title">
+          <span>事故特征与甩锅参数建模</span>
+        </div>
+
+        <div class="form-group">
+          <label>本次惨烈翻车事故 (Incident)</label>
+          <select id="incidentSelect">
+            <option value="drop_db">生产数据库被直接 Drop Table 全清空</option>
+            <option value="gateway_502">线上核心支付网关持续报错 502 达 4 小时</option>
+            <option value="zero_revenue">整季度业务 KPI 为 0，不仅没赚还亏了三千万</option>
+            <option value="test_in_prod">误把未测试的草稿功能推送至数亿级活跃用户</option>
+            <option value="delay_year">承诺下周上线的战略项目已延期两年零四个月</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>指定战略背锅载体 (Primary Culprit)</label>
+          <select id="culpritSelect">
+            <option value="intern">新来两天的应届实习生 (抗压能力强)</option>
+            <option value="cloud">第三方底层机房发生不可抗力物理光纤挖断</option>
+            <option value="solar">外太空高能宇宙射线导致的服务器内存比特单粒子翻转</option>
+            <option value="macro">宏观外部大周期下行导致的用户心智未完全对齐</option>
+            <option value="legacy">前任早已离职两年的首席架构师遗留的祖传技术债</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="intensity-box">
+            <span>战略黑话浓度指数</span>
+            <span id="densityVal">100% (满级闭环)</span>
+          </div>
+          <input type="range" id="densityRange" min="50" max="150" value="100">
+        </div>
+
+        <button class="btn-generate" id="btnGen">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+          </svg>
+          <span>一键生成顶层设计复盘白皮书</span>
+        </button>
+      </div>
+
+      <!-- 输出侧 -->
+      <div class="card report-card">
+        <div class="card-title">
+          <span>《关于本次能量场不对齐与心智认知偏差的闭环复盘声明》</span>
+        </div>
+
+        <div class="report-box" id="reportBox">点击左侧“一键生成”，即刻将事故转化为具有高度战略格局的商业洞察汇报。</div>
+
+        <div class="report-actions">
+          <button class="btn-sub btn-copy" id="btnCopy">复制复盘纪要</button>
+          <button class="btn-sub btn-send" id="btnSend">一键抄送全员并 @董事长</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fired-modal" id="firedModal">
+    <div class="fired-content">
+      <div style="font-size: 40px;">🚫</div>
+      <h3 style="color: #ef4444;">发送失败与账号异常警告</h3>
+      <p style="font-size: 13px; color: #94a3b8; line-height: 1.6;">
+        由于本复盘报告中的黑话浓度过高且甩锅逻辑过于无懈可击，董事长已被气进 ICU，且群管理员已将您移出全员大群，并为您办理了优化毕业手续。
+      </p>
+      <button class="btn-sub btn-copy" id="btnCloseModal">好的，我马上去办离职手续</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">复盘声明已成功复制到剪贴板！</div>
+
+  <script>
+    const buzzwords = [
+      "穿透底层逻辑", "寻找核心抓手", "打齐心智颗粒度", "实现生态闭环", "多模态矩阵赋能",
+      "垂直赛道深潜", "沉淀方法论资产", "击穿用户心智壁垒", "顶层架构重构", "打通端到端链路"
+    ];
+
+    const templates = {
+      drop_db: {
+        intern: "针对本次生产数据表象级置空事件，经复盘，系团队为验证应届同学在极限极端承压环境下的敏捷容灾心智，特意开放的高维实操沙盒权限。该同学以极强的探索精神精准验证了冷备份链路的抗脆弱性，虽然数据暂时回归宇宙虚无，但沉淀了宝贵的组织抗熵增经验。",
+        cloud: "本次数据库瞬态下线并非技术故障，而是上游云底座服务商在进行多维光子链路冗余校验时，偶发遭遇深空电磁扰动。从战略对齐维度来看，这恰恰为我们下一步推动完全自主可控的微架构私有化部署指明了方向。",
+        solar: "经深空天体物理观测站交叉比对，本次故障实为来自银河系猎户臂的高能宇宙粒子，精准命中了生产集群第 4 节点 ECC 内存的关键逻辑门，触发了硬件级自卫性擦除。属于千万年一遇的自然宇宙交汇，非人力认知框架所能规避。"
+      },
+      gateway_502: {
+        intern: "本次 502 状态码持续外露，是新锐实习同学主导的‘逆向饥饿营销心智触达工程’。通过暂时阻断常规业务流，倒逼用户产生强烈的心理依赖与沉浸式期待，根据留存模型推算，后续用户粘性将迎来指数级飞轮效应。",
+        cloud: "云网关侧发生的流控收敛，本质上是多云架构在面对全球互联网不可预测波动时所展现出的‘极高自适应防御机制’。团队第一时间启动多频协同对齐，有力保障了绝大部分空气流量的平稳穿透。",
+        solar: "由于量子微观涨落导致光纤折射率产生 0.000001% 的瞬间偏移，网关在进行纳秒级握手校验时主动触发了哲学级休克疗法。这是一次划时代的硬件-软件-宏观宇宙联合实战压测。"
+      }
+    };
+
+    const incidentSelect = document.getElementById('incidentSelect');
+    const culpritSelect = document.getElementById('culpritSelect');
+    const densityRange = document.getElementById('densityRange');
+    const densityVal = document.getElementById('densityVal');
+    const reportBox = document.getElementById('reportBox');
+    const btnGen = document.getElementById('btnGen');
+    const btnCopy = document.getElementById('btnCopy');
+    const btnSend = document.getElementById('btnSend');
+    const firedModal = document.getElementById('firedModal');
+    const toast = document.getElementById('toast');
+
+    densityRange.addEventListener('input', e => {
+      densityVal.textContent = `${e.target.value}% (${e.target.value > 120 ? '突破天际' : '满级闭环'})`;
+    });
+
+    btnGen.addEventListener('click', () => {
+      const inc = incidentSelect.value;
+      const cul = culpritSelect.value;
+      const density = parseInt(densityRange.value);
+
+      const baseText = (templates[inc] && templates[inc][cul]) || 
+        `关于本次业务交付偏差，团队通过深入调研，发现该现象系【${culpritSelect.options[culpritSelect.selectedIndex].text}】在底层能量场与当前宏观周期未能形成有效共振所致。`;
+
+      let extraBuzz = "\n\n【下一步推进抓手与顶层赋能】\n";
+      const count = Math.floor(density / 25);
+      for (let i = 0; i < count; i++) {
+        extraBuzz += `${i + 1}. 将继续以 ${buzzwords[i % buzzwords.length]} 为抓手，全面 ${buzzwords[(i + 3) % buzzwords.length]}，确保责任矩阵完全对齐，杜绝同类认知温差。\n`;
+      }
+
+      extraBuzz += "\n抄报：全体合伙人、CEO 办公室、组织部、财务部、法务部（免责声明备案）";
+
+      reportBox.textContent = baseText + extraBuzz;
+    });
+
+    btnCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(reportBox.textContent).then(() => {
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 2500);
+      });
+    });
+
+    btnSend.addEventListener('click', () => {
+      firedModal.classList.add('active');
+    });
+
+    document.getElementById('btnCloseModal').addEventListener('click', () => {
+      firedModal.classList.remove('active');
+    });
+  </script>
+</body>
+</html>

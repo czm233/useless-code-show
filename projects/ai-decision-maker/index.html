@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>量子 AI 终极决策中心 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #060913;
+      --panel: rgba(13, 20, 38, 0.82);
+      --panel-border: rgba(66, 153, 225, 0.24);
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.35);
+      --accent: #a855f7;
+      --gold: #fbbf24;
+      --danger: #f43f5e;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --mono-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: radial-gradient(circle at 50% 10%, #0d1b3e 0%, #060913 70%);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+    }
+    /* 背景科技网格 */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .container {
+      position: relative;
+      z-index: 1;
+      width: min(920px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    /* 顶部仪表盘状态栏 */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      font-family: var(--mono-font);
+      font-size: 13px;
+    }
+    .brand-tag {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--primary);
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 12px var(--primary);
+      animation: pulse 1.6s infinite ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+    .metrics {
+      display: flex;
+      gap: 18px;
+      color: var(--text-muted);
+    }
+    .metric-val {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    /* 主机舱 */
+    .main-deck {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .header-text h1 {
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #fff 30%, var(--primary) 70%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .header-text p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* 输入区域 */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .input-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+      display: flex;
+      justify-content: space-between;
+    }
+    .prompt-box {
+      width: 100%;
+      padding: 16px;
+      background: rgba(3, 7, 18, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+      line-height: 1.5;
+      resize: vertical;
+      min-height: 72px;
+      outline: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .prompt-box:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 16px var(--primary-glow);
+    }
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .preset-tag {
+      font-size: 12px;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .preset-tag:hover {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    /* 量子滑块参数 */
+    .parameters-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .param-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+    }
+    .param-header {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+    }
+    .param-header span:last-child {
+      color: var(--primary);
+      font-family: var(--mono-font);
+      font-weight: 600;
+    }
+    input[type=range] {
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Canvas 动态量子神经网 */
+    .quantum-canvas-wrap {
+      position: relative;
+      height: 120px;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(56, 189, 248, 0.15);
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .canvas-overlay-text {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-size: 11px;
+      font-family: var(--mono-font);
+      color: rgba(56, 189, 248, 0.6);
+      pointer-events: none;
+    }
+
+    /* 启动按钮 */
+    .launch-btn {
+      position: relative;
+      background: linear-gradient(135deg, #0284c7, #2563eb, #7c3aed);
+      border: none;
+      padding: 16px 28px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .launch-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(37, 99, 235, 0.6);
+      filter: brightness(1.1);
+    }
+    .launch-btn:active {
+      transform: translateY(1px);
+    }
+    .launch-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* 终端日志输出 */
+    .terminal-box {
+      background: #020617;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: var(--mono-font);
+      font-size: 12px;
+      line-height: 1.7;
+      color: #38bdf8;
+      max-height: 130px;
+      overflow-y: auto;
+    }
+    .log-line {
+      display: flex;
+      gap: 8px;
+    }
+    .log-time {
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .log-info { color: #67e8f9; }
+    .log-warn { color: var(--gold); }
+    .log-done { color: #34d399; font-weight: 700; }
+
+    /* 最终结果弹窗 */
+    .result-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+    .result-modal.active {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .result-card {
+      width: min(580px, 100%);
+      background: linear-gradient(145deg, #0f172a, #1e293b);
+      border: 2px solid var(--gold);
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 0 60px rgba(251, 191, 36, 0.25), 0 25px 50px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      position: relative;
+    }
+    .result-badge {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(251, 191, 36, 0.1);
+      padding: 4px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      font-weight: 700;
+    }
+    .result-title {
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.2;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+    .result-explanation {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 440px;
+      line-height: 1.6;
+    }
+    .result-stats {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px;
+      padding: 12px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      font-family: var(--mono-font);
+      font-size: 12px;
+    }
+    .result-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .stat-k { color: var(--text-muted); }
+    .stat-v { color: var(--primary); font-weight: 700; }
+    .result-btn-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+      width: 100%;
+    }
+    .action-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-again {
+      background: var(--gold);
+      color: #000;
+      border: none;
+    }
+    .btn-again:hover {
+      background: #f59e0b;
+      transform: translateY(-1px);
+    }
+    .btn-close {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+    }
+    .btn-close:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    @media (max-width: 600px) {
+      .top-bar { flex-direction: column; gap: 8px; align-items: flex-start; }
+      .metrics { width: 100%; justify-content: space-between; font-size: 11px; }
+      .main-deck { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 顶部状态栏 -->
+    <header class="top-bar">
+      <div class="brand-tag">
+        <span class="pulse-dot"></span>
+        <span>AGI-OMEGA QUANTUM COGNITION v9.4.1</span>
+      </div>
+      <div class="metrics">
+        <span>算力: <span class="metric-val" id="tflops">16,384 TFLOPS</span></span>
+        <span>坍缩延迟: <span class="metric-val">0.08 ms</span></span>
+        <span>置信纠缠度: <span class="metric-val" id="entangleVal">99.98%</span></span>
+      </div>
+    </header>
+
+    <!-- 主控台 -->
+    <main class="main-deck">
+      <div class="header-text">
+        <h1>量子 AI 终极决策中心</h1>
+        <p>耗费万亿张量算力，穿越 10^18 个平行多维宇宙，为您的人间琐事推演最庄严的最终裁决。</p>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label" for="problemInput">
+          <span>待裁决命题</span>
+          <span style="color: var(--text-muted); font-weight: normal;">支持任意宇宙级或下饭级难题</span>
+        </label>
+        <textarea id="problemInput" class="prompt-box" placeholder="例如：明天要不要向心动对象表白？晚上到底吃麻辣烫还是牛肉面？"></textarea>
+        
+        <div class="preset-row">
+          <span class="preset-tag" data-q="明天要不要向心动对象表白？">表白咨询</span>
+          <span class="preset-tag" data-q="晚上吃麻辣烫还是去健身房？">晚饭抉择</span>
+          <span class="preset-tag" data-q="我该不该现在辞职去鹤岗开烧烤店？">职业生涯</span>
+          <span class="preset-tag" data-q="这个需求到底要不要今天晚上通宵改？">需求博弈</span>
+          <span class="preset-tag" data-q="今天这套代码算不算完全没有用的艺术？">哲学反思</span>
+        </div>
+      </div>
+
+      <!-- 参数调节 -->
+      <div class="parameters-grid">
+        <div class="param-item">
+          <div class="param-header">
+            <span>量子拓扑维度</span>
+            <span id="dimVal">11 D</span>
+          </div>
+          <input type="range" id="dimRange" min="3" max="26" value="11">
+        </div>
+        <div class="param-item">
+          <div class="param-header">
+            <span>平行宇宙蒙特卡洛采样</span>
+            <span id="sampleVal">500 亿次</span>
+          </div>
+          <input type="range" id="sampleRange" min="10" max="100" value="50">
+        </div>
+        <div class="param-item">
+          <div class="param-header">
+            <span>严谨度与哲学深度</span>
+            <span id="rigorVal">99.9%</span>
+          </div>
+          <input type="range" id="rigorRange" min="50" max="100" value="99">
+        </div>
+      </div>
+
+      <!-- 动态波形与神经网 -->
+      <div class="quantum-canvas-wrap">
+        <canvas id="quantumCanvas"></canvas>
+        <div class="canvas-overlay-text">REALTIME TENSOR DYNAMICS</div>
+      </div>
+
+      <!-- 启动按钮 -->
+      <button class="launch-btn" id="startBtn">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <span>启动全维度量子坍缩测算</span>
+      </button>
+
+      <!-- 终端日志 -->
+      <div class="terminal-box" id="terminal">
+        <div class="log-line">
+          <span class="log-time">[00:00:01]</span>
+          <span class="log-info">量子纠缠态自检完成。超导温度维持在 0.015 K。</span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">[00:00:02]</span>
+          <span class="log-info">等待输入人间困惑，准备调用 1000 亿神经突触进行决策演算...</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 结果模态弹窗 -->
+  <div class="result-modal" id="resultModal">
+    <div class="result-card">
+      <div class="result-badge">QUANTUM COLLAPSE DECISION</div>
+      <div class="result-title" id="decisionTitle">抛硬币：正面</div>
+      <p class="result-explanation" id="decisionDesc">
+        历经 500 亿次微观量子态迭代，系统已成功排除宇宙大爆炸以来所有其他 42 种解法，最终裁定执行该结果。
+      </p>
+
+      <div class="result-stats">
+        <div class="result-stat-item">
+          <span class="stat-k">消耗电力</span>
+          <span class="stat-v" id="statPower">48.2 万度</span>
+        </div>
+        <div class="result-stat-item">
+          <span class="stat-k">数学置信度</span>
+          <span class="stat-v">50.00001%</span>
+        </div>
+        <div class="result-stat-item">
+          <span class="stat-k">推荐操作</span>
+          <span class="stat-v">照做即可</span>
+        </div>
+      </div>
+
+      <div class="result-btn-row">
+        <button class="action-btn btn-again" id="btnAgain">重新折叠时空测算</button>
+        <button class="action-btn btn-close" id="btnClose">谢了，我还是问我妈吧</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Web Audio 合成音效生成器 (无需任何外部音频资源)
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+      },
+      beep(freq = 440, type = 'sine', duration = 0.1) {
+        try {
+          this.init();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      },
+      quantumHum() {
+        try {
+          this.init();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(60, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(480, this.ctx.currentTime + 1.8);
+          gain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.12, this.ctx.currentTime + 1.5);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 2.0);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 2.0);
+        } catch(e) {}
+      },
+      ding() {
+        try {
+          this.init();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(880, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1760, this.ctx.currentTime + 0.1);
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 1.2);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 1.2);
+        } catch(e) {}
+      }
+    };
+
+    // Canvas 动画：量子波形与粒子
+    const canvas = document.getElementById('quantumCanvas');
+    const ctx = canvas.getContext('2d');
+    let width = 0, height = 0;
+    let animId = null;
+    let isComputing = false;
+    let time = 0;
+
+    function resizeCanvas() {
+      width = canvas.parentElement.clientWidth;
+      height = canvas.parentElement.clientHeight;
+      canvas.width = width * window.devicePixelRatio;
+      canvas.height = height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function drawWave() {
+      ctx.clearRect(0, 0, width, height);
+      time += isComputing ? 0.08 : 0.02;
+
+      // 绘制量子波函数
+      const lines = isComputing ? 6 : 3;
+      for (let i = 0; i < lines; i++) {
+        ctx.beginPath();
+        ctx.strokeStyle = i % 2 === 0 ? 'rgba(56, 189, 248, 0.4)' : 'rgba(168, 85, 247, 0.35)';
+        ctx.lineWidth = isComputing ? 2 : 1.5;
+
+        for (let x = 0; x < width; x += 5) {
+          const freq = 0.015 + i * 0.008;
+          const amp = isComputing ? 35 + Math.sin(time * 3 + i) * 15 : 18;
+          const y = height / 2 + Math.sin(x * freq + time + i * 1.5) * Math.cos(x * 0.005 - time) * amp;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      // 随机动态量子火花
+      if (isComputing && Math.random() > 0.4) {
+        ctx.fillStyle = '#fbbf24';
+        ctx.beginPath();
+        const rx = Math.random() * width;
+        const ry = Math.random() * height;
+        ctx.arc(rx, ry, Math.random() * 3 + 1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      animId = requestAnimationFrame(drawWave);
+    }
+    drawWave();
+
+    // 日志系统
+    const terminal = document.getElementById('terminal');
+    function addLog(text, type = 'info') {
+      const now = new Date();
+      const timeStr = `[${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}]`;
+      const line = document.createElement('div');
+      line.className = 'log-line';
+      line.innerHTML = `<span class="log-time">${timeStr}</span><span class="log-${type}">${text}</span>`;
+      terminal.appendChild(line);
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    // 预设点击
+    const problemInput = document.getElementById('problemInput');
+    document.querySelectorAll('.preset-tag').forEach(tag => {
+      tag.addEventListener('click', () => {
+        AudioEngine.beep(600, 'sine', 0.05);
+        problemInput.value = tag.getAttribute('data-q');
+      });
+    });
+
+    // 滑块联动
+    document.getElementById('dimRange').addEventListener('input', e => {
+      document.getElementById('dimVal').textContent = `${e.target.value} D`;
+    });
+    document.getElementById('sampleRange').addEventListener('input', e => {
+      document.getElementById('sampleVal').textContent = `${e.target.value * 10} 亿次`;
+    });
+    document.getElementById('rigorRange').addEventListener('input', e => {
+      document.getElementById('rigorVal').textContent = `${e.target.value}%`;
+    });
+
+    // 荒诞反差结果库
+    const decisions = [
+      {
+        title: "抛硬币：正面 (建议立即执行)",
+        desc: "经千亿级算力多模态矩阵拟合，正面的空气动力学姿态最为优美。建议您立刻去办，犹豫就会败北。"
+      },
+      {
+        title: "抛硬币：反面 (绝对不要动)",
+        desc: "根据热力学第二定律，不行动的熵增最小。AI 建议您躺平放空，静观其变。"
+      },
+      {
+        title: "抓阄结果：问问你妈",
+        desc: "超级计算机在分析了 400 亿条人类生存经验后发现，你妈直觉的准确率高出本大模型 14.7 个标准差。"
+      },
+      {
+        title: "硬币立起来了！(请立即摆烂)",
+        desc: "极端小概率事件已发生！这意味着量子真空涨落正在干扰现实，任何努力都毫无意义，建议立刻点一杯奶茶压惊。"
+      },
+      {
+        title: "掷骰子点数：6 (全压就对了)",
+        desc: "虽然这与您的命题毫无逻辑因果关系，但系统觉得 6 这个数字很吉利，足以支撑您的人生选择。"
+      },
+      {
+        title: "结果不可知：建议猜拳",
+        desc: "由于本题涉及过深的心智复杂度，算力已全部用于维持散热风扇运转。请找离您最近的人石头剪刀布解决。"
+      }
+    ];
+
+    const startBtn = document.getElementById('startBtn');
+    const resultModal = document.getElementById('resultModal');
+    const decisionTitle = document.getElementById('decisionTitle');
+    const decisionDesc = document.getElementById('decisionDesc');
+    const statPower = document.getElementById('statPower');
+
+    startBtn.addEventListener('click', () => {
+      if (isComputing) return;
+      const question = problemInput.value.trim() || '未指定命题 (系统默认为：晚饭吃什么？)';
+      isComputing = true;
+      startBtn.disabled = true;
+      startBtn.innerHTML = '<span>时空弯曲中... 算力全开</span>';
+
+      AudioEngine.quantumHum();
+
+      addLog(`开始摄入命题：“${question}”`, 'warn');
+      
+      const computeSteps = [
+        "正在构建 26 维超弦拓扑流形...",
+        "从暗物质背景辐射抽取随机熵源...",
+        "排除 99.999% 人类自我感动因素...",
+        "模拟推演至公元 3840 年终极热寂...",
+        "量子纠缠坍缩完毕，生成终极结论！"
+      ];
+
+      computeSteps.forEach((step, idx) => {
+        setTimeout(() => {
+          AudioEngine.beep(400 + idx * 120, 'sine', 0.08);
+          addLog(step, idx === computeSteps.length - 1 ? 'done' : 'info');
+        }, (idx + 1) * 500);
+      });
+
+      setTimeout(() => {
+        isComputing = false;
+        startBtn.disabled = false;
+        startBtn.innerHTML = `
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          <span>启动全维度量子坍缩测算</span>
+        `;
+
+        // 随机一个荒诞反差结果
+        const pick = decisions[Math.floor(Math.random() * decisions.length)];
+        decisionTitle.textContent = pick.title;
+        decisionDesc.textContent = pick.desc;
+        statPower.textContent = `${(Math.random() * 80 + 20).toFixed(1)} 万度`;
+
+        AudioEngine.ding();
+        resultModal.classList.add('active');
+      }, 3200);
+    });
+
+    document.getElementById('btnClose').addEventListener('click', () => {
+      resultModal.classList.remove('active');
+      AudioEngine.beep(300, 'sine', 0.08);
+    });
+
+    document.getElementById('btnAgain').addEventListener('click', () => {
+      resultModal.classList.remove('active');
+      setTimeout(() => startBtn.click(), 200);
+    });
+  </script>
+</body>
+</html>

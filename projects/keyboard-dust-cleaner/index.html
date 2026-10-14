@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>纳米超声波物理除尘器 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0f172a;
+      --card: rgba(30, 41, 59, 0.7);
+      --border: rgba(255, 255, 255, 0.1);
+      --cyan: #38bdf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    body {
+      background: radial-gradient(circle at 50% 30%, #1e293b, #0f172a 80%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+    }
+    .shell {
+      width: min(680px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      backdrop-filter: blur(20px);
+      padding: 40px 32px;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      position: relative;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--cyan);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 4px 14px;
+      border-radius: 999px;
+    }
+    h1 {
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    p.desc {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 480px;
+    }
+    /* 声波动画 Canvas */
+    .canvas-box {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+    .freq-tag {
+      position: absolute;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: ui-monospace, monospace;
+      color: var(--cyan);
+    }
+
+    /* 模式切换 */
+    .modes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .mode-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .mode-btn.active {
+      background: var(--cyan);
+      color: #000;
+      font-weight: 600;
+      border-color: var(--cyan);
+    }
+
+    /* 主按钮 */
+    .start-btn {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      border: none;
+      color: #000;
+      font-weight: 800;
+      font-size: 16px;
+      padding: 16px 36px;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.4);
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .start-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(56, 189, 248, 0.6);
+    }
+    .start-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .log {
+      font-size: 13px;
+      color: var(--text-muted);
+      min-height: 20px;
+    }
+
+    /* 振动动画 */
+    .shaking {
+      animation: shakeScreen 0.1s infinite;
+    }
+    @keyframes shakeScreen {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      20% { transform: translate(-2px, 0px) rotate(-0.5deg); }
+      40% { transform: translate(2px, -1px) rotate(0.5deg); }
+      60% { transform: translate(-1px, 2px) rotate(0deg); }
+      80% { transform: translate(1px, -2px) rotate(0.5deg); }
+      100% { transform: translate(0px, 0px) rotate(0deg); }
+    }
+
+    /* 弹窗 */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal.active { display: flex; }
+    .modal-card {
+      background: #1e293b;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 32px;
+      width: min(460px, 100%);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .cloth-icon {
+      font-size: 50px;
+    }
+    .btn-cloth {
+      background: #38bdf8;
+      border: none;
+      color: #000;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell" id="shell">
+    <span class="badge">Acoustic Sonic Purger v2.0</span>
+    <h1>纳米超声波除尘仪</h1>
+    <p class="desc">
+      通过扬声器物理发射 48,000 Hz 逆相位声学微涡流，产生高频微震波，彻底震碎键盘缝隙与屏幕微米级灰尘。
+    </p>
+
+    <div class="canvas-box">
+      <canvas id="sonicCanvas"></canvas>
+      <div class="freq-tag" id="freqTag">48.0 kHz</div>
+    </div>
+
+    <div class="modes">
+      <button class="mode-btn active" data-mode="48">键盘缝隙震击模式</button>
+      <button class="mode-btn" data-mode="72">屏幕指纹解离模式</button>
+      <button class="mode-btn" data-mode="96">风扇逆流反冲模式</button>
+    </div>
+
+    <button class="start-btn" id="startBtn">启动超声波纳秒级脉冲除尘</button>
+    <div class="log" id="logText">准备就绪：请确保设备音量适中以激活空气动力学涡流</div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="cloth-icon">🧻</div>
+      <h2>除尘程序已完美闭环</h2>
+      <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">
+        声学微波已成功将您键盘上的 0.0003 毫克纳米空气灰尘震飞了 0.1 毫米！<br><br>
+        <strong>最后一步关键工序：</strong><br>
+        请拿出您的抹布，用力擦拭您的屏幕与键盘。
+      </p>
+      <button class="btn-cloth" id="btnOk">我感觉我的智商被狠狠摩擦了 (确认)</button>
+    </div>
+  </div>
+
+  <script>
+    // Web Audio 合成
+    const AudioEngine = {
+      ctx: null,
+      osc: null,
+      gain: null,
+      startSonic() {
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AC();
+          this.osc = this.ctx.createOscillator();
+          this.gain = this.ctx.createGain();
+          this.osc.type = 'sine';
+          this.osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+          this.osc.frequency.linearRampToValueAtTime(1400, this.ctx.currentTime + 3);
+          this.gain.gain.setValueAtTime(0.01, this.ctx.currentTime);
+          this.gain.gain.linearRampToValueAtTime(0.08, this.ctx.currentTime + 1.5);
+          this.gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 4);
+          this.osc.connect(this.gain);
+          this.gain.connect(this.ctx.destination);
+          this.osc.start();
+          this.osc.stop(this.ctx.currentTime + 4);
+        } catch(e) {}
+      },
+      ding() {
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          const ctx = new AC();
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(1200, ctx.currentTime);
+          gain.gain.setValueAtTime(0.2, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start();
+          osc.stop(ctx.currentTime + 1);
+        } catch(e) {}
+      }
+    };
+
+    const canvas = document.getElementById('sonicCanvas');
+    const ctx = canvas.getContext('2d');
+    const shell = document.getElementById('shell');
+    const startBtn = document.getElementById('startBtn');
+    const logText = document.getElementById('logText');
+    const modal = document.getElementById('modal');
+    const freqTag = document.getElementById('freqTag');
+
+    let isPumping = false;
+    let waveR = 0;
+
+    function resize() {
+      canvas.width = canvas.parentElement.clientWidth * 2;
+      canvas.height = canvas.parentElement.clientHeight * 2;
+      ctx.scale(2, 2);
+    }
+    resize();
+
+    function draw() {
+      const w = canvas.parentElement.clientWidth;
+      const h = canvas.parentElement.clientHeight;
+      ctx.clearRect(0, 0, w, h);
+
+      if (isPumping) {
+        waveR = (waveR + 3) % (w / 2);
+        for (let i = 0; i < 4; i++) {
+          const r = (waveR + i * 25) % (w / 2);
+          ctx.beginPath();
+          ctx.arc(w / 2, h / 2, r, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(56, 189, 248, ${1 - r / (w / 2)})`;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        freqTag.textContent = `${btn.getAttribute('data-mode')}.0 kHz`;
+      });
+    });
+
+    startBtn.addEventListener('click', () => {
+      if (isPumping) return;
+      isPumping = true;
+      startBtn.disabled = true;
+      shell.classList.add('shaking');
+      AudioEngine.startSonic();
+
+      const msgs = [
+        "正在构建 48,000 Hz 逆共振能量场...",
+        "正在剧烈吹飞 CapsLock 键缝里的辣条碎屑...",
+        "正在中和屏幕表面 8 亿个微观指纹分子...",
+        "空气动力学逆相波发射完毕！"
+      ];
+
+      msgs.forEach((m, idx) => {
+        setTimeout(() => {
+          logText.textContent = m;
+        }, idx * 1000);
+      });
+
+      setTimeout(() => {
+        isPumping = false;
+        shell.classList.remove('shaking');
+        startBtn.disabled = false;
+        AudioEngine.ding();
+        modal.classList.add('active');
+      }, 4200);
+    });
+
+    document.getElementById('btnOk').addEventListener('click', () => {
+      modal.classList.remove('active');
+      logText.textContent = "下次清灰请继续相信科学与超声波。";
+    });
+  </script>
+</body>
+</html>

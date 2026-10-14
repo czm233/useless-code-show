@@ -38,5 +38,85 @@
     "preview": { "type": "gradient", "colors": ["#cf1f3f", "#24a06b"] },
     "tags": ["交互", "荒诞"],
     "path": "resignation-modal"
+  },
+  {
+    "id": "ai-decision-maker",
+    "title": "量子 AI 终极决策中心",
+    "description": "调动千万亿张量算力折叠多维时空，庄严地为您抛硬币或问问你妈",
+    "preview": { "type": "gradient", "colors": ["#0284c7", "#7c3aed"] },
+    "tags": ["AI", "量子计算", "反差"],
+    "path": "ai-decision-maker"
+  },
+  {
+    "id": "passphrase-overkill",
+    "title": "核设施级密码强度校验器",
+    "description": "密码必须包含北京时间、天气与打工人松弛感，过于安全时自动销毁",
+    "preview": { "type": "gradient", "colors": ["#ef4444", "#06b6d4"] },
+    "tags": ["安全", "硬核", "折磨"],
+    "path": "passphrase-overkill"
+  },
+  {
+    "id": "blame-shifter",
+    "title": "五百强企业级甩锅引擎",
+    "description": "用最顶级的互联网黑话与战略对齐，将线上故障归咎于宇宙射线",
+    "preview": { "type": "gradient", "colors": ["#10b981", "#8b5cf6"] },
+    "tags": ["职场", "黑话", "企业级"],
+    "path": "blame-shifter"
+  },
+  {
+    "id": "keyboard-dust-cleaner",
+    "title": "纳米超声波物理除尘器",
+    "description": "利用逆相位声波涡流强力除尘，最后贴心提醒您拿抹布用力擦屏幕",
+    "preview": { "type": "gradient", "colors": ["#0284c7", "#38bdf8"] },
+    "tags": ["硬件", "极简", "物理黑客"],
+    "path": "keyboard-dust-cleaner"
+  },
+  {
+    "id": "boss-key-pro",
+    "title": "摸鱼应急防御系统 (BossKey Pro)",
+    "description": "老板靠近瞬间一键切换千亿量化操盘或内核救火，狂敲键盘狂假装",
+    "preview": { "type": "gradient", "colors": ["#ef4444", "#10b981"] },
+    "tags": ["摸鱼", "黑客", "应急"],
+    "path": "boss-key-pro"
+  },
+  {
+    "id": "infinite-captcha",
+    "title": "人类灵魂图灵验证协议",
+    "description": "为了抵御 AGI，请选出渴望下班的眼神并憋气 3 秒证明你不是仿生人",
+    "preview": { "type": "gradient", "colors": ["#2563eb", "#60a5fa"] },
+    "tags": ["验证码", "哲学", "图灵测试"],
+    "path": "infinite-captcha"
+  },
+  {
+    "id": "download-more-ram",
+    "title": "云端量子物理内存增容平台",
+    "description": "免费下载 64GB DDR5 内存条并写入主板，贴心占用 64GB 硬盘来存放它",
+    "preview": { "type": "gradient", "colors": ["#10b981", "#059669"] },
+    "tags": ["经典梗", "硬件", "云原生"],
+    "path": "download-more-ram"
+  },
+  {
+    "id": "coffee-cooler",
+    "title": "手冲咖啡云端降温仪",
+    "description": "显卡咆哮满载渲染驱动机身微风，经过 30 秒全力降温 0.03°C",
+    "preview": { "type": "gradient", "colors": ["#e07a5f", "#c85a3c"] },
+    "tags": ["工业设计", "热力学", "硬核"],
+    "path": "coffee-cooler"
+  },
+  {
+    "id": "cyber-zen",
+    "title": "赛博佛祖与功德分布式存储",
+    "description": "多线程电子木鱼、Bug-1、功德哈希永久上链，一键成佛前请先交周报",
+    "preview": { "type": "gradient", "colors": ["#f59e0b", "#7c3aed"] },
+    "tags": ["赛博禅宗", "功德", "Web3"],
+    "path": "cyber-zen"
+  },
+  {
+    "id": "meeting-buzzword",
+    "title": "高情商会议脱困与废话发生器",
+    "description": "被领导点名时自动打通顶层逻辑闭环，支持一键信号不良画面马赛克",
+    "preview": { "type": "gradient", "colors": ["#3b82f6", "#ef4444"] },
+    "tags": ["职场", "高情商", "视频摸鱼"],
+    "path": "meeting-buzzword"
   }
 ]
