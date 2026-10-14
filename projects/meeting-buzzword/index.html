@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>高情商会议脱困神器 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #18191c;
+      --panel: #24262b;
+      --border: #33363f;
+      --primary: #3b82f6;
+      --danger: #ef4444;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .meeting-window {
+      width: min(880px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    }
+    .window-header {
+      background: #1e2025;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .meeting-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+    }
+    .rec-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--danger);
+      animation: blink 1s infinite;
+    }
+    @keyframes blink { 50% { opacity: 0.3; } }
+
+    /* 视频主格与提词区 */
+    .meeting-body {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: 440px;
+    }
+    @media (max-width: 768px) {
+      .meeting-body { grid-template-columns: 1fr; }
+    }
+
+    /* 模拟摄像头 */
+    .video-view {
+      background: #0f1013;
+      border-right: 1px solid var(--border);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+    }
+    .avatar-cam {
+      flex: 1;
+      background: #1e2026;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #3b82f6;
+    }
+    .cam-tag {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(0,0,0,0.6);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #fff;
+    }
+    /* 卡顿马赛克效果 */
+    .avatar-cam.lagged {
+      filter: blur(8px) contrast(200%);
+      animation: glitchLag 0.15s infinite;
+      border-color: var(--danger);
+    }
+    @keyframes glitchLag {
+      0% { transform: translate(2px, -2px); }
+      50% { transform: translate(-3px, 1px); }
+      100% { transform: translate(1px, 2px); }
+    }
+    .lag-overlay {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: rgba(239, 68, 68, 0.4);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px;
+      line-height: 1.4;
+    }
+    .avatar-cam.lagged .lag-overlay {
+      display: flex;
+    }
+
+    /* 提词器交互区 */
+    .prompter-view {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .prompter-screen {
+      flex: 1;
+      background: #141518;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #60a5fa;
+      font-weight: 500;
+      overflow-y: auto;
+      min-height: 180px;
+    }
+    .settings-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    select {
+      background: #1c1d22;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    /* 底部操作 */
+    .bottom-bar {
+      background: #1e2025;
+      border-top: 1px solid var(--border);
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .btn-act {
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-gen {
+      background: var(--primary);
+      border: none;
+      color: #fff;
+    }
+    .btn-gen:hover { background: #2563eb; }
+    .btn-lag {
+      background: #ef4444;
+      border: none;
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    }
+    .btn-lag:hover { background: #dc2626; }
+  </style>
+</head>
+<body>
+  <div class="meeting-window">
+    <div class="window-header">
+      <div class="meeting-info">
+        <span class="rec-dot"></span>
+        <span>2026 Q3 跨业务线破局与认知对齐高层战略研讨会</span>
+      </div>
+      <span style="color: var(--text-muted); font-size: 12px;">参会人数: 42 人 • 领导已在线</span>
+    </div>
+
+    <div class="meeting-body">
+      <!-- 摄像头视窗 -->
+      <div class="video-view">
+        <div class="avatar-cam" id="avatarCam">
+          <span>🧑‍💻</span>
+          <div class="cam-tag">你 (已被董事长点名)</div>
+          <div class="lag-overlay" id="lagOverlay">
+            ⚠️ 网络严重丢包<br>音频传输中断中...
+          </div>
+        </div>
+        <div style="font-size: 11px; color: var(--text-muted); text-align: center;">
+          状态：麦克风静音已解除
+        </div>
+      </div>
+
+      <!-- 提词器 -->
+      <div class="prompter-view">
+        <div class="settings-row">
+          <select id="leaderAsk">
+            <option value="q1">领导问：小张，这个项目接下来你怎么看？</option>
+            <option value="q2">领导问：为什么今天数据出现断崖式下跌？</option>
+            <option value="q3">领导问：下个季度你们的核心战略抓手是什么？</option>
+          </select>
+          <select id="tone">
+            <option value="high">语气：高屋建瓴、格局拉满</option>
+            <option value="humble">语气：深刻反思、态度诚恳</option>
+            <option value="calm">语气：若有所思、胸有成竹</option>
+          </select>
+        </div>
+
+        <div class="prompter-screen" id="prompterScreen">
+          点击下方“生成高情商黑话发言”，提词器将为您生成滴水不漏的战略长篇汇报。
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-bar">
+      <button class="btn-act btn-gen" id="btnGen">生成高情商发言</button>
+      <button class="btn-act btn-lag" id="btnLag">🚨 假装网络卡死 / 紧急掉线</button>
+    </div>
+  </div>
+
+  <script>
+    const speeches = {
+      q1: "张总，各位领导好。关于这个项目，我的核心思考是：我们首先要穿透表象问题，打通顶层逻辑与底层抓手之间的认知断层。当前的重点不是急于铺摊子，而是要把颗粒度对齐，形成敏捷闭环。至于具体的落地路线图，我已经在拉通跨部门团队，明天下午下班前单独向您做个专题汇报！",
+      q2: "张总，对于今天的数据波动，我们团队第一时间进行了多维归因。本质上这是我们主动进行的一次逆向抗熵增压力测试，目的是为了在大盘震荡期过滤掉非高净值噪音。虽然短期看数据有所收敛，但为我们下阶段实现爆发式飞轮效应筑牢了心智护城河！",
+      q3: "领导这个问题切中了要害。下个季度我们的重中之重，就是聚焦核心主线，找准差异化破局点，全面赋能上下游生态链。我们要用降维打击的思维重塑商业触达路径，确保每一分资源都打在战略重心上！"
+    };
+
+    const btnGen = document.getElementById('btnGen');
+    const prompterScreen = document.getElementById('prompterScreen');
+    const leaderAsk = document.getElementById('leaderAsk');
+    const btnLag = document.getElementById('btnLag');
+    const avatarCam = document.getElementById('avatarCam');
+
+    btnGen.addEventListener('click', () => {
+      const q = leaderAsk.value;
+      prompterScreen.textContent = speeches[q];
+    });
+
+    let isLagging = false;
+    btnLag.addEventListener('click', () => {
+      isLagging = !isLagging;
+      if (isLagging) {
+        avatarCam.classList.add('lagged');
+        btnLag.textContent = "恢复网络连接";
+        alert("脱困成功！\n\n您的画面已卡成马赛克，音频已发出刺耳杂音！\n领导由于听不清您在说什么，已转头点名了下一位倒霉同事。");
+      } else {
+        avatarCam.classList.remove('lagged');
+        btnLag.textContent = "🚨 假装网络卡死 / 紧急掉线";
+      }
+    });
+  </script>
+</body>
+</html>

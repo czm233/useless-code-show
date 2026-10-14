@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>赛博佛祖与功德存储 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0d0814;
+      --card: #170f24;
+      --border: #2e1d47;
+      --gold: #f59e0b;
+      --gold-glow: rgba(245, 158, 11, 0.4);
+      --purple: #a855f7;
+      --text: #fdf4ff;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: radial-gradient(circle at 50% 25%, #231238, var(--bg) 80%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow-x: hidden;
+    }
+    .temple-deck {
+      width: min(680px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      text-align: center;
+      position: relative;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 4px 14px;
+      border-radius: 999px;
+    }
+    h1 {
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* 功德计数器 */
+    .merit-counter {
+      font-size: 48px;
+      font-weight: 900;
+      font-family: var(--font-mono);
+      color: var(--gold);
+      text-shadow: 0 0 20px var(--gold-glow);
+    }
+    .merit-sub {
+      font-size: 13px;
+      color: #c084fc;
+      margin-top: -10px;
+    }
+
+    /* 赛博木鱼按键 */
+    .muyu-box {
+      width: 170px;
+      height: 150px;
+      border-radius: 40px;
+      background: linear-gradient(145deg, #2b1842, #170d26);
+      border: 2px solid var(--gold);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 2px 0 rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      position: relative;
+    }
+    .muyu-box:active {
+      transform: scale(0.92);
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.5);
+    }
+    .floating-text {
+      position: absolute;
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--gold);
+      pointer-events: none;
+      animation: floatUp 0.8s ease-out forwards;
+    }
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-70px) scale(1.2); }
+    }
+
+    /* 控制行 */
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+    .ctrl-btn {
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-auto {
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid var(--purple);
+      color: #e9d5ff;
+    }
+    .btn-auto.active {
+      background: var(--purple);
+      color: #fff;
+    }
+    .btn-buddha {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border: none;
+      color: #000;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    }
+    .btn-buddha:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    /* 区块链账本 */
+    .chain-log {
+      width: 100%;
+      background: #08050e;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #a855f7;
+      text-align: left;
+      height: 90px;
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="temple-deck">
+    <span class="badge">DECENTRALIZED KARMA LEDGER v3.8</span>
+    <h1>赛博佛祖与功德分布式存储</h1>
+    <div class="merit-counter" id="meritVal">0</div>
+    <div class="merit-sub">已上链不可篡改功德值</div>
+
+    <!-- 赛博木鱼 -->
+    <div class="muyu-box" id="muyu">
+      <span>🪵</span>
+    </div>
+
+    <div class="controls">
+      <button class="ctrl-btn btn-auto" id="btnAuto">多线程并发自动超度 (OFF)</button>
+      <button class="ctrl-btn btn-buddha" id="btnAscend">一键白日飞升 (立地成佛)</button>
+    </div>
+
+    <!-- 区块链记录 -->
+    <div class="chain-log" id="chainLog">
+      <div>[BLOCK #89021] 0x9a8f... 智能合约已部署：善哉善哉</div>
+      <div>[BLOCK #89022] 0x3e12... 正在监听局域网 Bug 驱散祈愿...</div>
+    </div>
+  </div>
+
+  <script>
+    // Web Audio 木鱼真实空灵敲击声
+    const AudioEngine = {
+      ctx: null,
+      knock() {
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!this.ctx) this.ctx = new AC();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(320, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(80, this.ctx.currentTime + 0.12);
+          gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.15);
+        } catch(e) {}
+      }
+    };
+
+    let merit = 0;
+    let autoTimer = null;
+    const muyu = document.getElementById('muyu');
+    const meritVal = document.getElementById('meritVal');
+    const chainLog = document.getElementById('chainLog');
+    const btnAuto = document.getElementById('btnAuto');
+    const btnAscend = document.getElementById('btnAscend');
+
+    const floatPhrases = ["功德 +1", "Bug -1", "头发 +1", "脱发 -1", "焦虑 -99", "加薪 +1000", "免裁金牌 +1"];
+
+    function hitMuyu() {
+      merit++;
+      meritVal.textContent = merit;
+      AudioEngine.knock();
+
+      // 漂浮文字
+      const text = document.createElement('div');
+      text.className = 'floating-text';
+      text.textContent = floatPhrases[Math.floor(Math.random() * floatPhrases.length)];
+      text.style.left = `${Math.random() * 80 + 10}%`;
+      text.style.top = '20%';
+      muyu.appendChild(text);
+      setTimeout(() => text.remove(), 800);
+
+      // 上链记录
+      if (merit % 5 === 0) {
+        const hash = Math.random().toString(36).substring(2, 10);
+        chainLog.innerHTML += `<div>[BLOCK #${90000 + merit}] 0x${hash}... 存证: 功德累计 ${merit} (PoK 共识已确认)</div>`;
+        chainLog.scrollTop = chainLog.scrollHeight;
+      }
+    }
+
+    muyu.addEventListener('click', hitMuyu);
+
+    // 自动超度
+    btnAuto.addEventListener('click', () => {
+      if (autoTimer) {
+        clearInterval(autoTimer);
+        autoTimer = null;
+        btnAuto.classList.remove('active');
+        btnAuto.textContent = "多线程并发自动超度 (OFF)";
+      } else {
+        autoTimer = setInterval(hitMuyu, 150);
+        btnAuto.classList.add('active');
+        btnAuto.textContent = "多线程高频超度中 (ON)";
+      }
+    });
+
+    // 飞升反差
+    btnAscend.addEventListener('click', () => {
+      alert("⚠️ 佛祖提示：\n\n系统检测到您本周在钉钉/企业微信打卡工时仅累计 28 小时，周报尚未提交！\n\n佛祖劝诫您：先回工位把需求交付对齐，再来谈白日飞升。\n\n【佛祖赠语】：菩提本无树，周报还要交。");
+    });
+  </script>
+</body>
+</html>

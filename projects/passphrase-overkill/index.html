@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>核设施级密码校验器 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #090a0f;
+      --panel: #11141f;
+      --border: #222738;
+      --primary: #10b981;
+      --danger: #ef4444;
+      --warn: #f59e0b;
+      --cyan: #06b6d4;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: var(--bg);
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 16px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    /* 扫描线效果 */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+      z-index: 99;
+    }
+    .wrapper {
+      width: min(800px, 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+      z-index: 10;
+    }
+    .header {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .header-left h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .sec-badge {
+      font-size: 11px;
+      font-family: var(--mono);
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      letter-spacing: 1px;
+    }
+    .header-desc {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+    .clearance {
+      text-align: right;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--cyan);
+    }
+
+    /* 输入区域与强度条 */
+    .eval-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .pw-input {
+      width: 100%;
+      background: #06070a;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 50px 16px 20px;
+      color: #fff;
+      font-size: 18px;
+      font-family: var(--mono);
+      outline: none;
+      transition: all 0.2s;
+      letter-spacing: 1px;
+    }
+    .pw-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+    }
+    .btn-eye {
+      position: absolute;
+      right: 16px;
+      background: transparent;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      padding: 6px;
+      display: flex;
+    }
+    .btn-eye:hover { color: #fff; }
+
+    /* 强度条 */
+    .strength-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .strength-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-family: var(--mono);
+    }
+    .strength-track {
+      height: 10px;
+      background: #1e2433;
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+    .strength-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ef4444, #f59e0b, #10b981);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 规则列表 */
+    .rules-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #cbd5e1;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .rules-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .rule-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      transition: all 0.25s;
+    }
+    .rule-item.valid {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.3);
+      color: #a7f3d0;
+    }
+    .rule-item.invalid {
+      background: rgba(239, 68, 68, 0.04);
+      border-color: rgba(239, 68, 68, 0.15);
+      color: #94a3b8;
+    }
+    .rule-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .rule-item.valid .rule-icon {
+      background: var(--primary);
+      color: #000;
+    }
+    .rule-item.invalid .rule-icon {
+      background: rgba(255, 255, 255, 0.1);
+      color: #64748b;
+    }
+
+    /* 动作按钮 */
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .btn-act {
+      padding: 14px 22px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+    .btn-submit {
+      background: #ef4444;
+      color: #fff;
+      border: none;
+      flex: 2;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    }
+    .btn-submit:hover {
+      background: #dc2626;
+      transform: translateY(-1px);
+    }
+    .btn-cheat {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      flex: 1;
+    }
+    .btn-cheat:hover {
+      background: #334155;
+      color: #fff;
+    }
+
+    /* 警报遮罩 */
+    .alert-banner {
+      display: none;
+      background: #ef4444;
+      color: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      animation: alertPulse 0.5s infinite alternate;
+    }
+    @keyframes alertPulse {
+      from { box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
+      to { box-shadow: 0 0 35px rgba(239, 68, 68, 0.9); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <div class="header-left">
+        <h1>
+          <span>核设施级密码强度校验器</span>
+          <span class="sec-badge">TOP SECRET // LEVEL-9</span>
+        </h1>
+        <p class="header-desc">依照绝密级生化核武库安防标准，进行 10 维多模态混沌加密校验</p>
+      </div>
+      <div class="clearance">
+        <div>DEFCON 1</div>
+        <div style="color: #64748b;">SHA-512 ACTIVE</div>
+      </div>
+    </div>
+
+    <div class="eval-card">
+      <div class="input-wrapper">
+        <input type="password" id="pwInput" class="pw-input" placeholder="输入超神级防黑客密码..." autofocus autocomplete="off">
+        <button class="btn-eye" id="toggleView" title="显示/隐藏密码">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+
+      <!-- 强度条 -->
+      <div class="strength-section">
+        <div class="strength-meta">
+          <span>安全度评分</span>
+          <span id="strengthText" style="color: var(--danger);">0% (纸糊级别)</span>
+        </div>
+        <div class="strength-track">
+          <div class="strength-bar" id="strengthBar"></div>
+        </div>
+      </div>
+
+      <!-- 毁灭警报通知 -->
+      <div class="alert-banner" id="alertBanner">
+        🚨 [CRITICAL PRIVACY PURGE] 警告：系统检测到密码已达到宇宙终极安全级别！为防止您的大脑遭到黑客使用物理扳手实施入侵破解，密码已强制阅后即焚并粉碎！
+      </div>
+
+      <!-- 规则项 -->
+      <div class="rules-title">
+        <span>必须满足的安全铁律</span>
+        <span id="rulePassedCount">0 / 8 已达成</span>
+      </div>
+
+      <div class="rules-list" id="rulesList">
+        <!-- 动态规则 -->
+      </div>
+
+      <div class="actions">
+        <button class="btn-act btn-submit" id="btnSubmit">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          <span>提交入库并实施量子封印</span>
+        </button>
+        <button class="btn-act btn-cheat" id="btnAuto">
+          <span>自动生成合规密文</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Web Audio 音效
+    const Sfx = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+      },
+      click() {
+        try {
+          this.init();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.05);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.05);
+        } catch(e) {}
+      },
+      alarm() {
+        try {
+          this.init();
+          for (let i = 0; i < 3; i++) {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(800, this.ctx.currentTime + i * 0.15);
+            osc.frequency.linearRampToValueAtTime(400, this.ctx.currentTime + i * 0.15 + 0.12);
+            gain.gain.setValueAtTime(0.12, this.ctx.currentTime + i * 0.15);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + i * 0.15 + 0.14);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(this.ctx.currentTime + i * 0.15);
+            osc.stop(this.ctx.currentTime + i * 0.15 + 0.15);
+          }
+        } catch(e) {}
+      }
+    };
+
+    const currentMinute = () => String(new Date().getMinutes());
+    const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+    const currentWeekday = () => weekdays[new Date().getDay()];
+
+    const rules = [
+      {
+        id: 'length',
+        title: '规则 1：密码长度至少达到 12 个字符',
+        check: val => val.length >= 12
+      },
+      {
+        id: 'mixed',
+        title: '规则 2：必须同时包含大写字母、小写字母及特殊符号',
+        check: val => /[A-Z]/.test(val) && /[a-z]/.test(val) && /[^A-Za-z0-9]/.test(val)
+      },
+      {
+        id: 'minute',
+        title: () => `规则 3：必须包含当前北京时间的实时分钟数【${currentMinute()}】`,
+        check: val => val.includes(currentMinute())
+      },
+      {
+        id: 'pi',
+        title: '规则 4：必须包含圆周率前 4 位有效数字 (3141)',
+        check: val => val.includes('3141')
+      },
+      {
+        id: 'emoji',
+        title: '规则 5：必须包含一个体现打工人精神状态的 Emoji (如 😭 🤡 🫠 💀 🤡)',
+        check: val => /[\u{1F300}-\u{1FAFF}]/u.test(val)
+      },
+      {
+        id: 'weekday',
+        title: () => `规则 6：必须包含今天的星期 (${currentWeekday()})`,
+        check: val => val.includes(currentWeekday())
+      },
+      {
+        id: 'flattery',
+        title: '规则 7：必须包含对领导的诚挚赞美 (如“领导英明”或“收到”)',
+        check: val => val.includes('领导英明') || val.includes('收到') || val.includes('好的领导')
+      },
+      {
+        id: 'chill',
+        title: '规则 8：必须包含“当代年轻人的松弛感”',
+        check: val => val.includes('松弛感') || val.includes('无所谓') || val.includes('摆烂')
+      }
+    ];
+
+    const pwInput = document.getElementById('pwInput');
+    const rulesList = document.getElementById('rulesList');
+    const strengthBar = document.getElementById('strengthBar');
+    const strengthText = document.getElementById('strengthText');
+    const rulePassedCount = document.getElementById('rulePassedCount');
+    const alertBanner = document.getElementById('alertBanner');
+
+    function renderRules() {
+      const val = pwInput.value;
+      rulesList.innerHTML = '';
+      let passed = 0;
+
+      rules.forEach(rule => {
+        const isValid = rule.check(val);
+        if (isValid) passed++;
+        const titleText = typeof rule.title === 'function' ? rule.title() : rule.title;
+
+        const item = document.createElement('div');
+        item.className = `rule-item ${isValid ? 'valid' : 'invalid'}`;
+        item.innerHTML = `
+          <div class="rule-icon">${isValid ? '✓' : '✕'}</div>
+          <span>${titleText}</span>
+        `;
+        rulesList.appendChild(item);
+      });
+
+      rulePassedCount.textContent = `${passed} / ${rules.length} 已达成`;
+
+      const pct = Math.floor((passed / rules.length) * 100);
+      strengthBar.style.width = `${pct}%`;
+
+      if (pct === 100) {
+        strengthText.style.color = '#10b981';
+        strengthText.textContent = '999.99% (神圣不可侵犯)';
+      } else if (pct >= 60) {
+        strengthText.style.color = '#f59e0b';
+        strengthText.textContent = `${pct}% (差强人意)`;
+      } else {
+        strengthText.style.color = '#ef4444';
+        strengthText.textContent = `${pct}% (极易被小学生破解)`;
+      }
+    }
+
+    pwInput.addEventListener('input', () => {
+      Sfx.click();
+      renderRules();
+    });
+
+    document.getElementById('toggleView').addEventListener('click', () => {
+      pwInput.type = pwInput.type === 'password' ? 'text' : 'password';
+    });
+
+    // 自动生成
+    document.getElementById('btnAuto').addEventListener('click', () => {
+      Sfx.click();
+      pwInput.value = `A#${currentMinute()}3141🫠${currentWeekday()}领导英明有松弛感`;
+      renderRules();
+    });
+
+    // 提交触发反差
+    document.getElementById('btnSubmit').addEventListener('click', () => {
+      const val = pwInput.value;
+      if (!val) {
+        alert('请输入密码后再提交！');
+        return;
+      }
+      Sfx.alarm();
+      alertBanner.style.display = 'block';
+      setTimeout(() => {
+        pwInput.value = '';
+        renderRules();
+        setTimeout(() => {
+          alertBanner.style.display = 'none';
+        }, 5000);
+      }, 1500);
+    });
+
+    renderRules();
+  </script>
+</body>
+</html>
