@@ -2063,5 +2063,195 @@
       "艺术"
     ],
     "path": "fake-error-404-museum"
+  },
+  {
+    "id": "paper-airplane-radar",
+    "title": "全球纸飞机空域精密雷达与遥测中心",
+    "description": "以 NASA 深空发射场级硬核多普勒雷达追踪你随手扔出的纸飞机，超温自毁于拖鞋旁",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0ea5e9",
+        "#0f172a"
+      ]
+    },
+    "tags": [
+      "航天",
+      "雷达",
+      "折磨",
+      "反差"
+    ],
+    "path": "paper-airplane-radar"
+  },
+  {
+    "id": "masterpiece-auction-appraisal",
+    "title": "传世抽象艺术万亿苏富比拍卖与终极鉴定仪",
+    "description": "苏富比天价竞拍毕生神作，红外光谱透视揭晓原迹竟是菜市场草纸收据与圆珠笔划痕",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#f59e0b",
+        "#18181b"
+      ]
+    },
+    "tags": [
+      "艺术",
+      "拍卖",
+      "解构",
+      "反差"
+    ],
+    "path": "masterpiece-auction-appraisal"
+  },
+  {
+    "id": "cgi-budget-incinerator",
+    "title": "好莱坞史诗视效物理渲染与经费蒸发仪",
+    "description": "128K 超光追每秒蒸发数万美金，历经数年渲染出的 100% 镜头竟是火柴人踩香蕉皮滑倒",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#f97316",
+        "#ef4444"
+      ]
+    },
+    "tags": [
+      "视效",
+      "渲染",
+      "好莱坞",
+      "电影"
+    ],
+    "path": "cgi-budget-incinerator"
+  },
+  {
+    "id": "michelin-instant-noodle",
+    "title": "米其林三星泡面分子料理重构工作台",
+    "description": "以法式超临界萃取重构 2 块 5 的红烧牛肉面，银制餐盘庄严揭晓 3 根面条盛惠两千元",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#fb7185",
+        "#4c0519"
+      ]
+    },
+    "tags": [
+      "美食",
+      "米其林",
+      "分子料理",
+      "反差"
+    ],
+    "path": "michelin-instant-noodle"
+  },
+  {
+    "id": "tectonic-footstep-seismograph",
+    "title": "楼上邻居剁馅与拖椅子震级监测中心",
+    "description": "国家地震台网级微陀螺仪监测楼上 6 点准时猛剁排骨肉馅与铁椅子刺耳摩擦横波",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#eab308",
+        "#18181b"
+      ]
+    },
+    "tags": [
+      "地震",
+      "邻里",
+      "声学",
+      "生活"
+    ],
+    "path": "tectonic-footstep-seismograph"
+  },
+  {
+    "id": "keyboard-crumb-biosphere",
+    "title": "键盘按键缝隙史前微生物生态科研显微镜",
+    "description": "冷冻电镜放大百万倍观测空格键下的远古薯片残渣化石与猫毛，生物多样性超越热带雨林",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#10b981",
+        "#064e3b"
+      ]
+    },
+    "tags": [
+      "生物",
+      "显微镜",
+      "生态",
+      "键盘"
+    ],
+    "path": "keyboard-crumb-biosphere"
+  },
+  {
+    "id": "missing-pen-investigation",
+    "title": "办公桌神秘失踪签字笔重案刑侦推演系统",
+    "description": "国际刑警重案红线白板推演 2 元黑色中性笔失窃悬案，弹道物理证明其已滑入机箱黑洞",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#b91c1c",
+        "#451a03"
+      ]
+    },
+    "tags": [
+      "刑侦",
+      "推理",
+      "办公",
+      "悬案"
+    ],
+    "path": "missing-pen-investigation"
+  },
+  {
+    "id": "office-microclimate-map",
+    "title": "办公室极地冷气与撒哈拉热浪微气候洋流测绘局",
+    "description": "NOAA 卫星云图精算中央空调风场：北纬 3 号工位极地冻伤，南纬 8 号西晒中暑",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#38bdf8",
+        "#ea580c"
+      ]
+    },
+    "tags": [
+      "气象",
+      "空调",
+      "工位",
+      "职场"
+    ],
+    "path": "office-microclimate-map"
+  },
+  {
+    "id": "toilet-break-var",
+    "title": "带薪如厕摸鱼世界杯级 VAR 鹰眼视频助理裁判",
+    "description": "FIFA 官方 3D 几何划线裁决带薪如厕 28 分钟严重越位，主裁走向场边出示红牌",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#22c55e",
+        "#4f46e5"
+      ]
+    },
+    "tags": [
+      "VAR",
+      "足球",
+      "摸鱼",
+      "职场"
+    ],
+    "path": "toilet-break-var"
+  },
+  {
+    "id": "future-archeology-digger",
+    "title": "公元5000年地外文明对人类现代数码遗迹考古挖掘仪",
+    "description": "穿透百米地层挖掘出土 iPhone 与机械键盘，外星学者释读为古人类宗教祭祀神明法器",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#f59e0b",
+        "#06b6d4"
+      ]
+    },
+    "tags": [
+      "科幻",
+      "考古",
+      "地外文明",
+      "未来"
+    ],
+    "path": "future-archeology-digger"
   }
 ]

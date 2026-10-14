@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全球纸飞机空域精密雷达与遥测中心 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #070d18;
+      --panel: #0d1726;
+      --border: #1e293b;
+      --radar-green: #10b981;
+      --radar-cyan: #06b6d4;
+      --alert-red: #ef4444;
+      --warning-amber: #f59e0b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: radial-gradient(circle at 50% 15%, #13233a, var(--bg) 80%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(14, 165, 233, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14, 165, 233, 0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .container {
+      position: relative;
+      z-index: 10;
+      width: min(860px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.7), 0 0 30px rgba(6, 182, 212, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--radar-cyan);
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-family: var(--mono);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--radar-green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--radar-green);
+      animation: blink 1.2s infinite ease-in-out;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.7); }
+    }
+    h1 {
+      font-size: clamp(20px, 3.5vw, 26px);
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* 主网格布局 */
+    .grid-deck {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .grid-deck {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 雷达圆盘 */
+    .radar-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      max-width: 380px;
+      margin: 0 auto;
+      background: #050b14;
+      border-radius: 50%;
+      border: 2px solid rgba(6, 182, 212, 0.4);
+      box-shadow: inset 0 0 40px rgba(6, 182, 212, 0.15), 0 0 20px rgba(0,0,0,0.8);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    canvas#radarCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .radar-crosshair {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .radar-crosshair::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: rgba(6, 182, 212, 0.2);
+    }
+    .radar-crosshair::after {
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 1px;
+      background: rgba(6, 182, 212, 0.2);
+    }
+
+    /* 遥测 HUD 数据卡片 */
+    .hud-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .hud-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(30, 41, 59, 0.8);
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .hud-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .hud-value {
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--radar-cyan);
+    }
+    .hud-value.danger {
+      color: var(--alert-red);
+    }
+    .hud-value.warn {
+      color: var(--warning-amber);
+    }
+
+    /* 控制按键组 */
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      flex: 1;
+      min-width: 150px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #0369a1, #075985);
+      transform: translateY(-1px);
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+    }
+    .btn-danger:hover {
+      background: linear-gradient(135deg, #b91c1c, #991b1b);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: rgba(30, 41, 59, 0.8);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover {
+      background: rgba(51, 65, 85, 0.8);
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    /* 黑匣子事件日志 */
+    .log-box {
+      background: #030712;
+      border: 1px solid #1f2937;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #38bdf8;
+      height: 120px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .log-entry {
+      line-height: 1.5;
+    }
+    .log-time {
+      color: #64748b;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>✈️ 纸飞机全球空域精密雷达与遥测中心</h1>
+        <div class="subtitle">NASA / 北约联合折痕航空动力学遥测站 · 房间局部微空域调度</div>
+      </div>
+      <div class="badge">
+        <div class="pulse-dot"></div>
+        <span>RADAR ACTIVE // SECTOR-LIVING-ROOM</span>
+      </div>
+    </div>
+
+    <div class="grid-deck">
+      <!-- 极客雷达圆盘 -->
+      <div class="radar-box">
+        <canvas id="radarCanvas" width="380" height="380"></canvas>
+        <div class="radar-crosshair"></div>
+      </div>
+
+      <!-- 实时遥测数据卡片 -->
+      <div class="hud-panel">
+        <div class="hud-card">
+          <span class="hud-label">目标机型代号</span>
+          <span class="hud-value" id="valPlaneId">A4-FOLD-MARK-IV</span>
+        </div>
+        <div class="hud-card">
+          <span class="hud-label">当前绝对航速</span>
+          <span class="hud-value" id="valMach">Mach 0.0031 (1.05 m/s)</span>
+        </div>
+        <div class="hud-card">
+          <span class="hud-label">巡航离地高度</span>
+          <span class="hud-value" id="valAlt">0.86 m</span>
+        </div>
+        <div class="hud-card">
+          <span class="hud-label">双翼折痕不对称容差</span>
+          <span class="hud-value warn" id="valSym">24.8% (严重向左侧翻)</span>
+        </div>
+        <div class="hud-card">
+          <span class="hud-label">空域环境气象预警</span>
+          <span class="hud-value danger" id="valWeather">落地风扇 2 档狂暴剪切风</span>
+        </div>
+        <div class="hud-card">
+          <span class="hud-label">预计终点落点测算</span>
+          <span class="hud-value" id="valDestination">沙发底下深处 (无法打扫区)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 交互操作按钮 -->
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnLaunch">
+        🚀 手动弹射投掷纸飞机
+      </button>
+      <button class="btn btn-danger" id="btnAfterburner">
+        🔥 强制开启超音速加力燃烧室
+      </button>
+      <button class="btn btn-secondary" id="btnATC">
+        📻 呼叫客厅阳台塔台指挥官
+      </button>
+    </div>
+
+    <!-- 黑匣子遥测日志 -->
+    <div class="log-box" id="logBox">
+      <div class="log-entry"><span class="log-time">[00:00:00]</span> 系统自检完成。多普勒相控阵雷达已锁定客厅全向空域。</div>
+      <div class="log-entry"><span class="log-time">[00:00:01]</span> 检测到一张废弃打印纸已被人工对折 4 次，气动阻力系数已飙升至临界值。</div>
+    </div>
+  </div>
+
+  <script>
+    // Web Audio 音效合成引擎
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      beep(freq = 880, type = 'sine', duration = 0.08) {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      },
+      whoosh() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(150, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.3);
+          osc.frequency.exponentialRampToValueAtTime(60, this.ctx.currentTime + 0.6);
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.6);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.6);
+        } catch(e) {}
+      },
+      alarm() {
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(400, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(800, this.ctx.currentTime + 0.15);
+          osc.frequency.linearRampToValueAtTime(400, this.ctx.currentTime + 0.3);
+          gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.35);
+        } catch(e) {}
+      }
+    };
+
+    // 雷达扫描渲染
+    const canvas = document.getElementById('radarCanvas');
+    const ctx = canvas.getContext('2d');
+    let sweepAngle = 0;
+    const planes = [
+      { x: 120, y: 150, id: 'A4-FOLD-MARK-IV', speed: 0.8, angle: 0.5, history: [] },
+      { x: 260, y: 110, id: 'CAT-TARGET-02', speed: 0.2, angle: 2.1, history: [] },
+      { x: 200, y: 280, id: 'MOP-DUST-09', speed: 0.05, angle: 3.5, history: [] }
+    ];
+
+    function log(msg) {
+      const logBox = document.getElementById('logBox');
+      const time = new Date().toTimeString().split(' ')[0];
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      entry.innerHTML = `<span class="log-time">[${time}]</span> ${msg}`;
+      logBox.appendChild(entry);
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function renderRadar() {
+      const w = canvas.width;
+      const h = canvas.height;
+      const cx = w / 2;
+      const cy = h / 2;
+      const r = w / 2 - 10;
+
+      ctx.fillStyle = 'rgba(5, 11, 20, 0.15)';
+      ctx.fillRect(0, 0, w, h);
+
+      // 同心圆
+      ctx.strokeStyle = 'rgba(6, 182, 212, 0.25)';
+      ctx.lineWidth = 1;
+      for (let i = 1; i <= 4; i++) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, (r / 4) * i, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // 扫描扇形线
+      sweepAngle += 0.035;
+      const sx = cx + Math.cos(sweepAngle) * r;
+      const sy = cy + Math.sin(sweepAngle) * r;
+
+      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      grad.addColorStop(0, 'rgba(6, 182, 212, 0.4)');
+      grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, sweepAngle - 0.35, sweepAngle);
+      ctx.fillStyle = 'rgba(6, 182, 212, 0.15)';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(sx, sy);
+      ctx.strokeStyle = '#06b6d4';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // 纸飞机目标绘制
+      planes.forEach((p, idx) => {
+        p.x += Math.cos(p.angle) * p.speed;
+        p.y += Math.sin(p.angle) * p.speed;
+
+        // 边界回弹
+        const dist = Math.hypot(p.x - cx, p.y - cy);
+        if (dist > r - 15) {
+          p.angle += Math.PI * 0.75;
+        }
+
+        p.history.push({ x: p.x, y: p.y });
+        if (p.history.length > 15) p.history.shift();
+
+        // 轨迹
+        ctx.beginPath();
+        p.history.forEach((pt, hIdx) => {
+          if (hIdx === 0) ctx.moveTo(pt.x, pt.y);
+          else ctx.lineTo(pt.x, pt.y);
+        });
+        ctx.strokeStyle = idx === 0 ? 'rgba(16, 185, 129, 0.4)' : 'rgba(148, 163, 184, 0.2)';
+        ctx.stroke();
+
+        // 点
+        ctx.fillStyle = idx === 0 ? '#10b981' : '#f59e0b';
+        ctx.shadowColor = ctx.fillStyle;
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, idx === 0 ? 4 : 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // 标识文字
+        ctx.font = '9px monospace';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText(p.id, p.x + 6, p.y - 4);
+      });
+
+      requestAnimationFrame(renderRadar);
+    }
+    renderRadar();
+
+    // 交互按键
+    const btnLaunch = document.getElementById('btnLaunch');
+    const btnAfterburner = document.getElementById('btnAfterburner');
+    const btnATC = document.getElementById('btnATC');
+
+    btnLaunch.addEventListener('click', () => {
+      AudioEngine.whoosh();
+      planes[0].speed = 3.5;
+      planes[0].angle = Math.random() * Math.PI * 2;
+      log("⚡ [投掷指令] 纸飞机已由右手全力脱手弹射！初速 1.25 m/s，空气动力学失衡！");
+      document.getElementById('valMach').textContent = `Mach 0.0039 (${(Math.random() * 0.5 + 1.2).toFixed(2)} m/s)`;
+      document.getElementById('valAlt').textContent = `${(Math.random() * 0.4 + 0.9).toFixed(2)} m`;
+      
+      setTimeout(() => {
+        planes[0].speed = 0.6;
+        AudioEngine.beep(300, 'sine', 0.2);
+        log("📉 [重力捕获] 动能衰减完毕，由于左翼折歪了 3mm，纸飞机开始剧烈盘旋俯冲！");
+      }, 1500);
+    });
+
+    btnAfterburner.addEventListener('click', () => {
+      AudioEngine.alarm();
+      log("🚨 [警告] 试图点燃纸纤维超音速加力燃烧室！");
+      setTimeout(() => {
+        alert("💥 灾难级飞行事故警告：\n\n【遥测黑匣子报告】\n经过 0.0001 秒的高温加力计算，由于纸张燃点仅为 233°C 且推重比绝对为零，纸飞机直接垂直失速砸落在客房拖鞋上！\n\n【黑匣子最终遗言】：“我尽力了，但折我的人甚至没有压平机翼边缘。”");
+        log("💥 [坠毁报告] 纸飞机于坐标 [X: 184, Y: 290] 坠落，损毁形态：机头微扁。");
+      }, 300);
+    });
+
+    btnATC.addEventListener('click', () => {
+      AudioEngine.beep(1200, 'square', 0.1);
+      setTimeout(() => AudioEngine.beep(800, 'square', 0.15), 120);
+      const responses = [
+        "阳台塔台收到：前方 0.5 米处检测到肥猫正处于伏击姿势，建议立即紧急复飞！",
+        "塔台指挥官报告：茶几空域气流紊乱，建议迫降在纸巾盒顶部避免被踩烂。",
+        "无线电静默：客厅老妈正在拖地，进入该领空可能遭遇拖把对空导弹拦截！"
+      ];
+      const res = responses[Math.floor(Math.random() * responses.length)];
+      log(`📻 [塔台通话] ${res}`);
+      alert(`📻 客厅阳台无线电塔台回复：\n\n"${res}"`);
+    });
+  </script>
+</body>
+</html>

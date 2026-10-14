@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>办公室极地冷气与撒哈拉热浪微气候洋流测绘局 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #080c14;
+      --card: #0f172a;
+      --border: #1e293b;
+      --ice-blue: #38bdf8;
+      --ice-glow: rgba(56, 189, 248, 0.4);
+      --heat-orange: #f97316;
+      --heat-glow: rgba(249, 115, 22, 0.4);
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: radial-gradient(circle at 50% 15%, #172554, var(--bg) 80%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      position: relative;
+    }
+    .climate-deck {
+      width: min(860px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px var(--ice-glow);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--ice-blue);
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-family: var(--mono);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .temp-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--heat-orange);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--heat-orange);
+    }
+    h1 {
+      font-size: clamp(20px, 3.5vw, 25px);
+      font-weight: 800;
+      color: #fff;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* 气象卫星洋流图与温区卡片 */
+    .climate-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .climate-grid { grid-template-columns: 1fr; }
+    }
+
+    /* 办公室微气候热力矢量图 */
+    .map-box {
+      background: #030712;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16/11;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    canvas#weatherCanvas {
+      width: 100%;
+      height: 100%;
+    }
+    .map-legend {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--ice-blue);
+      background: rgba(0,0,0,0.6);
+      padding: 4px 8px;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    /* 温区分析卡片 */
+    .zones-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .zone-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .zone-card:hover {
+      background: rgba(30, 41, 59, 0.8);
+      border-color: var(--ice-blue);
+    }
+    .zone-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .zone-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .zone-temp {
+      font-family: var(--mono);
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .temp-polar { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
+    .temp-sahara { color: #f97316; text-shadow: 0 0 10px rgba(249, 115, 22, 0.4); }
+    .temp-pantry { color: #4ade80; }
+
+    /* 按钮组 */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      flex: 1;
+      min-width: 160px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-blue {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
+    }
+    .btn-blue:hover {
+      background: linear-gradient(135deg, #0369a1, #075985);
+      transform: translateY(-1px);
+    }
+    .btn-orange {
+      background: linear-gradient(135deg, #ea580c, #c2410c);
+      color: #fff;
+    }
+    .btn-orange:hover {
+      background: linear-gradient(135deg, #c2410c, #9a3412);
+    }
+    .btn-outline {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    /* 气象快报 */
+    .meteo-log {
+      background: #030712;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #7dd3fc;
+      height: 90px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="climate-deck">
+    <div class="header">
+      <div>
+        <h1>🌡️ 办公室极地冷气与撒哈拉热浪微气候洋流测绘局</h1>
+        <div class="subtitle">中央空调气流动力学 · 南北纬工位极端温差停火调解站</div>
+      </div>
+      <div class="badge">
+        <div class="temp-dot"></div>
+        <span>GLOBAL NOAA SATELLITE FEED // OPEN-SPACE OFFICE</span>
+      </div>
+    </div>
+
+    <div class="climate-grid">
+      <!-- 热力与风场图 -->
+      <div class="map-box">
+        <canvas id="weatherCanvas" width="460" height="280"></canvas>
+        <div class="map-legend">THERMAL VECTOR FLOW // BLUE=ARCTIC, RED=DESERT</div>
+      </div>
+
+      <!-- 温区卡片 -->
+      <div class="zones-panel">
+        <div class="zone-card" id="zone1">
+          <div>
+            <div class="zone-title">🥶 3 号工位：北冰洋深渊风口区</div>
+            <div class="zone-sub">空调正下方直吹 · 程序员身披军大衣</div>
+          </div>
+          <div class="zone-temp temp-polar">13.8 °C</div>
+        </div>
+
+        <div class="zone-card" id="zone2">
+          <div>
+            <div class="zone-title">🥵 8 号工位：撒哈拉副热带西晒区</div>
+            <div class="zone-sub">落地玻璃大暴晒 · 仙人掌已脱水自闭</div>
+          </div>
+          <div class="zone-temp temp-sahara">35.4 °C</div>
+        </div>
+
+        <div class="zone-card" id="zone3">
+          <div>
+            <div class="zone-title">☕ 茶水间：八卦暖锋低压对流带</div>
+            <div class="zone-sub">微气候宜人 · 伴随高频同事离职八卦</div>
+          </div>
+          <div class="zone-temp temp-pantry">24.2 °C</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 交互操作 -->
+    <div class="btn-row">
+      <button class="btn btn-blue" id="btnDeflect">
+        🌬️ 调整空调百叶扇叶 5 度 (偏头痛转移术)
+      </button>
+      <button class="btn btn-orange" id="btnCurtain">
+        ☀️ 拉上西晒窗帘引发采光争端
+      </button>
+      <button class="btn btn-outline" id="btnTreaty">
+        📜 起草《办公室南北温差停火公约》
+      </button>
+    </div>
+
+    <!-- 气象日志 -->
+    <div class="meteo-log" id="meteoLog">
+      <div>[09:00:00] 中央空调启动，北纬 3 号工位室温瞬间断崖下跌 12°C！</div>
+      <div>[09:05:12] 西晒区同事已开启手持小风扇，形成微观反气旋弱风暴。</div>
+    </div>
+  </div>
+
+  <script>
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      wind() { // 狂风呼啸声
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(100, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(300, this.ctx.currentTime + 0.3);
+          osc.frequency.linearRampToValueAtTime(80, this.ctx.currentTime + 0.6);
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.6);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.6);
+        } catch(e) {}
+      }
+    };
+
+    // Canvas 气流流线模拟
+    const canvas = document.getElementById('weatherCanvas');
+    const ctx = canvas.getContext('2d');
+    let windParticles = [];
+    for (let i = 0; i < 70; i++) {
+      windParticles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 3,
+        vy: Math.random() * 2 + 1,
+        len: Math.random() * 12 + 6
+      });
+    }
+
+    function renderWind() {
+      // 热力背景渐变
+      const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      grad.addColorStop(0, '#0c4a6e'); // 左上极地冰蓝
+      grad.addColorStop(1, '#7c2d12'); // 右下干热火红
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 工位方块
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.fillRect(40, 50, 70, 50); // 3号工位
+      ctx.fillRect(320, 160, 70, 50); // 8号工位
+
+      ctx.fillStyle = '#bae6fd';
+      ctx.font = '10px monospace';
+      ctx.fillText('SEAT 03 (极地)', 45, 80);
+      ctx.fillStyle = '#fed7aa';
+      ctx.fillText('SEAT 08 (沙漠)', 325, 190);
+
+      // 风力流线
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.lineWidth = 1.5;
+      windParticles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.y > canvas.height) { p.y = 0; p.x = Math.random() * canvas.width; }
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x - p.vx * 3, p.y - p.vy * 3);
+        ctx.stroke();
+      });
+
+      requestAnimationFrame(renderWind);
+    }
+    renderWind();
+
+    const meteoLog = document.getElementById('meteoLog');
+    function logMeteo(msg) {
+      const time = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.textContent = `[${time}] ${msg}`;
+      meteoLog.appendChild(div);
+      meteoLog.scrollTop = meteoLog.scrollHeight;
+    }
+
+    document.getElementById('btnDeflect').addEventListener('click', () => {
+      AudioEngine.wind();
+      logMeteo("🌬️ [风向转移] 空调风板微调 5 度，极地寒风完美绕过 3 号，精准灌入 4 号工位后脑勺！");
+    });
+
+    document.getElementById('btnCurtain').addEventListener('click', () => {
+      AudioEngine.wind();
+      logMeteo("☀️ [地缘冲突] 西晒区同事强行拉下百叶窗，中央区同事大喊“太黑了别拉”，矛盾升级！");
+    });
+
+    document.getElementById('btnTreaty').addEventListener('click', () => {
+      alert("📜【办公室南北纬室内气温和平条约草案】\n\n一、冷区（北纬3号）要求将恒温器调至 26°C 并赠送热宝贴；\n二、热区（南纬8号）坚持必须开至 18°C 强风档，并威胁要赤膊办公；\n\n【仲裁结论】：\n行政部宣布：由于遥控器电池去年已漏液，温度已物理锁定在 21°C，任何抗议均予以驳回。");
+    });
+  </script>
+</body>
+</html>

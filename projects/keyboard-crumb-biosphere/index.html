@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>键盘按键缝隙史前微生物生态科研显微镜 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #03130e;
+      --panel: #06231a;
+      --border: #0e4333;
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.4);
+      --teal: #14b8a6;
+      --amber: #f59e0b;
+      --text: #f0fdf4;
+      --text-muted: #86efac;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: radial-gradient(circle at 50% 15%, #0d382b, var(--bg) 80%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      position: relative;
+    }
+    .micro-deck {
+      width: min(860px, 100%);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px var(--emerald-glow);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--emerald);
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-family: var(--mono);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bio-pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--emerald);
+      animation: bioGlow 1.2s infinite ease-in-out;
+    }
+    @keyframes bioGlow {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.5; }
+    }
+    h1 {
+      font-size: clamp(20px, 3.5vw, 25px);
+      font-weight: 800;
+      color: #fff;
+    }
+    .subtitle {
+      color: #a7f3d0;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* 显微镜目镜与分析卡 */
+    .lab-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .lab-grid { grid-template-columns: 1fr; }
+    }
+
+    /* 显微镜圆形视野 */
+    .scope-box {
+      width: 100%;
+      aspect-ratio: 1;
+      max-width: 340px;
+      margin: 0 auto;
+      border-radius: 50%;
+      background: #021a12;
+      border: 4px solid var(--border);
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 10px 30px rgba(0,0,0,0.6);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    canvas#scopeCanvas {
+      width: 100%;
+      height: 100%;
+    }
+    .reticle {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .reticle-ring {
+      width: 70%;
+      height: 70%;
+      border: 1px dashed rgba(16, 185, 129, 0.4);
+      border-radius: 50%;
+    }
+    .scope-hud {
+      position: absolute;
+      bottom: 12px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--emerald);
+      background: rgba(0,0,0,0.6);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* 物种档案卡 */
+    .taxonomy-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .specimen-card {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .latin-name {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--emerald);
+    }
+    .common-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .desc-text {
+      font-size: 12px;
+      color: #a7f3d0;
+      line-height: 1.5;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.02);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .stat-val {
+      font-family: var(--mono);
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    /* 按钮组 */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      flex: 1;
+      min-width: 150px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-emerald {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+    .btn-emerald:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+      transform: translateY(-1px);
+    }
+    .btn-amber {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #111;
+    }
+    .btn-amber:hover {
+      background: linear-gradient(135deg, #d97706, #b45309);
+    }
+    .btn-outline {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    /* 显微镜观测日志 */
+    .lab-log {
+      background: #020f0b;
+      border: 1px solid #093425;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #86efac;
+      height: 90px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="micro-deck">
+    <div class="header">
+      <div>
+        <h1>🔬 键盘按键缝隙史前微生物生态科研显微镜</h1>
+        <div class="subtitle">中国科学院按键微生态研究所 · 冷冻电镜 1,000,000x 超高分辨率观测平台</div>
+      </div>
+      <div class="badge">
+        <div class="bio-pulse"></div>
+        <span>MAG: 500,000X // CRYO-EM STATUS: STABLE</span>
+      </div>
+    </div>
+
+    <div class="lab-grid">
+      <!-- 显微镜目镜 -->
+      <div class="scope-box">
+        <canvas id="scopeCanvas" width="340" height="340"></canvas>
+        <div class="reticle"><div class="reticle-ring"></div></div>
+        <div class="scope-hud" id="magHud">FOCUS: SPACEBAR GAP // 500,000X</div>
+      </div>
+
+      <!-- 标本物种档案卡 -->
+      <div class="taxonomy-panel">
+        <div class="specimen-card">
+          <div class="latin-name" id="latinTitle">Pseudosnackus potati (薯片残渣化石)</div>
+          <div class="common-name" id="commonTitle">远古碳化烧烤味乐事薯片残渣化石</div>
+          <div class="desc-text" id="specimenDesc">
+            碳14同位素测定距今已有整整 3 个月历史，深嵌在空格键弹簧底座，已与油脂尘埃结合为具有高刚性的大理石级沉积岩。
+          </div>
+        </div>
+
+        <div class="stat-row">
+          <span>生物多样性香农指数</span>
+          <span class="stat-val">H = 9.84 (远超亚马逊雨林)</span>
+        </div>
+        <div class="stat-row">
+          <span>活体微生态群体数量</span>
+          <span class="stat-val">约 4,800,000,000 菌落 CFU</span>
+        </div>
+        <div class="stat-row">
+          <span>演化形态预测</span>
+          <span class="stat-val" style="color: #f59e0b;">疑似已产生独立初级文明</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 交互操作 -->
+    <div class="btn-row">
+      <button class="btn btn-emerald" id="btnSwitch">
+        🔄 旋转物镜：观测猫毛与咖啡渍物种
+      </button>
+      <button class="btn btn-amber" id="btnNutrient">
+        💧 滴加营养液：刺激微生物疯狂繁衍
+      </button>
+      <button class="btn btn-outline" id="btnHeritage">
+        📜 申请联合国键盘国家级自然保护区
+      </button>
+    </div>
+
+    <!-- 实验室日志 -->
+    <div class="lab-log" id="labLog">
+      <div>[00:00:01] 冷冻电镜电子枪点火完成，真空度达 10^-7 Pa。</div>
+      <div>[00:00:02] 在 CapsLock 键帽夹角处成功捕获到活体金色猫毛纤维一束。</div>
+    </div>
+  </div>
+
+  <script>
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      click() { // 伺服电机转动声
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(400, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.08);
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.08);
+        } catch(e) {}
+      },
+      bubble() { // 液体滴加声
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(1200, this.ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.15);
+        } catch(e) {}
+      }
+    };
+
+    // 显微镜游动细胞模拟
+    const canvas = document.getElementById('scopeCanvas');
+    const ctx = canvas.getContext('2d');
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    let organisms = [];
+    for (let i = 0; i < 40; i++) {
+      organisms.push({
+        x: cx + (Math.random() - 0.5) * 160,
+        y: cy + (Math.random() - 0.5) * 160,
+        r: Math.random() * 6 + 3,
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: (Math.random() - 0.5) * 1.5,
+        wobble: Math.random() * Math.PI * 2,
+        color: ['#10b981', '#14b8a6', '#f59e0b', '#34d399'][Math.floor(Math.random() * 4)]
+      });
+    }
+
+    function renderScope() {
+      ctx.fillStyle = '#021a12';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      organisms.forEach(org => {
+        org.x += org.vx;
+        org.y += org.vy;
+        org.wobble += 0.08;
+
+        const dist = Math.hypot(org.x - cx, org.y - cy);
+        if (dist > 120) {
+          org.vx *= -1;
+          org.vy *= -1;
+        }
+
+        ctx.save();
+        ctx.translate(org.x, org.y);
+        ctx.scale(1 + Math.sin(org.wobble) * 0.15, 1 + Math.cos(org.wobble) * 0.15);
+
+        ctx.beginPath();
+        ctx.arc(0, 0, org.r, 0, Math.PI * 2);
+        ctx.fillStyle = org.color;
+        ctx.shadowColor = org.color;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // 细胞核
+        ctx.beginPath();
+        ctx.arc(0, 0, org.r * 0.4, 0, Math.PI * 2);
+        ctx.fillStyle = '#06231a';
+        ctx.fill();
+
+        ctx.restore();
+      });
+
+      requestAnimationFrame(renderScope);
+    }
+    renderScope();
+
+    // 标本切换
+    const specimens = [
+      {
+        latin: "Pseudosnackus potati",
+        common: "远古碳化烧烤味乐事薯片残渣化石",
+        desc: "碳14测年距今已有 3 个月，深嵌在空格键弹簧底座，已与油脂尘埃结合为坚硬的大理石级沉积岩。"
+      },
+      {
+        latin: "Felis capillaris aureus",
+        common: "主子御赐高刚性金黄猫毛纤维",
+        desc: "去年换毛期掉落并卡在 F 和 J 盲打凸起缝隙，经测算其韧性可吊起一辆微型卡车，严禁拔除以免损坏轴体。"
+      },
+      {
+        latin: "Bacterius lattes crusta",
+        common: "上季度冰拿铁干涸结壳菌落",
+        desc: "奶渍与焦糖结晶的完美共生体，在微弱键盘背光照射下已自发进化出原始光合作用机制。"
+      }
+    ];
+
+    let currentSpecimen = 0;
+    const labLog = document.getElementById('labLog');
+
+    function addLog(msg) {
+      const time = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.textContent = `[${time}] ${msg}`;
+      labLog.appendChild(div);
+      labLog.scrollTop = labLog.scrollHeight;
+    }
+
+    document.getElementById('btnSwitch').addEventListener('click', () => {
+      AudioEngine.click();
+      currentSpecimen = (currentSpecimen + 1) % specimens.length;
+      const s = specimens[currentSpecimen];
+      document.getElementById('latinTitle').textContent = `${s.latin} (${s.common})`;
+      document.getElementById('commonTitle').textContent = s.common;
+      document.getElementById('specimenDesc').textContent = s.desc;
+      addLog(`🔬 [物镜调焦] 已切换观测样本至：${s.common}`);
+    });
+
+    document.getElementById('btnNutrient').addEventListener('click', () => {
+      AudioEngine.bubble();
+      organisms.forEach(o => {
+        o.r = Math.min(o.r + 1.5, 14);
+        o.vx *= 1.3;
+        o.vy *= 1.3;
+      });
+      addLog("🧪 [微量喷洒] 滴加高糖奶茶培养液！微生态菌落繁衍速率激增 400%！");
+    });
+
+    document.getElementById('btnHeritage').addEventListener('click', () => {
+      alert("📜【联合国教科文组织微生态特别法令】\n\n鉴定结论：\n申请人键盘内部所蕴含的微生物多样性与化石标本群，具有不可估量的科研价值。\n\n正式授予该键盘《国际级微生态湿地自然保护区》称号！\n严禁使用键盘泥、压缩空气罐或吹风机清理，任何破坏生态平衡的行为将交由海牙国际法庭审判！");
+    });
+  </script>
+</body>
+</html>

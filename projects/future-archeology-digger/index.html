@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>公元5000年地外文明对人类现代数码遗迹考古挖掘仪 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0c0905;
+      --card: #18120a;
+      --border: #382613;
+      --amber: #f59e0b;
+      --amber-glow: rgba(245, 158, 11, 0.4);
+      --sand: #d97706;
+      --cyan: #06b6d4;
+      --text: #fef3c7;
+      --text-muted: #d4bda8;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: radial-gradient(circle at 50% 15%, #291b0c, var(--bg) 80%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      position: relative;
+    }
+    .archeo-deck {
+      width: min(860px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px var(--amber-glow);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--amber);
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-family: var(--mono);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .scan-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--amber);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--amber);
+      animation: pulse 1s infinite alternate;
+    }
+    @keyframes pulse {
+      from { opacity: 0.4; }
+      to { opacity: 1; }
+    }
+    h1 {
+      font-size: clamp(20px, 3.5vw, 25px);
+      font-weight: 800;
+      color: #fff;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* 挖掘透视探地雷达与出土文物 */
+    .digger-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .digger-grid { grid-template-columns: 1fr; }
+    }
+
+    /* 地质穿透雷达屏幕 */
+    .radar-box {
+      background: #060402;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16/11;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    canvas#archeoCanvas {
+      width: 100%;
+      height: 100%;
+    }
+    .gpr-hud {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--amber);
+      background: rgba(0,0,0,0.6);
+      padding: 4px 8px;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    /* 文物考证报告卡 */
+    .relic-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .relic-card {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .relic-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--amber);
+    }
+    .relic-origin {
+      font-size: 12px;
+      color: #fed7aa;
+    }
+    .alien-interpretation {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.02);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .metric-val {
+      font-family: var(--mono);
+      color: var(--cyan);
+      font-weight: 700;
+    }
+
+    /* 控制按键组 */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      flex: 1;
+      min-width: 160px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-amber {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #111;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    }
+    .btn-amber:hover {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      transform: translateY(-1px);
+    }
+    .btn-cyan {
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+      color: #111;
+    }
+    .btn-cyan:hover {
+      background: linear-gradient(135deg, #0891b2, #0e7490);
+    }
+    .btn-outline {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    /* 考古日志 */
+    .archeo-log {
+      background: #050302;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #fde68a;
+      height: 90px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="archeo-deck">
+    <div class="header">
+      <div>
+        <h1>🪐 公元5000年地外文明对人类现代数码遗迹考古挖掘仪</h1>
+        <div class="subtitle">仙女座第三科学远征舰队 · 硅基打工文明地质层深度勘探器</div>
+      </div>
+      <div class="badge">
+        <div class="scan-dot"></div>
+        <span>STRATUM DEPTH: 120M // ANTHROPOCENE</span>
+      </div>
+    </div>
+
+    <div class="digger-grid">
+      <!-- 探地雷达波束 -->
+      <div class="radar-box">
+        <canvas id="archeoCanvas" width="460" height="280"></canvas>
+        <div class="gpr-hud">GROUND PENETRATING RADAR // 21ST CENTURY DEBRIS</div>
+      </div>
+
+      <!-- 出土文物释读 -->
+      <div class="relic-panel">
+        <div class="relic-card">
+          <div class="relic-title" id="relicTitle">【发热发光的长方形祭祀灵牌】</div>
+          <div class="relic-origin" id="relicOrigin">出土物还原：iPhone 15 Pro 钛金属残骸</div>
+          <div class="alien-interpretation" id="relicInterp">
+            外星首席考古学家释读：“古人类每天清晨第一件事与夜晚最后一件事均为抚摸摩擦此黑色图腾，内部蕴含名为‘微信’的降维拘束法阵，是用于禁锢个体灵魂的终极宗教法器。”
+          </div>
+        </div>
+
+        <div class="metric-row">
+          <span>地质年代测定</span>
+          <span class="metric-val">距今约 2974 年前 (早新人类纪)</span>
+        </div>
+        <div class="metric-row">
+          <span>出土地层分类</span>
+          <span class="metric-val" style="color: #f59e0b;">高分子聚合物与奶茶吸管层</span>
+        </div>
+        <div class="metric-row">
+          <span>该文明灭绝推测</span>
+          <span class="metric-val" style="color: #ef4444;">终日坐在方块前久坐不动</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 交互操作 -->
+    <div class="btn-row">
+      <button class="btn btn-amber" id="btnExcavate">
+        ⛏️ 向下钻探 50 米：挖掘机械键盘法器
+      </button>
+      <button class="btn btn-cyan" id="btnCarbon14">
+        🔬 启动高阶质谱仪对珍珠奶茶化石测序
+      </button>
+      <button class="btn btn-outline" id="btnPaper">
+        📑 输出银河系核心考古期刊论文
+      </button>
+    </div>
+
+    <!-- 日志 -->
+    <div class="archeo-log" id="archeoLog">
+      <div>[YEAR 5000] 钻头已穿透 40 米厚的风化混凝土与塑料吸管复合地层。</div>
+      <div>[YEAR 5000] 扫描到强金属反应：检测到一个带有 87 个独立击打弹簧的古老宗教法器。</div>
+    </div>
+  </div>
+
+  <script>
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      sonar() { // 声呐下探声
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(200, this.ctx.currentTime + 0.3);
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.3);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.3);
+        } catch(e) {}
+      }
+    };
+
+    // Canvas 钻探地层扫描
+    const canvas = document.getElementById('archeoCanvas');
+    const ctx = canvas.getContext('2d');
+    let scanY = 0;
+
+    function renderArcheo() {
+      ctx.fillStyle = '#0a0603';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 地质层线
+      ctx.lineWidth = 1;
+      for (let y = 30; y < canvas.height; y += 40) {
+        ctx.strokeStyle = y < 100 ? '#78350f' : (y < 200 ? '#451a03' : '#1c1917');
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+
+      // 扫描金光横线
+      scanY = (scanY + 2) % canvas.height;
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.shadowColor = '#f59e0b';
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      ctx.moveTo(0, scanY);
+      ctx.lineTo(canvas.width, scanY);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // 埋藏物骨架
+      ctx.fillStyle = 'rgba(245, 158, 11, 0.3)';
+      ctx.fillRect(180, 120, 90, 45); // 手机轮廓
+      ctx.strokeStyle = '#f59e0b';
+      ctx.strokeRect(180, 120, 90, 45);
+
+      requestAnimationFrame(renderArcheo);
+    }
+    renderArcheo();
+
+    const relics = [
+      {
+        title: "【发热发光的长方形祭祀灵牌】",
+        origin: "出土物还原：iPhone 15 Pro 钛金属残骸",
+        interp: "外星考古学家释读：“古人类每天清晨第一件事与夜晚最后一件事均为抚摸摩擦此黑色图腾，内部蕴含名为‘微信’的降维拘束法阵，是用于禁锢个体灵魂的终极宗教法器。”"
+      },
+      {
+        title: "【多键位敲击打击乐降魔杵】",
+        origin: "出土物还原：青轴机械键盘 (带 RGB 背光残渣)",
+        interp: "外星考古学家释读：“按压伴随清脆‘啪啪’铁器撞击声，古人类祭司在发光方块前连续击打十余小时，以此举行‘乞求代码在生产环境不崩’的祈雨巫术。”"
+      },
+      {
+        title: "【黑色高弹性有机碳化能量小球】",
+        origin: "出土物还原：波霸奶茶珍珠化石串",
+        interp: "外星考古学家释读：“由高纯度木薯粉与反式脂肪酸合成，富含极端多巴胺，是 21 世纪打工文明赖以对抗精神崩溃的核心神圣能量补给胶囊。”"
+      }
+    ];
+
+    let rIdx = 0;
+    const archeoLog = document.getElementById('archeoLog');
+
+    function addLog(msg) {
+      const time = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.textContent = `[YEAR 5000 ${time}] ${msg}`;
+      archeoLog.appendChild(div);
+      archeoLog.scrollTop = archeoLog.scrollHeight;
+    }
+
+    document.getElementById('btnExcavate').addEventListener('click', () => {
+      AudioEngine.sonar();
+      rIdx = (rIdx + 1) % relics.length;
+      const r = relics[rIdx];
+      document.getElementById('relicTitle').textContent = r.title;
+      document.getElementById('relicOrigin').textContent = r.origin;
+      document.getElementById('relicInterp').textContent = r.interp;
+      addLog(`⛏️ [出土鉴定] 成功解密新出土史前文物：${r.title}`);
+    });
+
+    document.getElementById('btnCarbon14').addEventListener('click', () => {
+      AudioEngine.sonar();
+      addLog("🔬 [质谱分析] 珍珠奶茶化石糖分残留高达 82%，推测原宿主曾点过‘全糖去冰加波霸’。");
+    });
+
+    document.getElementById('btnPaper').addEventListener('click', () => {
+      alert("📑【仙女座考古科学院核心期刊论文通报】\n\n论文题目：《关于公元 2000-2030 年代地球碳基生物自愿被四方盒子奴役一生的悲剧性演化假说》\n\n摘要：\n尽管该文明拥有飞往近地轨道的科技，但其绝大多数成年个体选择每日在被称为‘工位’的 1.2 米格子间内，盯着发光像素点直到视力丧失、头发脱落。\n\n结论：这是一种极为罕见且充满自毁倾向的宇宙文明奇观。");
+    });
+  </script>
+</body>
+</html>

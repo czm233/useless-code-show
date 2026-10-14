@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>米其林三星泡面分子料理重构工作台 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0c0a09;
+      --card: #1c1917;
+      --border: #292524;
+      --gold: #fbbf24;
+      --rose: #fb7185;
+      --wine: #881337;
+      --text: #f5f5f4;
+      --text-muted: #a8a29e;
+      --serif: "Didot", "Bodoni MT", "Cinzel", "Songti SC", serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: radial-gradient(circle at 50% 10%, #29151b, var(--bg) 80%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      position: relative;
+    }
+    .kitchen-station {
+      width: min(840px, 100%);
+      background: var(--card);
+      border: 1px solid rgba(251, 191, 36, 0.25);
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.8), 0 0 40px rgba(251, 191, 36, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      padding: 4px 16px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      font-family: var(--serif);
+    }
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(22px, 3.5vw, 32px);
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff, #fef3c7, var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 13px;
+      font-style: italic;
+    }
+
+    /* 烹饪操作台与摆盘展示 */
+    .station-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 24px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .station-grid { grid-template-columns: 1fr; }
+    }
+
+    /* 奢华餐盘 */
+    .plate-stage {
+      background: #000;
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 1px solid var(--border);
+      aspect-ratio: 1;
+      max-width: 320px;
+      margin: 0 auto;
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.9);
+    }
+    .luxury-plate {
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, #292524 30%, #1c1917 80%, #0c0a09 100%);
+      border-radius: 50%;
+      border: 4px solid #44403c;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.9), inset 0 0 25px rgba(0,0,0,0.7);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* 餐盘盖 */
+    .cloche-lid {
+      position: absolute;
+      inset: -4px;
+      background: radial-gradient(circle at 35% 30%, #a8a29e, #44403c 70%, #1c1917);
+      border-radius: 50%;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 10;
+      cursor: pointer;
+    }
+    .cloche-handle {
+      width: 28px;
+      height: 28px;
+      background: #e7e5e4;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    .cloche-lid.lifted {
+      transform: translateY(-80px) rotate(-15deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* 盘中物：仅有 3 根弯曲泡面与一滴汤汁 */
+    .haute-cuisine-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .noodle-curl {
+      font-size: 32px;
+      line-height: 1;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+    }
+    .soup-drop {
+      width: 8px;
+      height: 8px;
+      background: #b45309;
+      border-radius: 50%;
+      margin-top: 10px;
+      box-shadow: 0 0 6px #f59e0b;
+    }
+    .parsley-flake {
+      font-size: 10px;
+      margin-top: -6px;
+      margin-left: 18px;
+    }
+
+    /* 分子料理步骤 */
+    .recipe-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .step-item {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .step-item:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(251, 191, 36, 0.4);
+    }
+    .step-item.active {
+      border-color: var(--gold);
+      background: rgba(251, 191, 36, 0.08);
+    }
+    .step-name {
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .step-status {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--gold);
+    }
+
+    /* 品鉴评语卡 */
+    .tasting-notes {
+      background: #141210;
+      border-left: 3px solid var(--wine);
+      padding: 12px 14px;
+      border-radius: 0 8px 8px 0;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #e7e5e4;
+      font-style: italic;
+    }
+
+    /* 按钮组 */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      flex: 1;
+      min-width: 150px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      color: #fff;
+    }
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #b45309, #92400e);
+      transform: translateY(-1px);
+    }
+    .btn-wine {
+      background: linear-gradient(135deg, #be123c, #9f1239);
+      color: #fff;
+    }
+    .btn-wine:hover {
+      background: linear-gradient(135deg, #9f1239, #881337);
+      transform: translateY(-1px);
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+  </style>
+</head>
+<body>
+  <div class="kitchen-station">
+    <div class="header">
+      <div class="badge">⭐⭐⭐ MICHELIN GASTRONOMY LAB</div>
+      <h1>米其林三星泡面分子料理重构工作台</h1>
+      <div class="subtitle">“将 2 元 5 角的碳水馈赠，升华为令塞纳河两岸贵族流泪的存在主义诗篇”</div>
+    </div>
+
+    <div class="station-grid">
+      <!-- 餐盘展台 -->
+      <div class="plate-stage">
+        <div class="luxury-plate">
+          <!-- 银质盖子 -->
+          <div class="cloche-lid" id="clocheLid" title="点击掀起银色餐盘盖">
+            <div class="cloche-handle"></div>
+          </div>
+          <!-- 核心盘中物 -->
+          <div class="haute-cuisine-content">
+            <div class="noodle-curl">🍜</div>
+            <div class="parsley-flake">🌿</div>
+            <div class="soup-drop"></div>
+            <div style="font-size: 9px; color: #a8a29e; margin-top: 8px; font-family: var(--serif);">《红烧牛肉之宿命的纠缠》</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 分子解构工序 -->
+      <div class="recipe-steps">
+        <div class="step-item" id="step1">
+          <div class="step-name">🧪 1. 蔬菜包超临界真空纳秒复水</div>
+          <div class="step-status">脱水葱花膨胀率 108%</div>
+        </div>
+        <div class="step-item" id="step2">
+          <div class="step-name">🛢️ 2. 牛油酱包不饱和脂肪酸均质化分子乳化</div>
+          <div class="step-status">味精结晶多肽析出</div>
+        </div>
+        <div class="step-item" id="step3">
+          <div class="step-name">🌀 3. 油炸面饼淀粉双螺旋空间构象慢释</div>
+          <div class="step-status">弯曲弧度黄金比例</div>
+        </div>
+
+        <!-- 主厨品鉴卡 -->
+        <div class="tasting-notes" id="tastingNotes">
+          “前调是深邃的工业棕榈油芳香；中调绽放出人工合成牛肉风味多肽的激昂交响；尾调则是凌晨两点加班出租屋的沉沦与叹息。”
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-gold" id="btnCloche">
+        🛎️ 庄严掀开银制餐盘盖 (呈盘赏味)
+      </button>
+      <button class="btn btn-wine" id="btnBill">
+        🍷 输出米其林三星账单与侍酒服务费
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      glass() { // 高脚杯轻碰
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1864.66, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 1.2);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 1.2);
+        } catch(e) {}
+      },
+      sizzle() { // 厨房滋滋声
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(400, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(200, this.ctx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.2);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.2);
+        } catch(e) {}
+      }
+    };
+
+    const clocheLid = document.getElementById('clocheLid');
+    const btnCloche = document.getElementById('btnCloche');
+    let isLifted = false;
+
+    function toggleLid() {
+      AudioEngine.glass();
+      isLifted = !isLifted;
+      if (isLifted) {
+        clocheLid.classList.add('lifted');
+        btnCloche.textContent = "🛎️ 盖上银制餐盘盖 (保持香气)";
+      } else {
+        clocheLid.classList.remove('lifted');
+        btnCloche.textContent = "🛎️ 庄严掀开银制餐盘盖 (呈盘赏味)";
+      }
+    }
+
+    clocheLid.addEventListener('click', toggleLid);
+    btnCloche.addEventListener('click', toggleLid);
+
+    // 步骤点击互动
+    const notes = [
+      "【脱水胡萝卜粒微观解构】：在 100°C 沸水浸润 180 秒后，其细胞壁展现出对现实生活的坚强抵抗。",
+      "【调味粉包结晶晶格】：氯化钠与谷氨酸钠在微观偏振光下如钻石般闪耀，直击人类基因深处对味精的渴望。",
+      "【面汤表面纳米油滴】：漂浮于汤面的牛油微滴折射出彩虹色泽，象征着当代都市游子漂泊不定的命运。"
+    ];
+
+    ['step1', 'step2', 'step3'].forEach((id, idx) => {
+      document.getElementById(id).addEventListener('click', () => {
+        AudioEngine.sizzle();
+        document.querySelectorAll('.step-item').forEach(el => el.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.getElementById('tastingNotes').textContent = notes[idx];
+      });
+    });
+
+    document.getElementById('btnBill').addEventListener('click', () => {
+      AudioEngine.glass();
+      alert("🧾【米其林三星餐厅·结账账单】\n\n菜品：解构红烧牛肉面 (单人份三根) ￥1,888\n配饮：2026 年份产自来水 (常温) ￥380\n主厨开盖仪式感服务费 (15%)：￥340.20\n\n【合计】：￥2,608.20\n\n主厨寄语：感谢您的光临，如果还没吃饱，出门右拐便民小卖部 2 块 5 一包，还能多放根火腿肠。");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>传世抽象艺术万亿苏富比拍卖与终极鉴定仪 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #09090b;
+      --card: #141417;
+      --border: #27272a;
+      --gold: #eab308;
+      --gold-light: #fef08a;
+      --gold-dark: #854d0e;
+      --red: #ef4444;
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --font-serif: "Playfair Display", "Songti SC", Georgia, serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: radial-gradient(circle at 50% 10%, #1e1810, var(--bg) 80%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      position: relative;
+    }
+    .auction-deck {
+      width: min(840px, 100%);
+      background: var(--card);
+      border: 1px solid rgba(234, 179, 8, 0.25);
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.8), 0 0 40px rgba(234, 179, 8, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .header {
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(234, 179, 8, 0.1);
+      border: 1px solid rgba(234, 179, 8, 0.3);
+      padding: 4px 16px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 3.5vw, 32px);
+      font-weight: 700;
+      background: linear-gradient(135deg, #fff, var(--gold-light), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    /* 艺术品展台 */
+    .gallery-stage {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 24px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .gallery-stage { grid-template-columns: 1fr; }
+    }
+
+    /* 画框容器 */
+    .painting-frame {
+      position: relative;
+      background: #000;
+      padding: 16px;
+      border-radius: 12px;
+      border: 8px solid #2b1f11;
+      outline: 2px solid var(--gold);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.9), inset 0 0 20px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .canvas-art {
+      width: 100%;
+      aspect-ratio: 1;
+      max-width: 280px;
+      background: #fafaf9;
+      border-radius: 4px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+    }
+    /* 展品真实形态：极度抽象草率的一个点和一根歪线 */
+    .art-content {
+      position: absolute;
+      inset: 0;
+      transition: opacity 0.4s ease;
+    }
+    .art-spotlight {
+      position: absolute;
+      top: -50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 250px;
+      background: radial-gradient(ellipse at top, rgba(255,255,255,0.4), transparent 70%);
+      pointer-events: none;
+    }
+    .art-squiggle {
+      position: absolute;
+      top: 40%;
+      left: 25%;
+      width: 50%;
+      height: 3px;
+      background: #18181b;
+      transform: rotate(-12deg);
+      border-radius: 2px;
+    }
+    .art-dot {
+      position: absolute;
+      top: 55%;
+      left: 60%;
+      width: 14px;
+      height: 14px;
+      background: #ef4444;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+    }
+    /* 红外透视层 (反差揭秘) */
+    .xray-content {
+      position: absolute;
+      inset: 0;
+      background: #1e1b4b;
+      color: #38bdf8;
+      font-family: var(--mono);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+      font-size: 11px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .painting-frame.xray-mode .art-content {
+      opacity: 0.15;
+    }
+    .painting-frame.xray-mode .xray-content {
+      opacity: 1;
+    }
+    .frame-plaque {
+      margin-top: 12px;
+      background: linear-gradient(135deg, #d97706, #78350f);
+      color: #fef08a;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 4px 12px;
+      border-radius: 3px;
+      border: 1px solid #fef08a;
+      text-transform: uppercase;
+    }
+
+    /* 拍卖与评估控制台 */
+    .bidding-hud {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .price-display {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .price-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .current-bid {
+      font-family: var(--mono);
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 800;
+      color: var(--gold);
+      text-shadow: 0 0 15px rgba(234, 179, 8, 0.3);
+      margin: 4px 0;
+    }
+    .bid-count {
+      font-size: 12px;
+      color: #4ade80;
+    }
+
+    .critique-card {
+      background: rgba(24, 24, 27, 0.8);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #e4e4e7;
+    }
+
+    /* 按钮组 */
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-row {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #d97706, #b45309);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
+    }
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #b45309, #92400e);
+      transform: translateY(-1px);
+    }
+    .btn-purple {
+      background: linear-gradient(135deg, #6366f1, #4f46e5);
+      color: #fff;
+    }
+    .btn-purple:hover {
+      background: linear-gradient(135deg, #4f46e5, #4338ca);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    /* 竞拍滚屏记录 */
+    .bid-ticker {
+      background: #050507;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #a1a1aa;
+      height: 90px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .ticker-item {
+      display: flex;
+      justify-content: space-between;
+    }
+    .ticker-highlight {
+      color: var(--gold);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div class="auction-deck">
+    <div class="header">
+      <div class="badge">SOTHEBY'S EXCLUSIVE LOT #8892</div>
+      <h1>传世抽象艺术万亿苏富比拍卖与终极鉴定仪</h1>
+      <div class="subtitle">当代后解构存在主义孤作 · 卢浮宫特约专家联合估价</div>
+    </div>
+
+    <div class="gallery-stage">
+      <!-- 极品画作展台 -->
+      <div class="painting-frame" id="frameBox">
+        <div class="canvas-art">
+          <div class="art-content">
+            <div class="art-spotlight"></div>
+            <div class="art-squiggle"></div>
+            <div class="art-dot"></div>
+          </div>
+          <!-- 极度打脸红外透视揭秘 -->
+          <div class="xray-content">
+            <div style="color: #f43f5e; font-weight: bold;">[红外光谱透视还原结果]</div>
+            <div>材质：菜市场草纸收据残片</div>
+            <div>原迹字样：“测试圆珠笔好不好使”</div>
+            <div>涂鸦内容：简笔画猪头 x1</div>
+            <div>经济纠纷：“欠老张肉摊 4 块 5”</div>
+          </div>
+        </div>
+        <div class="frame-plaque">LOT 8892: 《虚无的凝视与红点》</div>
+      </div>
+
+      <!-- 拍卖与鉴赏控制台 -->
+      <div class="bidding-hud">
+        <div class="price-display">
+          <div class="price-label">当前实时竞价估值 (CURRENT BID)</div>
+          <div class="current-bid" id="bidPrice">$148,000,000</div>
+          <div class="bid-count" id="bidCount">已获全球顶流藏家 14 次疯狂出价加价</div>
+        </div>
+
+        <div class="critique-card" id="critiqueBox">
+          “这道倾斜的黑线刺穿了画布的宁静，那颗孤独的红点则犹如宇宙大爆炸初期尚未冷却的孤寂叹息，象征着现代打工人被工作异化的空虚灵魂。”
+        </div>
+
+        <div class="btn-group">
+          <div class="btn-row">
+            <button class="btn btn-gold" id="btnBid">
+              🔨 迪拜石油财阀举牌加价 (+$20M)
+            </button>
+            <button class="btn btn-purple" id="btnHammer">
+              🛎️ 拍卖官一槌定音落槌成交！
+            </button>
+          </div>
+          <button class="btn btn-outline" id="btnXray">
+            🔍 启动红外线多光谱鉴宝透视仪 (揭秘底细)
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 竞拍滚屏 -->
+    <div class="bid-ticker" id="bidTicker">
+      <div class="ticker-item"><span>[14:22:01] 巴黎私人藏家开盘起拍</span><span class="ticker-highlight">$80,000,000</span></div>
+      <div class="ticker-item"><span>[14:23:15] 华尔街对冲基金经理跟投加价</span><span class="ticker-highlight">$110,000,000</span></div>
+      <div class="ticker-item"><span>[14:24:40] 硅谷加密巨鲸举牌加价</span><span class="ticker-highlight">$148,000,000</span></div>
+    </div>
+  </div>
+
+  <script>
+    // Web Audio 音效系统
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      gavel() { // 木槌重击声
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(120, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.8, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.15);
+        } catch(e) {}
+      },
+      chime() { // 仙乐提示
+        try {
+          this.init();
+          if (!this.ctx) return;
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, this.ctx.currentTime + idx * 0.08);
+            gain.gain.setValueAtTime(0.15, this.ctx.currentTime + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + idx * 0.08 + 0.3);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(this.ctx.currentTime + idx * 0.08);
+            osc.stop(this.ctx.currentTime + idx * 0.08 + 0.3);
+          });
+        } catch(e) {}
+      },
+      buzz() { // 扫描仪科幻声
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(240, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(480, this.ctx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.25);
+        } catch(e) {}
+      }
+    };
+
+    let currentAmount = 148000000;
+    let bidsCount = 14;
+    const bidPriceEl = document.getElementById('bidPrice');
+    const bidCountEl = document.getElementById('bidCount');
+    const bidTickerEl = document.getElementById('bidTicker');
+    const critiqueBoxEl = document.getElementById('critiqueBox');
+    const frameBoxEl = document.getElementById('frameBox');
+
+    const buyers = [
+      "瑞士私人银行神秘代表",
+      "阿布扎比皇室艺术信托",
+      "纽约现代艺术馆基金会",
+      "东京涩谷加密艺术收藏家",
+      "伦敦白金汉街古董商"
+    ];
+
+    const critiques = [
+      "“这道歪斜的墨迹打破了画布的确定性，那点猩红仿佛是后工业时代资本车轮碾碎的梦想，价值连城！”",
+      "“红与黑的激荡呼应了量子场论中的夸克坍缩，画家一定在创作那一刻感受到了神谕的临在！”",
+      "“绝妙的负空间留白！99% 的纯白不是空白，而是人类语言穷尽之处的浩瀚沉思！”",
+      "“这是对传统透视法最无情的嘲弄！这根线条具备了跨越时空的生命力与野性呼唤！”"
+    ];
+
+    document.getElementById('btnBid').addEventListener('click', () => {
+      AudioEngine.gavel();
+      currentAmount += 20000000;
+      bidsCount++;
+      bidPriceEl.textContent = `$${currentAmount.toLocaleString()}`;
+      bidCountEl.textContent = `已获全球顶流藏家 ${bidsCount} 次疯狂出价加价`;
+
+      const buyer = buyers[Math.floor(Math.random() * buyers.length)];
+      const time = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.className = 'ticker-item';
+      div.innerHTML = `<span>[${time}] ${buyer} 举牌加价</span><span class="ticker-highlight">$${currentAmount.toLocaleString()}</span>`;
+      bidTickerEl.appendChild(div);
+      bidTickerEl.scrollTop = bidTickerEl.scrollHeight;
+
+      critiqueBoxEl.textContent = critiques[Math.floor(Math.random() * critiques.length)];
+    });
+
+    document.getElementById('btnHammer').addEventListener('click', () => {
+      AudioEngine.gavel();
+      setTimeout(() => AudioEngine.gavel(), 250);
+      setTimeout(() => {
+        AudioEngine.chime();
+        alert(`🎉 恭喜！一槌定音！\n\n【苏富比拍卖落槌通告】\n拍品《虚无的凝视与红点》以天价 $${currentAmount.toLocaleString()} 美元被神秘买家竞得！\n\n买家附言：“我甚至不需要把它运回家，只要知道这幅神作属于我，我的精神世界便得到了洗礼。”`);
+      }, 500);
+    });
+
+    let isXray = false;
+    document.getElementById('btnXray').addEventListener('click', () => {
+      AudioEngine.buzz();
+      isXray = !isXray;
+      if (isXray) {
+        frameBoxEl.classList.add('xray-mode');
+        document.getElementById('btnXray').textContent = "🎨 关闭红外透视 (重回艺术虚妄)";
+      } else {
+        frameBoxEl.classList.remove('xray-mode');
+        document.getElementById('btnXray').textContent = "🔍 启动红外线多光谱鉴宝透视仪 (揭秘底细)";
+      }
+    });
+  </script>
+</body>
+</html>

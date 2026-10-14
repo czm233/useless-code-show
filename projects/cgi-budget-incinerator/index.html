@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>好莱坞史诗视效物理渲染与经费蒸发仪 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #090a0f;
+      --card: #11131f;
+      --border: #22263d;
+      --orange: #f97316;
+      --orange-glow: rgba(249, 115, 22, 0.4);
+      --red: #ef4444;
+      --cyan: #06b6d4;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: radial-gradient(circle at 50% 15%, #1f1a2e, var(--bg) 80%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      position: relative;
+    }
+    .render-station {
+      width: min(860px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 40px rgba(249, 115, 22, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--orange);
+      background: rgba(249, 115, 22, 0.1);
+      border: 1px solid rgba(249, 115, 22, 0.3);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-family: var(--mono);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .heat-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--red);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--red);
+      animation: pulse 0.8s infinite alternate;
+    }
+    @keyframes pulse {
+      from { transform: scale(0.8); opacity: 0.6; }
+      to { transform: scale(1.2); opacity: 1; }
+    }
+    h1 {
+      font-size: clamp(20px, 3.5vw, 26px);
+      font-weight: 800;
+      color: #fff;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* 渲染监视器与预算表 */
+    .viewport-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .viewport-grid { grid-template-columns: 1fr; }
+    }
+
+    /* 视口渲染区域 */
+    .render-viewport {
+      position: relative;
+      background: #000;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    canvas#renderCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .hud-overlay {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--cyan);
+      background: rgba(0,0,0,0.65);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      pointer-events: none;
+    }
+    /* 最终反差揭秘画面 (火柴人滑倒) */
+    .stickman-screen {
+      position: absolute;
+      inset: 0;
+      background: #fafafa;
+      color: #111;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      z-index: 5;
+    }
+    .stickman-anim {
+      font-size: 54px;
+      animation: slip 1.2s infinite ease-in-out;
+    }
+    @keyframes slip {
+      0% { transform: rotate(0deg) translateY(0); }
+      40% { transform: rotate(45deg) translateY(-20px); }
+      70% { transform: rotate(90deg) translateY(20px); }
+      100% { transform: rotate(90deg) translateY(20px); }
+    }
+
+    /* 经费燃烧仪表板 */
+    .budget-dash {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .burn-counter {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .burn-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+    .burn-amount {
+      font-family: var(--mono);
+      font-size: clamp(26px, 4vw, 36px);
+      font-weight: 800;
+      color: var(--orange);
+      text-shadow: 0 0 15px var(--orange-glow);
+      margin: 4px 0;
+    }
+    .burn-rate {
+      font-size: 12px;
+      color: var(--red);
+      font-family: var(--mono);
+    }
+
+    .telemetry-row {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.02);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+    .telemetry-val {
+      font-family: var(--mono);
+      color: var(--cyan);
+      font-weight: 700;
+    }
+
+    /* 控制按键 */
+    .action-panel {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      flex: 1;
+      min-width: 170px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-fire {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+    }
+    .btn-fire:hover {
+      background: linear-gradient(135deg, #ea580c, #c2410c);
+      transform: translateY(-1px);
+    }
+    .btn-reveal {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+    }
+    .btn-reveal:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+    }
+    .btn-memo {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-memo:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    /* 渲染农场控制台日志 */
+    .farm-log {
+      background: #030508;
+      border: 1px solid #1a1e2e;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #94a3b8;
+      height: 90px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="render-station">
+    <div class="header">
+      <div>
+        <h1>🎬 好莱坞史诗视效物理渲染与经费蒸发仪</h1>
+        <div class="subtitle">工业光魔 / 维塔数码集群 · 128K 超光线追踪次表面散射计算节点</div>
+      </div>
+      <div class="badge">
+        <div class="heat-dot"></div>
+        <span>FARM GPU OVERLOAD // 100% TDP</span>
+      </div>
+    </div>
+
+    <div class="viewport-grid">
+      <!-- 视口 -->
+      <div class="render-viewport">
+        <canvas id="renderCanvas" width="480" height="300"></canvas>
+        <div class="hud-overlay" id="hudOverlay">RAYTRACING: 1024 SPP // VRAM: 48.2 GB</div>
+        
+        <!-- 终极反差镜头 -->
+        <div class="stickman-screen" id="stickmanScreen">
+          <div class="stickman-anim">🍌 🤸‍♂️ 💥</div>
+          <div style="font-weight: 800; font-size: 14px;">《史诗级镜头渲染完成》</div>
+          <div style="font-size: 11px; color: #666;">内容：火柴人踩香蕉皮滑倒 (耗资 8400 万美金)</div>
+        </div>
+      </div>
+
+      <!-- 经费消耗 -->
+      <div class="budget-dash">
+        <div class="burn-counter">
+          <div class="burn-title">制片厂已蒸发视效预算 (BUDGET INCINERATED)</div>
+          <div class="burn-amount" id="budgetAmount">$84,392,100</div>
+          <div class="burn-rate">🔥 经费燃烧速率: $185,000 / 秒</div>
+        </div>
+
+        <div class="telemetry-row">
+          <span>渲染农场芯片温度</span>
+          <span class="telemetry-val" style="color: #ef4444;" id="gpuTemp">104.5 °C (风扇已起火)</span>
+        </div>
+        <div class="telemetry-row">
+          <span>加州电网负荷占用</span>
+          <span class="telemetry-val" id="powerLoad">12.8 MW (引发街区跳闸)</span>
+        </div>
+        <div class="telemetry-row">
+          <span>已解算光子与次表面粒子</span>
+          <span class="telemetry-val" id="particleCount">4,289,102,000 个</span>
+        </div>
+        <div class="telemetry-row">
+          <span>预计成片延期交付时间</span>
+          <span class="telemetry-val" style="color: #f59e0b;">顺延 38 个月 (2032年秋季档)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 交互操作 -->
+    <div class="action-panel">
+      <button class="btn btn-fire" id="btnOverclock">
+        ⚡ 极限制冷超频：加速经费燃烧
+      </button>
+      <button class="btn btn-reveal" id="btnReveal">
+        🎞️ 揭晓耗资近亿的 100% 史诗终极镜头
+      </button>
+      <button class="btn btn-memo" id="btnMemo">
+        📝 向好莱坞投资人索要追加预算申请
+      </button>
+    </div>
+
+    <!-- 农场日志 -->
+    <div class="farm-log" id="farmLog">
+      <div>[00:00:01] 正在计算第 14 帧香蕉皮表皮微观折射率与高斯模糊...</div>
+      <div>[00:00:02] 投资人来电询问进度，已被自动语音答录机以“正在打通量子渲染管线”礼貌敷衍。</div>
+    </div>
+  </div>
+
+  <script>
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      whine() { // GPU 啸叫音
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+          osc.frequency.linearRampToValueAtTime(1600, this.ctx.currentTime + 0.4);
+          gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.5);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.5);
+        } catch(e) {}
+      },
+      boing() { // 滑稽弹跳声
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(200, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.2);
+          osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.4);
+          gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.45);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.45);
+        } catch(e) {}
+      }
+    };
+
+    // 粒子涡流渲染
+    const canvas = document.getElementById('renderCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    for (let i = 0; i < 90; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 4,
+        vy: (Math.random() - 0.5) * 4,
+        radius: Math.random() * 2.5 + 1,
+        color: ['#f97316', '#ef4444', '#06b6d4', '#eab308'][Math.floor(Math.random() * 4)]
+      });
+    }
+
+    function renderParticles() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+
+      // 连线模拟光线追踪弹射
+      for (let i = 0; i < particles.length; i += 4) {
+        for (let j = i + 1; j < i + 3; j++) {
+          if (particles[j]) {
+            ctx.strokeStyle = 'rgba(249, 115, 22, 0.15)';
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(renderParticles);
+    }
+    renderParticles();
+
+    // 预算自动增长
+    let budget = 84392100;
+    const budgetAmountEl = document.getElementById('budgetAmount');
+    const farmLogEl = document.getElementById('farmLog');
+
+    setInterval(() => {
+      budget += Math.floor(Math.random() * 30000 + 10000);
+      budgetAmountEl.textContent = `$${budget.toLocaleString()}`;
+    }, 400);
+
+    function addLog(msg) {
+      const time = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.textContent = `[${time}] ${msg}`;
+      farmLogEl.appendChild(div);
+      farmLogEl.scrollTop = farmLogEl.scrollHeight;
+    }
+
+    document.getElementById('btnOverclock').addEventListener('click', () => {
+      AudioEngine.whine();
+      budget += 5000000;
+      document.getElementById('gpuTemp').textContent = `${(Math.random() * 10 + 115).toFixed(1)} °C (机箱已在烤肉)`;
+      addLog("💥 [极限超频] 算力暴增 300%，制片厂经费瞬间蒸发 $5,000,000 美金！");
+    });
+
+    let revealed = false;
+    const stickmanScreen = document.getElementById('stickmanScreen');
+    document.getElementById('btnReveal').addEventListener('click', () => {
+      revealed = !revealed;
+      if (revealed) {
+        stickmanScreen.style.display = 'flex';
+        AudioEngine.boing();
+        addLog("🎬 [镜头揭晓] 耗费 8400 万美金与 120 万机时的大片特写已呈现在屏幕上！");
+        document.getElementById('btnReveal').textContent = "🌌 切回粒子光线追踪监视器";
+      } else {
+        stickmanScreen.style.display = 'none';
+        document.getElementById('btnReveal').textContent = "🎞️ 揭晓耗资近亿的 100% 史诗终极镜头";
+      }
+    });
+
+    document.getElementById('btnMemo').addEventListener('click', () => {
+      alert("📜【关于申请追加 6,000 万美元视效预算的紧急备忘录】\n\n致 投资方执行董事：\n为了实现香蕉皮在 0.03 秒内受重力挤压变形的非线性流体动力学保真度，原定 8400 万美元预算已被完全击穿！\n\n请尽快批准追加经费，否则下周无法给渲染机房缴纳空调电费！\n\n署名：好莱坞视效总监");
+      addLog("📬 [公函发送] 追加预算公函已投递至投资人邮箱，已被自动归档至垃圾邮件。");
+    });
+  </script>
+</body>
+</html>

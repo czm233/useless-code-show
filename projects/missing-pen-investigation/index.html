@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>办公桌神秘失踪黑色中性笔重案刑侦推演系统 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #1c1511;
+      --board: #2b1d16;
+      --card: #3a2820;
+      --border: #52372c;
+      --red: #ef4444;
+      --yellow: #facc15;
+      --text: #fef3c7;
+      --text-muted: #d4bda8;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: radial-gradient(circle at 50% 15%, #3d2419, var(--bg) 80%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      position: relative;
+    }
+    .corkboard-deck {
+      width: min(860px, 100%);
+      background: var(--board);
+      border: 8px solid #4a2e22;
+      border-radius: 16px;
+      padding: 32px 24px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.9), inset 0 0 40px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+    }
+    /* 软木纹理网格模拟 */
+    .corkboard-deck::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(#1c1511 1px, transparent 1px);
+      background-size: 8px 8px;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px dashed var(--border);
+      padding-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #111;
+      background: var(--yellow);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-family: var(--mono);
+      transform: rotate(-1.5deg);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    h1 {
+      font-size: clamp(20px, 3.5vw, 25px);
+      font-weight: 800;
+      color: #fff;
+    }
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* 案件照片墙与证据卡 */
+    .board-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 20px;
+      position: relative;
+      z-index: 2;
+    }
+    @media (max-width: 768px) {
+      .board-grid { grid-template-columns: 1fr; }
+    }
+
+    /* 拍立得证物相框 */
+    .polaroid-box {
+      background: #fafaf9;
+      color: #1c1917;
+      padding: 16px 16px 24px;
+      border-radius: 4px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+      transform: rotate(-1deg);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .pin {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 16px;
+      background: #ef4444;
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+      border: 2px solid #b91c1c;
+    }
+    .crime-scene-photo {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: #27272a;
+      border-radius: 2px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    canvas#penPathCanvas {
+      width: 100%;
+      height: 100%;
+    }
+    .chalk-outline {
+      position: absolute;
+      border: 2px dashed #facc15;
+      width: 140px;
+      height: 24px;
+      border-radius: 12px;
+      transform: rotate(25deg);
+      pointer-events: none;
+    }
+    .polaroid-caption {
+      margin-top: 12px;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    /* 嫌疑人档案 */
+    .suspect-dossier {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .suspect-card {
+      background: rgba(58, 40, 32, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .suspect-card:hover {
+      border-color: var(--yellow);
+      background: rgba(74, 46, 34, 0.9);
+    }
+    .suspect-card.active {
+      border-color: var(--red);
+      background: rgba(239, 68, 68, 0.15);
+    }
+    .suspect-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .suspect-alibi {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* 按钮组 */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+    }
+    .btn {
+      flex: 1;
+      min-width: 160px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-red {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    }
+    .btn-red:hover {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      transform: translateY(-1px);
+    }
+    .btn-amber {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #111;
+    }
+    .btn-amber:hover {
+      background: linear-gradient(135deg, #d97706, #b45309);
+    }
+    .btn-outline {
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    /* 案情记录本 */
+    .case-log {
+      background: #140d0a;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: #fed7aa;
+      height: 90px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="corkboard-deck">
+    <div class="header">
+      <div>
+        <h1>🕵️ 办公桌神秘失踪签字笔重案刑侦推演系统</h1>
+        <div class="subtitle">CASE FILE #2026-PEN-COLD-01 · 晨光 0.5 黑色按动中性笔失踪特大悬案</div>
+      </div>
+      <div class="badge">EVIDENCE LOCKED // TOP SECRET</div>
+    </div>
+
+    <div class="board-grid">
+      <!-- 拍立得证物 -->
+      <div class="polaroid-box">
+        <div class="pin"></div>
+        <div class="crime-scene-photo">
+          <canvas id="penPathCanvas" width="340" height="240"></canvas>
+          <div class="chalk-outline"></div>
+        </div>
+        <div class="polaroid-caption">【第一案发现场】：鼠标垫右上角 5cm 处</div>
+      </div>
+
+      <!-- 嫌疑人审查档案 -->
+      <div class="suspect-dossier">
+        <div class="suspect-card" id="suspect1">
+          <div class="suspect-header">
+            <span>嫌疑人 1 号：工位邻座小李</span>
+            <span style="color: #ef4444;">嫌疑指数 88%</span>
+          </div>
+          <div class="suspect-alibi">
+            “我笔筒里这 24 支同款晨光笔全是我自己买的，笔帽咬痕只是大家口味相似而已！”
+          </div>
+        </div>
+
+        <div class="suspect-card" id="suspect2">
+          <div class="suspect-header">
+            <span>嫌疑空间 2 号：机箱与墙缝 3mm 裂隙</span>
+            <span style="color: #f59e0b;">物理虫洞 99%</span>
+          </div>
+          <div class="suspect-alibi">
+            桌面引力异常区，曾离奇吞噬过 3 块橡皮擦、5 枚回形针与 1 只左耳降噪蓝牙耳机。
+          </div>
+        </div>
+
+        <div class="suspect-card" id="suspect3">
+          <div class="suspect-header">
+            <span>嫌疑人 3 号：开会借笔的直属 Leader</span>
+            <span style="color: #a855f7;">权力威压 100%</span>
+          </div>
+          <div class="suspect-alibi">
+            “小陈啊，笔借我签个字先……对了，你上次提的转正答辩 PPT 改完了吗？”
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 交互操作 -->
+    <div class="btn-row">
+      <button class="btn btn-red" id="btnSimulate">
+        🔄 3D 物理模拟推演签字笔滚落轨迹
+      </button>
+      <button class="btn btn-amber" id="btnInterrogate">
+        🔍 对邻座小李开展测谎与笔迹鉴定
+      </button>
+      <button class="btn btn-outline" id="btnColdCase">
+        📁 盖章归档为“二十一世纪最大办公悬案”
+      </button>
+    </div>
+
+    <!-- 案情记录 -->
+    <div class="case-log" id="caseLog">
+      <div>[14:15:00] 受害者（价值 2 元 5 角黑色中性笔）安详躺在鼠标垫旁，油墨剩余 75%。</div>
+      <div>[14:18:20] 报案人离开工位去接了杯温开水，归来后案发现场仅剩一圈虚无的空气。</div>
+    </div>
+  </div>
+
+  <script>
+    const AudioEngine = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      },
+      roll() { // 笔滚动的咔哒声
+        try {
+          this.init();
+          if (!this.ctx) return;
+          for (let i = 0; i < 6; i++) {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(300 + i * 80, this.ctx.currentTime + i * 0.08);
+            gain.gain.setValueAtTime(0.15, this.ctx.currentTime + i * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + i * 0.08 + 0.06);
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+            osc.start(this.ctx.currentTime + i * 0.08);
+            osc.stop(this.ctx.currentTime + i * 0.08 + 0.06);
+          }
+        } catch(e) {}
+      },
+      stamp() { // 盖章重击声
+        try {
+          this.init();
+          if (!this.ctx) return;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(100, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(20, this.ctx.currentTime + 0.15);
+          gain.gain.setValueAtTime(0.8, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.15);
+        } catch(e) {}
+      }
+    };
+
+    // Canvas 笔滚落弹道
+    const canvas = document.getElementById('penPathCanvas');
+    const ctx = canvas.getContext('2d');
+    let penX = 60, penY = 120, penAngle = 0;
+    let isRolling = false;
+
+    function drawPen() {
+      ctx.fillStyle = '#18181b';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 桌面边缘线
+      ctx.strokeStyle = '#52525b';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(220, 0);
+      ctx.lineTo(220, canvas.height);
+      ctx.stroke();
+
+      ctx.fillStyle = '#71717a';
+      ctx.font = '10px monospace';
+      ctx.fillText('DESK EDGE (落差 75cm)', 225, 20);
+
+      // 笔
+      ctx.save();
+      ctx.translate(penX, penY);
+      ctx.rotate(penAngle);
+
+      ctx.fillStyle = '#09090b';
+      ctx.fillRect(-35, -5, 70, 10);
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(25, -4, 8, 8); // 笔尾红塞
+
+      ctx.restore();
+    }
+    drawPen();
+
+    const caseLog = document.getElementById('caseLog');
+    function addLog(msg) {
+      const time = new Date().toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.textContent = `[${time}] ${msg}`;
+      caseLog.appendChild(div);
+      caseLog.scrollTop = caseLog.scrollHeight;
+    }
+
+    document.getElementById('btnSimulate').addEventListener('click', () => {
+      if (isRolling) return;
+      isRolling = true;
+      AudioEngine.roll();
+      addLog("📐 [弹道演算] 启动牛顿重力反弹物理模型演算...");
+
+      let step = 0;
+      const anim = setInterval(() => {
+        step++;
+        penX += 4;
+        penAngle += 0.2;
+        if (penX > 220) {
+          penY += 8;
+        }
+        drawPen();
+
+        if (step > 45) {
+          clearInterval(anim);
+          isRolling = false;
+          addLog("🕳️ [坠入虚空] 签字笔弹跳 2 次后滑入主机箱底脚缝隙，已被宇宙尘埃永久封印！");
+        }
+      }, 30);
+    });
+
+    document.getElementById('btnInterrogate').addEventListener('click', () => {
+      AudioEngine.stamp();
+      alert("🚨【测谎仪与笔迹鉴定报告】\n\n审讯对象：工位邻座小李\n测谎结果：心率从 72 骤升至 165！\n\n证物搜查发现：其抽屉内共有晨光中性笔 24 支、斑马 8 支、百乐 12 支，其中 1 支笔杆上赫然刻着报案人的英文缩写！\n\n嫌疑人辩解：“这纯粹是巧合，大家都叫 Tom！”");
+      addLog("⚖️ [审讯突破] 搜获大量失窃文具，嫌疑人小李神色极其慌张！");
+    });
+
+    document.getElementById('btnColdCase').addEventListener('click', () => {
+      AudioEngine.stamp();
+      alert("📁【特大悬案终审结案通告】\n\n鉴于中性笔已被机箱缝隙微型黑洞完全湮灭，且直接追问 Leader 要笔可能危及本季度年终绩效。\n\n专案组一致决议：将此案永久归档为“二十一世纪未解之谜”，建议报案人重新在拼多多以 9 块 9 包邮 50 支继续上班。");
+      addLog("🔒 [结案归档] 卷宗入库，世纪悬案画上句号。");
+    });
+  </script>
+</body>
+</html>
