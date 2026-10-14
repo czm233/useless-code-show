@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工资条瞬逝魔术台 - 无用代码画廊</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #06130d;
+      --card: #0b2016;
+      --border: #163a29;
+      --pri: #10b981;
+      --pri-light: #6ee7b7;
+      --pri-dark: #059669;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+    body {
+      background: radial-gradient(circle at 50% 20%, #0b2016, var(--bg) 75%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .panel {
+      position: relative;
+      z-index: 10;
+      width: min(720px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 28px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      text-align: center;
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--pri-light);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-family: var(--mono);
+    }
+    .hero-icon {
+      font-size: 56px;
+      line-height: 1;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hero-icon:hover {
+      transform: scale(1.15) rotate(5deg);
+    }
+    h1 {
+      font-size: clamp(22px, 4vw, 32px);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    p.hook {
+      color: var(--text-muted);
+      font-size: 14px;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+    
+    /* 核心交互区 */
+    .interact-box {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+    .display-metric {
+      font-family: var(--mono);
+      font-size: clamp(28px, 6vw, 42px);
+      font-weight: 900;
+      color: var(--pri-light);
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+    }
+    .display-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* 动态控制台 */
+    .controls {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+    .btn-main {
+      flex: 2;
+      background: linear-gradient(135deg, var(--pri), var(--pri-dark));
+      border: none;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 16px 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      transition: all 0.2s;
+      min-width: 200px;
+    }
+    .btn-main:hover {
+      filter: brightness(1.12);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+    .btn-main:active {
+      transform: translateY(1px);
+    }
+    .btn-sec {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 14px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-sec:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    /* 实时日志系统 */
+    .log-stream {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--pri-light);
+      min-height: 54px;
+      max-height: 80px;
+      overflow-y: auto;
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    /* 弹窗通知 */
+    .toast-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .toast-modal.active { display: flex; }
+    .toast-card {
+      background: var(--card);
+      border: 2px solid var(--pri);
+      border-radius: 16px;
+      padding: 28px;
+      width: min(480px, 100%);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <span class="badge">PAYCHECK DISAPPEARING ACT</span>
+    <div class="hero-icon" id="heroIcon">💸</div>
+    <h1>工资条瞬逝魔术台</h1>
+    <p class="hook">输入你的月薪，体验在量子微秒级内资产回归虚无的物理过程。</p>
+
+    <div class="interact-box">
+      <div class="display-metric" id="metric">0.00</div>
+      <div class="display-sub" id="metricLabel">系统稳态参数指标</div>
+    </div>
+
+    <div class="controls">
+      <button class="btn-main" id="btnAction">点击发放本月薪水</button>
+      <button class="btn-sec" id="btnReset">重置参数状态</button>
+    </div>
+
+    <div class="log-stream" id="logBox">
+      <div>[STATUS] 系统准备就绪。随时准备以最高规格展现无用魅力。</div>
+    </div>
+  </div>
+
+  <div class="toast-modal" id="toastModal">
+    <div class="toast-card">
+      <div style="font-size: 44px;">💸</div>
+      <h3 style="color: #fff;" id="modalTitle">操作已圆满闭环</h3>
+      <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6;" id="modalDesc">
+        历经毫秒级高阶非线性运算，系统已为您完成全流程处理。虽然并未产生任何实质性产出，但情绪价值已拉满。
+      </p>
+      <button class="btn-main" id="btnCloseModal" style="width: 100%;">确认并继续浪费时间</button>
+    </div>
+  </div>
+
+  <script>
+    // Web Audio 合成音效
+    const Sfx = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AC();
+        }
+      },
+      beep(freq = 520, duration = 0.08) {
+        try {
+          this.init();
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      },
+      fanfare() {
+        try {
+          this.init();
+          [523, 659, 783, 1046].forEach((f, i) => {
+            setTimeout(() => this.beep(f, 0.12), i * 90);
+          });
+        } catch(e) {}
+      }
+    };
+
+    let counter = 0;
+    const metric = document.getElementById('metric');
+    const metricLabel = document.getElementById('metricLabel');
+    const logBox = document.getElementById('logBox');
+    const btnAction = document.getElementById('btnAction');
+    const btnReset = document.getElementById('btnReset');
+    const toastModal = document.getElementById('toastModal');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+    const heroIcon = document.getElementById('heroIcon');
+
+    function log(msg) {
+      const time = new Date().toLocaleTimeString();
+      logBox.innerHTML += `<div>[${time}] ${msg}</div>`;
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    btnAction.addEventListener('click', () => {
+      counter++;
+      Sfx.beep(400 + (counter % 10) * 80);
+      metric.textContent = (counter * 42.195).toFixed(2);
+      heroIcon.style.transform = `scale(1.2) rotate(${(counter * 25) % 360}deg)`;
+      setTimeout(() => heroIcon.style.transform = '', 200);
+
+      const logs = [
+        "正在穿透顶层逻辑壁垒并对齐颗粒度...",
+        "从量子多世界宇宙抽取高维虚无扰动...",
+        "能量场已达成完美共振，正在生成无用结论...",
+        "已排除 99.99% 的有效生产力因素...",
+        "操作已成功闭环！"
+      ];
+      log(logs[counter % logs.length]);
+
+      if (counter % 3 === 0) {
+        Sfx.fanfare();
+        toastModal.classList.add('active');
+      }
+    });
+
+    btnReset.addEventListener('click', () => {
+      counter = 0;
+      metric.textContent = "0.00";
+      Sfx.beep(300, 0.1);
+      log("参数已完全重置为初始零点态。");
+    });
+
+    btnCloseModal.addEventListener('click', () => {
+      toastModal.classList.remove('active');
+    });
+  </script>
+</body>
+</html>

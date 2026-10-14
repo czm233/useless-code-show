@@ -3,120 +3,2065 @@
     "id": "bouncing-balls",
     "title": "弹跳球",
     "description": "一群永远停不下来的弹跳球，碰撞反弹，色彩斑斓",
-    "preview": { "type": "gradient", "colors": ["#ff6b6b", "#feca57"] },
-    "tags": ["Canvas", "物理"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ff6b6b",
+        "#feca57"
+      ]
+    },
+    "tags": [
+      "Canvas",
+      "物理"
+    ],
     "path": "bouncing-balls"
   },
   {
     "id": "matrix-rain",
     "title": "矩阵代码雨",
     "description": "经典的绿色字符瀑布效果",
-    "preview": { "type": "gradient", "colors": ["#00ff41", "#0d3b0d"] },
-    "tags": ["Canvas", "动画"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#00ff41",
+        "#0d3b0d"
+      ]
+    },
+    "tags": [
+      "Canvas",
+      "动画"
+    ],
     "path": "matrix-rain"
   },
   {
     "id": "useless-button",
     "title": "无用按钮",
     "description": "一个点了什么也不会发生的按钮",
-    "preview": { "type": "gradient", "colors": ["#a29bfe", "#6c5ce7"] },
-    "tags": ["交互", "哲学"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#a29bfe",
+        "#6c5ce7"
+      ]
+    },
+    "tags": [
+      "交互",
+      "哲学"
+    ],
     "path": "useless-button"
   },
   {
     "id": "forever-loader",
     "title": "永远 99% 加载器",
     "description": "进度条会努力加载到 99%，然后认真地卡住",
-    "preview": { "type": "gradient", "colors": ["#ffd166", "#118ab2"] },
-    "tags": ["交互", "荒诞"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ffd166",
+        "#118ab2"
+      ]
+    },
+    "tags": [
+      "交互",
+      "荒诞"
+    ],
     "path": "forever-loader"
   },
   {
     "id": "resignation-modal",
     "title": "辞职申请",
     "description": "一个永远点不到“不批准”的模态窗口",
-    "preview": { "type": "gradient", "colors": ["#cf1f3f", "#24a06b"] },
-    "tags": ["交互", "荒诞"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#cf1f3f",
+        "#24a06b"
+      ]
+    },
+    "tags": [
+      "交互",
+      "荒诞"
+    ],
     "path": "resignation-modal"
   },
   {
     "id": "ai-decision-maker",
     "title": "量子 AI 终极决策中心",
     "description": "调动千万亿张量算力折叠多维时空，庄严地为您抛硬币或问问你妈",
-    "preview": { "type": "gradient", "colors": ["#0284c7", "#7c3aed"] },
-    "tags": ["AI", "量子计算", "反差"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0284c7",
+        "#7c3aed"
+      ]
+    },
+    "tags": [
+      "AI",
+      "量子计算",
+      "反差"
+    ],
     "path": "ai-decision-maker"
   },
   {
     "id": "passphrase-overkill",
     "title": "核设施级密码强度校验器",
     "description": "密码必须包含北京时间、天气与打工人松弛感，过于安全时自动销毁",
-    "preview": { "type": "gradient", "colors": ["#ef4444", "#06b6d4"] },
-    "tags": ["安全", "硬核", "折磨"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ef4444",
+        "#06b6d4"
+      ]
+    },
+    "tags": [
+      "安全",
+      "硬核",
+      "折磨"
+    ],
     "path": "passphrase-overkill"
   },
   {
     "id": "blame-shifter",
     "title": "五百强企业级甩锅引擎",
     "description": "用最顶级的互联网黑话与战略对齐，将线上故障归咎于宇宙射线",
-    "preview": { "type": "gradient", "colors": ["#10b981", "#8b5cf6"] },
-    "tags": ["职场", "黑话", "企业级"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#10b981",
+        "#8b5cf6"
+      ]
+    },
+    "tags": [
+      "职场",
+      "黑话",
+      "企业级"
+    ],
     "path": "blame-shifter"
   },
   {
     "id": "keyboard-dust-cleaner",
     "title": "纳米超声波物理除尘器",
     "description": "利用逆相位声波涡流强力除尘，最后贴心提醒您拿抹布用力擦屏幕",
-    "preview": { "type": "gradient", "colors": ["#0284c7", "#38bdf8"] },
-    "tags": ["硬件", "极简", "物理黑客"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0284c7",
+        "#38bdf8"
+      ]
+    },
+    "tags": [
+      "硬件",
+      "极简",
+      "物理黑客"
+    ],
     "path": "keyboard-dust-cleaner"
   },
   {
     "id": "boss-key-pro",
     "title": "摸鱼应急防御系统 (BossKey Pro)",
     "description": "老板靠近瞬间一键切换千亿量化操盘或内核救火，狂敲键盘狂假装",
-    "preview": { "type": "gradient", "colors": ["#ef4444", "#10b981"] },
-    "tags": ["摸鱼", "黑客", "应急"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ef4444",
+        "#10b981"
+      ]
+    },
+    "tags": [
+      "摸鱼",
+      "黑客",
+      "应急"
+    ],
     "path": "boss-key-pro"
   },
   {
     "id": "infinite-captcha",
     "title": "人类灵魂图灵验证协议",
     "description": "为了抵御 AGI，请选出渴望下班的眼神并憋气 3 秒证明你不是仿生人",
-    "preview": { "type": "gradient", "colors": ["#2563eb", "#60a5fa"] },
-    "tags": ["验证码", "哲学", "图灵测试"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#2563eb",
+        "#60a5fa"
+      ]
+    },
+    "tags": [
+      "验证码",
+      "哲学",
+      "图灵测试"
+    ],
     "path": "infinite-captcha"
   },
   {
     "id": "download-more-ram",
     "title": "云端量子物理内存增容平台",
     "description": "免费下载 64GB DDR5 内存条并写入主板，贴心占用 64GB 硬盘来存放它",
-    "preview": { "type": "gradient", "colors": ["#10b981", "#059669"] },
-    "tags": ["经典梗", "硬件", "云原生"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#10b981",
+        "#059669"
+      ]
+    },
+    "tags": [
+      "经典梗",
+      "硬件",
+      "云原生"
+    ],
     "path": "download-more-ram"
   },
   {
     "id": "coffee-cooler",
     "title": "手冲咖啡云端降温仪",
     "description": "显卡咆哮满载渲染驱动机身微风，经过 30 秒全力降温 0.03°C",
-    "preview": { "type": "gradient", "colors": ["#e07a5f", "#c85a3c"] },
-    "tags": ["工业设计", "热力学", "硬核"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#e07a5f",
+        "#c85a3c"
+      ]
+    },
+    "tags": [
+      "工业设计",
+      "热力学",
+      "硬核"
+    ],
     "path": "coffee-cooler"
   },
   {
     "id": "cyber-zen",
     "title": "赛博佛祖与功德分布式存储",
     "description": "多线程电子木鱼、Bug-1、功德哈希永久上链，一键成佛前请先交周报",
-    "preview": { "type": "gradient", "colors": ["#f59e0b", "#7c3aed"] },
-    "tags": ["赛博禅宗", "功德", "Web3"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#f59e0b",
+        "#7c3aed"
+      ]
+    },
+    "tags": [
+      "赛博禅宗",
+      "功德",
+      "Web3"
+    ],
     "path": "cyber-zen"
   },
   {
     "id": "meeting-buzzword",
     "title": "高情商会议脱困与废话发生器",
     "description": "被领导点名时自动打通顶层逻辑闭环，支持一键信号不良画面马赛克",
-    "preview": { "type": "gradient", "colors": ["#3b82f6", "#ef4444"] },
-    "tags": ["职场", "高情商", "视频摸鱼"],
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#3b82f6",
+        "#ef4444"
+      ]
+    },
+    "tags": [
+      "职场",
+      "高情商",
+      "视频摸鱼"
+    ],
     "path": "meeting-buzzword"
+  },
+  {
+    "id": "ppt-page-multiplier",
+    "title": "PPT 一页变百页膨胀机",
+    "description": "输入一句话，自动拆分成包含飞轮、抓手与闭环架构图的 50 页大厂汇报",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#4f46e5",
+        "#06b6d4"
+      ]
+    },
+    "tags": [
+      "职场",
+      "黑话",
+      "PPT"
+    ],
+    "path": "ppt-page-multiplier"
+  },
+  {
+    "id": "overtime-simulator",
+    "title": "沉浸式通宵加班声学仪",
+    "description": "混音播放机械键盘暴击、老板叹气、隔壁吃泡面声，制造努力上班的错觉",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#1e293b",
+        "#f59e0b"
+      ]
+    },
+    "tags": [
+      "职场",
+      "摸鱼",
+      "声音"
+    ],
+    "path": "overtime-simulator"
+  },
+  {
+    "id": "leave-request-barrier",
+    "title": "高情商请假理由粉碎机",
+    "description": "无论你输入什么请假理由，HR 机器人都能完美找到让你继续上班的理由",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ef4444",
+        "#8b5cf6"
+      ]
+    },
+    "tags": [
+      "职场",
+      "请假",
+      "反差"
+    ],
+    "path": "leave-request-barrier"
+  },
+  {
+    "id": "salary-disappearing-act",
+    "title": "工资条瞬逝魔术台",
+    "description": "刚到账的税后薪资，在 1 秒内自动扣除房租、五险一金和花呗，余额变负数",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#10b981",
+        "#ef4444"
+      ]
+    },
+    "tags": [
+      "财务",
+      "工资",
+      "现实"
+    ],
+    "path": "salary-disappearing-act"
+  },
+  {
+    "id": "okr-fluff-spinner",
+    "title": "顶级 OKR 废话对齐生成器",
+    "description": "将“每天按时打卡”翻译为“赋能全天候敏捷出勤生态闭环的跨周期稳态”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0284c7",
+        "#10b981"
+      ]
+    },
+    "tags": [
+      "职场",
+      "黑话",
+      "OKR"
+    ],
+    "path": "okr-fluff-spinner"
+  },
+  {
+    "id": "coworker-praise-bot",
+    "title": "同事违心互吹夸夸机",
+    "description": "输入“同事写出毁灭级 Bug”，输出“以颠覆性思维对生产架构做极端抗压测试”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ec4899",
+        "#f59e0b"
+      ]
+    },
+    "tags": [
+      "职场",
+      "高情商",
+      "社交"
+    ],
+    "path": "coworker-praise-bot"
+  },
+  {
+    "id": "inbox-zero-annihilator",
+    "title": "未读邮件虚空蒸发仪",
+    "description": "一键将 999+ 封工作邮件全标为已读，并自动群发“已阅，原则上同意”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#3b82f6",
+        "#1e1b4b"
+      ]
+    },
+    "tags": [
+      "效率",
+      "职场",
+      "爽快"
+    ],
+    "path": "inbox-zero-annihilator"
+  },
+  {
+    "id": "resign-letter-encryptor",
+    "title": "离职信量子加密器",
+    "description": "把“钱太少老板画饼”自动加密翻译成 4000 字赞美企业文化的深情告别长文",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#6366f1",
+        "#a855f7"
+      ]
+    },
+    "tags": [
+      "职场",
+      "离职",
+      "黑话"
+    ],
+    "path": "resign-letter-encryptor"
+  },
+  {
+    "id": "group-chat-emoji-flood",
+    "title": "工作大群无脑排队刷屏机",
+    "description": "当领导在群里发“大家辛苦了”，自动以 0.01 秒间隔排队连击“👍收到”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#f59e0b",
+        "#10b981"
+      ]
+    },
+    "tags": [
+      "职场",
+      "微信",
+      "排队"
+    ],
+    "path": "group-chat-emoji-flood"
+  },
+  {
+    "id": "lunch-dilemma-resolver",
+    "title": "园区食堂盲盒决斗转盘",
+    "description": "转盘上画满各种高大上私房菜，转了 10 圈最终指针永远被磁铁吸在隆江猪脚饭",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ea580c",
+        "#ca8a04"
+      ]
+    },
+    "tags": [
+      "美食",
+      "选择困难",
+      "转盘"
+    ],
+    "path": "lunch-dilemma-resolver"
+  },
+  {
+    "id": "quantum-tarot",
+    "title": "量子多世界塔罗占卜",
+    "description": "每张牌都是薛定谔的猫，翻开后提示“由于您的观测，命运已坍缩为最差状态”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#7c3aed",
+        "#ec4899"
+      ]
+    },
+    "tags": [
+      "玄学",
+      "量子",
+      "塔罗"
+    ],
+    "path": "quantum-tarot"
+  },
+  {
+    "id": "digital-burning-paper",
+    "title": "天地通宝赛博上链汇款台",
+    "description": "向冥府转账 100 亿元，实时生成包含时间戳与哈希值的不可篡改转账回执",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#dc2626",
+        "#eab308"
+      ]
+    },
+    "tags": [
+      "玄学",
+      "区块链",
+      "冥钞"
+    ],
+    "path": "digital-burning-paper"
+  },
+  {
+    "id": "cyber-fortune-cat",
+    "title": "纯物理电磁招财猫",
+    "description": "高频疯狂挥动手臂，通过电磁感应为手机反向充电 0.00001%，招财效果显著",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#f59e0b",
+        "#ef4444"
+      ]
+    },
+    "tags": [
+      "玄学",
+      "物理",
+      "招财"
+    ],
+    "path": "cyber-fortune-cat"
+  },
+  {
+    "id": "code-blessing-shrine",
+    "title": "老代码供奉与退散神坛",
+    "description": "为十年前写下的祖传 C++ 生产老代码点三炷电子香，祈求千万别崩",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ca8a04",
+        "#78350f"
+      ]
+    },
+    "tags": [
+      "代码",
+      "玄学",
+      "祈福"
+    ],
+    "path": "code-blessing-shrine"
+  },
+  {
+    "id": "daily-horoscope-inverse",
+    "title": "每日大逆转反向黄历",
+    "description": "今日大忌：起床、写代码、讲道理；今日大宜：平躺、发呆、甩锅给实习生",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0f172a",
+        "#38bdf8"
+      ]
+    },
+    "tags": [
+      "黄历",
+      "幽默",
+      "逆向"
+    ],
+    "path": "daily-horoscope-inverse"
+  },
+  {
+    "id": "fengshui-monitor-adjuster",
+    "title": "办公桌屏幕风水罗盘",
+    "description": "借助重力感应校准显示器方位：坐西朝东压制甲方，坐北朝南减少内存泄漏",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#15803d",
+        "#facc15"
+      ]
+    },
+    "tags": [
+      "风水",
+      "硬件",
+      "工位"
+    ],
+    "path": "fengshui-monitor-adjuster"
+  },
+  {
+    "id": "electronic-incantation",
+    "title": "赛博辟邪护体符咒生成器",
+    "description": "一键绘制“内存不溢出符”、“需求不变更符”，贴在机箱上神鬼莫近",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#b91c1c",
+        "#fbbf24"
+      ]
+    },
+    "tags": [
+      "玄学",
+      "符咒",
+      "防Bug"
+    ],
+    "path": "electronic-incantation"
+  },
+  {
+    "id": "karma-exchange-market",
+    "title": "功德证券交易所行情屏",
+    "description": "实时跳动 K 线图，“好人有好报指数”暴跌跌停，“好心办坏事期货”巨量涨停",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#16a34a",
+        "#dc2626"
+      ]
+    },
+    "tags": [
+      "金融",
+      "功德",
+      "K线"
+    ],
+    "path": "karma-exchange-market"
+  },
+  {
+    "id": "soul-weighing-scale",
+    "title": "打工人赛博灵魂称重秤",
+    "description": "把手机轻放在屏幕上进行电容感应测重，精准称出被工作榨干后仅剩 0.0001 克",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#64748b",
+        "#06b6d4"
+      ]
+    },
+    "tags": [
+      "测试",
+      "灵魂",
+      "反差"
+    ],
+    "path": "soul-weighing-scale"
+  },
+  {
+    "id": "digital-confession-booth",
+    "title": "匿名程序员洗罪告解室",
+    "description": "向赛博神父忏悔“我把测试环境删了但假装不知道”，神父赐你三遍 Hello World",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#312e81",
+        "#c084fc"
+      ]
+    },
+    "tags": [
+      "告解",
+      "程序员",
+      "心理"
+    ],
+    "path": "digital-confession-booth"
+  },
+  {
+    "id": "chat-reply-delay-timer",
+    "title": "恋爱拉扯战术延时锁",
+    "description": "对方发来消息后，强制锁定输入框 2 小时，防止秒回显得自己毫无身价",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ec4899",
+        "#8b5cf6"
+      ]
+    },
+    "tags": [
+      "恋爱",
+      "社交",
+      "拉扯"
+    ],
+    "path": "chat-reply-delay-timer"
+  },
+  {
+    "id": "crush-mind-reader",
+    "title": "心动对象潜台词粉碎机",
+    "description": "输入“今晚早点睡吧”，瞬间翻译为“你话真的很多，请立刻闭嘴退出聊天”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#f43f5e",
+        "#fb7185"
+      ]
+    },
+    "tags": [
+      "潜台词",
+      "扎心",
+      "恋爱"
+    ],
+    "path": "crush-mind-reader"
+  },
+  {
+    "id": "fake-incoming-call",
+    "title": "救命假电话逃生模拟器",
+    "description": "点击后 5 秒内响起逼真系统来电铃声，来电显示“联合国秘书长”或“房东收租”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#10b981",
+        "#3b82f6"
+      ]
+    },
+    "tags": [
+      "脱身",
+      "相亲",
+      "电话"
+    ],
+    "path": "fake-incoming-call"
+  },
+  {
+    "id": "awkward-silence-breaker",
+    "title": "电梯尬聊荒谬话题机",
+    "description": "随机生成让全电梯人陷入更深沉思的话题：“你们觉得长颈鹿睡觉会落枕吗？”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0284c7",
+        "#f59e0b"
+      ]
+    },
+    "tags": [
+      "尬聊",
+      "话题",
+      "社交"
+    ],
+    "path": "awkward-silence-breaker"
+  },
+  {
+    "id": "compliment-generator-overkill",
+    "title": "超对称肉麻彩虹屁炮台",
+    "description": "用量子场论与高维拓扑夸奖对方：“你眼眸的折射率让全宇宙的引力透镜失色”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#f472b6",
+        "#c084fc"
+      ]
+    },
+    "tags": [
+      "夸人",
+      "彩虹屁",
+      "硬核"
+    ],
+    "path": "compliment-generator-overkill"
+  },
+  {
+    "id": "blind-date-panic-button",
+    "title": "相亲现场紧急尿遁导航",
+    "description": "一键规划“卫生间翻窗路线”、“假装接到母星召唤”等 3 套全地形撤离方案",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ef4444",
+        "#f97316"
+      ]
+    },
+    "tags": [
+      "相亲",
+      "逃生",
+      "导航"
+    ],
+    "path": "blind-date-panic-button"
+  },
+  {
+    "id": "message-unsender-illusion",
+    "title": "微信撤回心理战诱捕器",
+    "description": "发一条神秘消息并瞬间撤回，系统自动留下让对方抓心挠肝一整夜的残余提示",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#059669",
+        "#1e293b"
+      ]
+    },
+    "tags": [
+      "心理战",
+      "撤回",
+      "好奇"
+    ],
+    "path": "message-unsender-illusion"
+  },
+  {
+    "id": "social-battery-gauge",
+    "title": "社交电量断崖暴跌表",
+    "description": "检测与人说话超过 3 句，电量立即从 100% 暴跌至 1% 并自动触发‘不想理人’模式",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ef4444",
+        "#22c55e"
+      ]
+    },
+    "tags": [
+      "社恐",
+      "电量",
+      "内耗"
+    ],
+    "path": "social-battery-gauge"
+  },
+  {
+    "id": "passive-aggressive-translator",
+    "title": "绿茶阴阳怪气逆向解码",
+    "description": "“好羡慕你都不用化妆呢” -> “你看起来气色真的很差且完全不修边幅”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#14b8a6",
+        "#f43f5e"
+      ]
+    },
+    "tags": [
+      "绿茶",
+      "解码",
+      "防坑"
+    ],
+    "path": "passive-aggressive-translator"
+  },
+  {
+    "id": "friendship-contract-generator",
+    "title": "塑料友谊正式解除公证书",
+    "description": "以联合国安理会最高决议格式，起草《关于即日起不再互相点赞朋友圈的决议》",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#475569",
+        "#94a3b8"
+      ]
+    },
+    "tags": [
+      "绝交",
+      "公证",
+      "法律"
+    ],
+    "path": "friendship-contract-generator"
+  },
+  {
+    "id": "screen-brightness-lux-absorber",
+    "title": "逆向屏幕吸光黑洞仪",
+    "description": "声称利用反向发光二极管吸走房间内的可见光子，让周围环境瞬间变黑",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#000000",
+        "#475569"
+      ]
+    },
+    "tags": [
+      "硬件",
+      "吸光",
+      "黑客"
+    ],
+    "path": "screen-brightness-lux-absorber"
+  },
+  {
+    "id": "battery-drain-accelerator",
+    "title": "电池反向充电极速耗电仪",
+    "description": "启动 1000 万个浮点三角函数死循环，在 10 秒内榨干电池，让你名正言顺关机",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#dc2626",
+        "#ea580c"
+      ]
+    },
+    "tags": [
+      "电池",
+      "耗电",
+      "逃避"
+    ],
+    "path": "battery-drain-accelerator"
+  },
+  {
+    "id": "wifi-speed-booster-placebo",
+    "title": "量子安慰剂 Wi-Fi 提速仪",
+    "description": "手持手机原地顺时针旋转 360 度，界面显示‘已捕获微波背景辐射，网速飙升 800%’",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#2563eb",
+        "#06b6d4"
+      ]
+    },
+    "tags": [
+      "WiFi",
+      "提速",
+      "玄学"
+    ],
+    "path": "wifi-speed-booster-placebo"
+  },
+  {
+    "id": "cpu-popcorn-popper",
+    "title": "CPU 核心爆米花模拟器",
+    "description": "监控 16 核处理器，温度狂飙至 240°C，伴随着噼里啪啦的玉米爆开声弹出爆米花",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#f59e0b",
+        "#d97706"
+      ]
+    },
+    "tags": [
+      "CPU",
+      "爆米花",
+      "发热"
+    ],
+    "path": "cpu-popcorn-popper"
+  },
+  {
+    "id": "mouse-friction-minimizer",
+    "title": "鼠标垫纳米电荷润滑仪",
+    "description": "通过屏幕发射静电斥力，声称使鼠标悬浮在桌面上 0.001 毫米，摩擦力降为零",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0284c7",
+        "#38bdf8"
+      ]
+    },
+    "tags": [
+      "鼠标",
+      "物理",
+      "润滑"
+    ],
+    "path": "mouse-friction-minimizer"
+  },
+  {
+    "id": "fan-decibel-silencer",
+    "title": "风扇噪音逆向声波抵消仪",
+    "description": "用扬声器播放 120 分贝的轰鸣白噪音，声称“只要这里的噪音更大，你就听不到风扇声了”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#475569",
+        "#ef4444"
+      ]
+    },
+    "tags": [
+      "降噪",
+      "掩耳盗铃",
+      "声学"
+    ],
+    "path": "fan-decibel-silencer"
+  },
+  {
+    "id": "hard-drive-weight-scale",
+    "title": "硬盘数据物理重量称量仪",
+    "description": "计算得出你存的 2TB 4K 电影因二进制 1 比 0 稍微更重，使电脑增加了 0.0000001 克",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0d9488",
+        "#14b8a6"
+      ]
+    },
+    "tags": [
+      "硬盘",
+      "重量",
+      "极客"
+    ],
+    "path": "hard-drive-weight-scale"
+  },
+  {
+    "id": "solar-screen-charger",
+    "title": "屏幕反向太阳能发电机",
+    "description": "拿手电筒照着屏幕，进度条开始疯狂倒退，提示“因光电效应逆转，电量倒灌入电网”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#facc15",
+        "#eab308"
+      ]
+    },
+    "tags": [
+      "太阳能",
+      "荒诞",
+      "发电机"
+    ],
+    "path": "solar-screen-charger"
+  },
+  {
+    "id": "bluetooth-le-telepathy",
+    "title": "低功耗蓝牙脑电波互联",
+    "description": "扫描附近 5 米内的同事大脑，配对成功后提示：“该大脑当前处于休眠，无任何意识流”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#2563eb",
+        "#9333ea"
+      ]
+    },
+    "tags": [
+      "蓝牙",
+      "脑机",
+      "科幻"
+    ],
+    "path": "bluetooth-le-telepathy"
+  },
+  {
+    "id": "anti-gravity-toggle",
+    "title": "网页牛顿引力反转控制器",
+    "description": "一键关闭地球重力，页面上的所有文字、按钮和卡片像失重太空垃圾一样向上飘落",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#8b5cf6",
+        "#ec4899"
+      ]
+    },
+    "tags": [
+      "重力",
+      "物理",
+      "飘浮"
+    ],
+    "path": "anti-gravity-toggle"
+  },
+  {
+    "id": "procrastination-scheduler",
+    "title": "拖延症科学延后演算机",
+    "description": "输入今天必须完成的事，算法综合生物钟与宇宙大爆炸周期，科学推算出最佳执行时间：大后年",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#e11d48",
+        "#f43f5e"
+      ]
+    },
+    "tags": [
+      "拖延",
+      "时间",
+      "哲学"
+    ],
+    "path": "procrastination-scheduler"
+  },
+  {
+    "id": "existential-dread-generator",
+    "title": "宇宙终极热寂倒计时器",
+    "description": "实时倒计时距离宇宙热寂还有 10^100 年：“反正一切终将化为虚无，你手里的活急什么？”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#020617",
+        "#64748b"
+      ]
+    },
+    "tags": [
+      "热寂",
+      "虚无",
+      "降维打击"
+    ],
+    "path": "existential-dread-generator"
+  },
+  {
+    "id": "useless-weather-forecast",
+    "title": "百分之百准确的废话天气",
+    "description": "“今日白天光照明显强于午夜；若下雨则地表湿润；若太阳升起则说明是早晨”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0ea5e9",
+        "#f59e0b"
+      ]
+    },
+    "tags": [
+      "天气",
+      "废话",
+      "准确"
+    ],
+    "path": "useless-weather-forecast"
+  },
+  {
+    "id": "indecision-roulette",
+    "title": "纠结症终极决策大轮盘",
+    "description": "无论你输入多少个备选方案，轮盘疯狂旋转 10 圈后，弹窗最终统一建议：“吃泡面”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#a855f7",
+        "#ec4899"
+      ]
+    },
+    "tags": [
+      "纠结",
+      "转盘",
+      "泡面"
+    ],
+    "path": "indecision-roulette"
+  },
+  {
+    "id": "regret-minimization-machine",
+    "title": "后悔药逆向心理对冲机",
+    "description": "输入你当年后悔错过的决定，AI 为你推演平行世界：如果你选了它，结局会比现在惨烈 10 倍",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#10b981",
+        "#0284c7"
+      ]
+    },
+    "tags": [
+      "心理",
+      "释怀",
+      "平行宇宙"
+    ],
+    "path": "regret-minimization-machine"
+  },
+  {
+    "id": "universe-center-locator",
+    "title": "宇宙中心绝对坐标定位仪",
+    "description": "根据大爆炸理论‘各向同性’原理，权威从物理学数学公式证明：你的工位就是宇宙的正中心",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#eab308",
+        "#f97316"
+      ]
+    },
+    "tags": [
+      "宇宙中心",
+      "自信",
+      "物理"
+    ],
+    "path": "universe-center-locator"
+  },
+  {
+    "id": "boredom-level-meter",
+    "title": "当代无聊指数激光测定仪",
+    "description": "检测鼠标无意识滑动圈数与呼吸频率，测出当前无聊度 99.98%，颁发“虚度光阴大师”证书",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#6366f1",
+        "#4f46e5"
+      ]
+    },
+    "tags": [
+      "无聊",
+      "摸鱼",
+      "打发时间"
+    ],
+    "path": "boredom-level-meter"
+  },
+  {
+    "id": "water-drinking-alarm-overkill",
+    "title": "极端仪式感喝水打卡机",
+    "description": "喝一口水需要输入水温、TDS水质读数、吞咽角度并签署《水分子摄入免责协议》",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#06b6d4",
+        "#3b82f6"
+      ]
+    },
+    "tags": [
+      "喝水",
+      "仪式感",
+      "折磨"
+    ],
+    "path": "water-drinking-alarm-overkill"
+  },
+  {
+    "id": "sleeping-sheep-counter",
+    "title": "失眠数羊失控模拟器",
+    "description": "数到第 28 只羊时，羊群开始互相顶撞并拿出电吉他现场开摇滚演唱会，让你彻底清醒",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#334155",
+        "#e2e8f0"
+      ]
+    },
+    "tags": [
+      "失眠",
+      "数羊",
+      "搞笑"
+    ],
+    "path": "sleeping-sheep-counter"
+  },
+  {
+    "id": "useless-clock",
+    "title": "毫无时间观念的相对论钟",
+    "description": "时针分针根据主人的心情随机变速旋转，甚至逆时针狂飙，主打一个“与我何干”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ca8a04",
+        "#a16207"
+      ]
+    },
+    "tags": [
+      "时钟",
+      "时间",
+      "反向"
+    ],
+    "path": "useless-clock"
+  },
+  {
+    "id": "git-commit-excuse",
+    "title": "离谱 Git Commit 生成器",
+    "description": "“修复了由于修复了前天修复的 Bug 而导致无法修复的新 Bug”、“代码能跑，别碰”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#10b981",
+        "#3b82f6"
+      ]
+    },
+    "tags": [
+      "Git",
+      "代码",
+      "摸鱼"
+    ],
+    "path": "git-commit-excuse"
+  },
+  {
+    "id": "regex-horror-generator",
+    "title": "毁灭级正则表达式召唤台",
+    "description": "为了匹配一个简单的一位数，生成长达 280 个字符、包含 14 重嵌套断言的克苏鲁正则",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#9333ea",
+        "#4f46e5"
+      ]
+    },
+    "tags": [
+      "正则",
+      "硬核",
+      "折磨"
+    ],
+    "path": "regex-horror-generator"
+  },
+  {
+    "id": "semi-colon-hider",
+    "title": "希腊问号代码伪装隐形斗篷",
+    "description": "把所有的英文分号替换为肉眼完全一致的希腊问号 (;)，让整个开发团队陷入绝望沉思",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#e11d48",
+        "#be123c"
+      ]
+    },
+    "tags": [
+      "恶作剧",
+      "分号",
+      "程序员"
+    ],
+    "path": "semi-colon-hider"
+  },
+  {
+    "id": "css-center-struggle",
+    "title": "CSS 水平垂直居中折磨体验",
+    "description": "拖动一个方块尝试居中，一旦距离中心点小于 5px，物理引擎立即产生弹射力将它撞飞",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0284c7",
+        "#2563eb"
+      ]
+    },
+    "tags": [
+      "CSS",
+      "居中",
+      "前端梗"
+    ],
+    "path": "css-center-struggle"
+  },
+  {
+    "id": "npm-install-blackhole",
+    "title": "node_modules 黑洞质量引力仪",
+    "description": "安装一个 is-even 库，自动递归下载 42,000 个依赖包，总质量超过太阳系的质量总和",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#dc2626",
+        "#172554"
+      ]
+    },
+    "tags": [
+      "npm",
+      "黑洞",
+      "前端"
+    ],
+    "path": "npm-install-blackhole"
+  },
+  {
+    "id": "variable-namer-pro",
+    "title": "最离谱垃圾变量命名器",
+    "description": "输入变量意图，输出：`temp_arr_final_v2_new_donottouch_real` 和 `data_xxx_o0O1`",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#d97706",
+        "#b45309"
+      ]
+    },
+    "tags": [
+      "命名",
+      "坏味道",
+      "代码"
+    ],
+    "path": "variable-namer-pro"
+  },
+  {
+    "id": "code-complexity-booster",
+    "title": "企业级过度设计重构膨胀器",
+    "description": "把 `a + b` 自动重构为带有工厂模式、适配器、观察者、反向代理的 500 行企业级大厦",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#059669",
+        "#047857"
+      ]
+    },
+    "tags": [
+      "重构",
+      "设计模式",
+      "大厂"
+    ],
+    "path": "code-complexity-booster"
+  },
+  {
+    "id": "rubber-duck-therapist",
+    "title": "赛博小黄鸭心理咨询室",
+    "description": "无论你倾诉多么复杂的系统死锁 Bug，小黄鸭都会眨眨眼，认真地对你回复：“嘎？”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#eab308",
+        "#ca8a04"
+      ]
+    },
+    "tags": [
+      "小黄鸭",
+      "调试",
+      "心理"
+    ],
+    "path": "rubber-duck-therapist"
+  },
+  {
+    "id": "production-deploy-lottery",
+    "title": "周五下午四点上线轮盘赌",
+    "description": "6 颗弹巢的生死轮盘，按下“发布到生产环境”，随机触发全站 502 并被通知通宵排查",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#b91c1c",
+        "#991b1b"
+      ]
+    },
+    "tags": [
+      "上线",
+      "轮盘赌",
+      "周五"
+    ],
+    "path": "production-deploy-lottery"
+  },
+  {
+    "id": "stack-overflow-copy-paste",
+    "title": "盲目复制粘贴缝合怪代码台",
+    "description": "从毫无关联的 5 个回答中各抄一行代码拼在一起，居然能跑，但没有人知道为什么能跑",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ea580c",
+        "#c2410c"
+      ]
+    },
+    "tags": [
+      "抄代码",
+      "玄学",
+      "缝合怪"
+    ],
+    "path": "stack-overflow-copy-paste"
+  },
+  {
+    "id": "crypto-coin-flipper",
+    "title": "一秒暴富归零空气币发行机",
+    "description": "发行自己的‘窝囊币’，看着它在 3 秒内暴涨 1,000,000%，接着瞬间庄家砸盘归零",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#eab308",
+        "#22c55e"
+      ]
+    },
+    "tags": [
+      "加密币",
+      "炒币",
+      "割韭菜"
+    ],
+    "path": "crypto-coin-flipper"
+  },
+  {
+    "id": "lottery-ticket-simulator",
+    "title": "双色球头奖概率残酷体验",
+    "description": "一秒狂开 100 张彩票，账面资产飞速减少，用冷冰冰的数据告诉你什么是千分之零点零零零几",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#dc2626",
+        "#b91c1c"
+      ]
+    },
+    "tags": [
+      "彩票",
+      "概率",
+      "扎心"
+    ],
+    "path": "lottery-ticket-simulator"
+  },
+  {
+    "id": "compound-interest-delusion",
+    "title": "复利奇迹打工白日梦计算器",
+    "description": "每天存 1 块钱，在连续保持 15% 年化收益 800 年后，你的第 40 代子孙将买下银河系",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#15803d",
+        "#166534"
+      ]
+    },
+    "tags": [
+      "复利",
+      "理财",
+      "白日梦"
+    ],
+    "path": "compound-interest-delusion"
+  },
+  {
+    "id": "luxury-goods-price-converter",
+    "title": "奢侈品工时真实转换折算仪",
+    "description": "输入奢侈品包包价格，精准折算为：您需要无休无眠连续加班 3 年零 4 个月",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#701a75",
+        "#4a044e"
+      ]
+    },
+    "tags": [
+      "奢侈品",
+      "打工",
+      "性价比"
+    ],
+    "path": "luxury-goods-price-converter"
+  },
+  {
+    "id": "bubble-tea-financial-freedom",
+    "title": "戒掉奶茶换兰博基尼测算仪",
+    "description": "每天省下一杯 15 元奶茶，只需不吃不喝坚持 340 年，即可喜提兰博基尼车门一只",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#d97706",
+        "#78350f"
+      ]
+    },
+    "tags": [
+      "奶茶",
+      "理财",
+      "跑车"
+    ],
+    "path": "bubble-tea-financial-freedom"
+  },
+  {
+    "id": "stock-market-cat-trader",
+    "title": "猫爪盲选量化基金操盘手",
+    "description": "猫爪在屏幕上随意踩踏，随机全仓买入冷门股票，跑赢 90% 专业基金经理",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0284c7",
+        "#0369a1"
+      ]
+    },
+    "tags": [
+      "炒股",
+      "猫咪",
+      "量化"
+    ],
+    "path": "stock-market-cat-trader"
+  },
+  {
+    "id": "inflation-bread-counter",
+    "title": "恶性通货膨胀模拟菜市场",
+    "description": "买一根大葱需要 50,000,000 元，输入付款金额时钞票多到把输入框直接撑爆崩塌",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#b91c1c",
+        "#7f1d1d"
+      ]
+    },
+    "tags": [
+      "通胀",
+      "钞票",
+      "疯狂"
+    ],
+    "path": "inflation-bread-counter"
+  },
+  {
+    "id": "virtual-rich-flexer",
+    "title": "朋友圈虚假资产神级证明器",
+    "description": "一键生成‘瑞士银行 9.8 亿美元可用余额’与‘布加迪威龙购车合同’假截图",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#047857",
+        "#064e3b"
+      ]
+    },
+    "tags": [
+      "朋友圈",
+      "装逼",
+      "虚荣"
+    ],
+    "path": "virtual-rich-flexer"
+  },
+  {
+    "id": "budget-zero-balancer",
+    "title": "财务对账永远少五块平账仪",
+    "description": "无论是加法减法积分求导，经过严谨会计审核后，账面总是莫名其妙少整整 5 块钱",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#475569",
+        "#334155"
+      ]
+    },
+    "tags": [
+      "财务",
+      "对账",
+      "抓狂"
+    ],
+    "path": "budget-zero-balancer"
+  },
+  {
+    "id": "angel-investor-pitch-spinner",
+    "title": "车库天使轮路演吹牛机",
+    "description": "把‘给邻居家遛狗’包装为‘去中心化宠物时空精力共享平台’，估值 3000 万美金",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#6366f1",
+        "#4338ca"
+      ]
+    },
+    "tags": [
+      "融资",
+      "路演",
+      "吹牛"
+    ],
+    "path": "angel-investor-pitch-spinner"
+  },
+  {
+    "id": "posture-spine-straightener",
+    "title": "赛博脊柱前倾电击督促器",
+    "description": "只要摄像头检测到你脖子往前探出 2 厘米，屏幕立即闪烁红光并发出刺耳防空警报",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ef4444",
+        "#dc2626"
+      ]
+    },
+    "tags": [
+      "驼背",
+      "健康",
+      "警报"
+    ],
+    "path": "posture-spine-straightener"
+  },
+  {
+    "id": "eye-protection-green-mode",
+    "title": "全屏原谅绿物理护眼霸王",
+    "description": "强行将屏幕所有像素染成 100% 饱和度的纯绿色，眼睛受到的刺激比之前更强烈 10 倍",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#16a34a",
+        "#22c55e"
+      ]
+    },
+    "tags": [
+      "护眼",
+      "绿色",
+      "反差"
+    ],
+    "path": "eye-protection-green-mode"
+  },
+  {
+    "id": "calorie-burn-by-blinking",
+    "title": "眨眼极速燃脂卡路里计",
+    "description": "连续疯狂眨眼 100,000 次，系统恭喜你成功消耗了半颗瓜子所蕴含的惊人热量",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ea580c",
+        "#f97316"
+      ]
+    },
+    "tags": [
+      "减肥",
+      "眨眼",
+      "卡路里"
+    ],
+    "path": "calorie-burn-by-blinking"
+  },
+  {
+    "id": "mindfulness-forced-meditation",
+    "title": "暴躁监考级强制正念冥想",
+    "description": "要求闭目冥想 1 分钟，期间只要鼠标移动 1 个像素，神父立即弹窗大吼“杂念太重！”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#475569",
+        "#1e293b"
+      ]
+    },
+    "tags": [
+      "冥想",
+      "正念",
+      "折磨"
+    ],
+    "path": "mindfulness-forced-meditation"
+  },
+  {
+    "id": "hair-loss-predictor",
+    "title": "程序员发际线退后倒计时",
+    "description": "输入每周通宵写代码工时，精准推算出你的头顶何时进化为寸草不生的闪耀地中海",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#d97706",
+        "#b45309"
+      ]
+    },
+    "tags": [
+      "脱发",
+      "发际线",
+      "程序员"
+    ],
+    "path": "hair-loss-predictor"
+  },
+  {
+    "id": "caffeine-blood-simulator",
+    "title": "血液咖啡因浓度爆表仪",
+    "description": "模拟今天喝了 4 杯冰美式、2 罐红牛后，血管里流淌的纯黑色高压咖啡因湍流",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#451a03",
+        "#78350f"
+      ]
+    },
+    "tags": [
+      "咖啡",
+      "健康",
+      "心率"
+    ],
+    "path": "caffeine-blood-simulator"
+  },
+  {
+    "id": "virtual-acupuncture",
+    "title": "屏幕经络高压赛博针灸",
+    "description": "在屏幕人体穴位图上点击“太阳穴”，扬声器发出刺耳金属扎针音效并伴随微电流麻痹感",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0284c7",
+        "#06b6d4"
+      ]
+    },
+    "tags": [
+      "中医",
+      "针灸",
+      "电击"
+    ],
+    "path": "virtual-acupuncture"
+  },
+  {
+    "id": "sleep-debt-calculator",
+    "title": "周公睡眠银行高利贷账单",
+    "description": "输入你的熬夜天数，计算出你欠周公 480 小时本金，按照复利计算，必须昏睡到下辈子",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#1e1b4b",
+        "#312e81"
+      ]
+    },
+    "tags": [
+      "睡眠",
+      "熬夜",
+      "高利贷"
+    ],
+    "path": "sleep-debt-calculator"
+  },
+  {
+    "id": "quantum-wellness-water",
+    "title": "量子共振充能杯垫",
+    "description": "把水杯放在屏幕中央，屏幕闪烁紫光发出滋滋声，声称普通自来水已被激活为弱碱性量子神水",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#8b5cf6",
+        "#a855f7"
+      ]
+    },
+    "tags": [
+      "养生",
+      "伪科学",
+      "喝水"
+    ],
+    "path": "quantum-wellness-water"
+  },
+  {
+    "id": "mental-age-reverse",
+    "title": "逆向心理年龄心智测评",
+    "description": "回答 3 道高难度智力题后，系统权威评定：你的真实心理年龄为 3 岁半零 18 天",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#f43f5e",
+        "#fb7185"
+      ]
+    },
+    "tags": [
+      "心理",
+      "测验",
+      "幼态"
+    ],
+    "path": "mental-age-reverse"
+  },
+  {
+    "id": "slippery-submit-button",
+    "title": "抹了润滑油的逃跑按钮",
+    "description": "鼠标指针只要距离按钮小于 30px，按钮就利用牛顿反作用力瞬移到屏幕另一角",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0284c7",
+        "#06b6d4"
+      ]
+    },
+    "tags": [
+      "折磨",
+      "交互",
+      "点不到"
+    ],
+    "path": "slippery-submit-button"
+  },
+  {
+    "id": "volume-slider-gravity",
+    "title": "重力感应物理倾斜音量条",
+    "description": "音量调节条是一个带物理斜坡的轨道，刚把滑块拉到 80%，滑块就呼啸着滑回 0%",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ea580c",
+        "#d97706"
+      ]
+    },
+    "tags": [
+      "音量",
+      "重力",
+      "物理"
+    ],
+    "path": "volume-slider-gravity"
+  },
+  {
+    "id": "disappearing-checkbox",
+    "title": "薛定谔的隐形勾选框",
+    "description": "点击复选框勾选，勾选框立即变透明隐形；取消勾选后它又重新嘲讽般显现",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#475569",
+        "#64748b"
+      ]
+    },
+    "tags": [
+      "复选框",
+      "隐形",
+      "折磨"
+    ],
+    "path": "disappearing-checkbox"
+  },
+  {
+    "id": "captcha-speedrun",
+    "title": "0.1秒超光速闪现验证码",
+    "description": "验证码只在屏幕上显现 100 毫秒就化为灰烬，哪怕是超人都来不及看清任何一个字母",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#dc2626",
+        "#ef4444"
+      ]
+    },
+    "tags": [
+      "验证码",
+      "手速",
+      "非人"
+    ],
+    "path": "captcha-speedrun"
+  },
+  {
+    "id": "infinite-nested-accordion",
+    "title": "俄罗斯套娃无尽折叠面板",
+    "description": "点开第 1 层抽屉，里面有 3 个抽屉；点开其中一个，里面又有 5 个更小的微型抽屉",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#4f46e5",
+        "#7c3aed"
+      ]
+    },
+    "tags": [
+      "折叠面板",
+      "套娃",
+      "迷宫"
+    ],
+    "path": "infinite-nested-accordion"
+  },
+  {
+    "id": "cursor-inverted-maze",
+    "title": "鼠标指针反向控制迷宫",
+    "description": "鼠标向上推指针往下坠，鼠标向左指针向右跑，用最逆天的操作走出简单迷宫",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#059669",
+        "#10b981"
+      ]
+    },
+    "tags": [
+      "鼠标",
+      "反向",
+      "迷宫"
+    ],
+    "path": "cursor-inverted-maze"
+  },
+  {
+    "id": "agree-terms-endless-scroll",
+    "title": "永远滚不到底的用户协议",
+    "description": "当你奋力将滚动条拖到最底部准备勾选时，底部自动动态追加 500 条崭新条款",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#334155",
+        "#0f172a"
+      ]
+    },
+    "tags": [
+      "用户协议",
+      "无限滚动",
+      "绝望"
+    ],
+    "path": "agree-terms-endless-scroll"
+  },
+  {
+    "id": "shaking-input-earthquake",
+    "title": "8.0级地震文本输入框",
+    "description": "每当你敲下一个字母，整个输入框就爆发剧烈晃动并随机把字母的顺序颠倒震飞",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#b91c1c",
+        "#ea580c"
+      ]
+    },
+    "tags": [
+      "输入框",
+      "地震",
+      "抓狂"
+    ],
+    "path": "shaking-input-earthquake"
+  },
+  {
+    "id": "color-picker-blind",
+    "title": "全盲灰度迷惑调色盘",
+    "description": "调色板上所有的色块看起来都是不同深浅的死灰色，点击确认后告诉你这是‘荧光粉’",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#525252",
+        "#737373"
+      ]
+    },
+    "tags": [
+      "颜色",
+      "盲盒",
+      "设计"
+    ],
+    "path": "color-picker-blind"
+  },
+  {
+    "id": "dropdown-roulette",
+    "title": "暴力随机重排下拉菜单",
+    "description": "每次点击展开下拉列表，所有的选项位置就会像洗扑克牌一样完全打乱重新排序",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#7c3aed",
+        "#a855f7"
+      ]
+    },
+    "tags": [
+      "下拉框",
+      "打乱",
+      "折磨"
+    ],
+    "path": "dropdown-roulette"
+  },
+  {
+    "id": "time-travel-dial",
+    "title": "跨维度时空跃迁旋钮",
+    "description": "扭动机械刻度盘跳转到公元前 2000 年，整个页面所有的文字与按钮瞬间变身商朝甲骨文",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#78350f",
+        "#b45309"
+      ]
+    },
+    "tags": [
+      "时空旅行",
+      "甲骨文",
+      "历史"
+    ],
+    "path": "time-travel-dial"
+  },
+  {
+    "id": "black-hole-cursor",
+    "title": "鼠标引力坍缩黑洞",
+    "description": "鼠标化身为拥有奇点的超大质量黑洞，所过之处文字、按钮和边框被扭曲吸入虚空",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#000000",
+        "#1e1b4b"
+      ]
+    },
+    "tags": [
+      "黑洞",
+      "吞噬",
+      "特效"
+    ],
+    "path": "black-hole-cursor"
+  },
+  {
+    "id": "typing-sound-typewriter",
+    "title": "复古机械打字机回车铃",
+    "description": "键盘敲下的每一个字都带有老式铁器撞针的轰鸣，敲击回车键伴随清脆‘铛——’的铃声",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#292524",
+        "#78716c"
+      ]
+    },
+    "tags": [
+      "打字机",
+      "声音",
+      "复古"
+    ],
+    "path": "typing-sound-typewriter"
+  },
+  {
+    "id": "alien-signal-decoder",
+    "title": "地外深空文明信号破译仪",
+    "description": "截获来自半人马座阿尔法星的射电脉冲，经历多重解调破译，外星文明留言：“吃了没呢”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#047857",
+        "#10b981"
+      ]
+    },
+    "tags": [
+      "外星人",
+      "信号",
+      "破译"
+    ],
+    "path": "alien-signal-decoder"
+  },
+  {
+    "id": "virtual-bubble-wrap",
+    "title": "永远捏不完的减压气泡膜",
+    "description": "啪啪啪疯狂捏爆塑料气泡，捏爆 100 个后气泡膜发出刺耳充气声重新原地复活",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#0284c7",
+        "#38bdf8"
+      ]
+    },
+    "tags": [
+      "气泡膜",
+      "解压",
+      "爽快"
+    ],
+    "path": "virtual-bubble-wrap"
+  },
+  {
+    "id": "cat-keyboard-walk",
+    "title": "猫咪踩键盘随机发乱码",
+    "description": "一只肥硕的猫咪迈着优雅的步伐在键盘上走过，打出 `asdkfh892q3u4hjalskdf` 并自动按下回车",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#d97706",
+        "#f59e0b"
+      ]
+    },
+    "tags": [
+      "猫咪",
+      "踩键盘",
+      "乱码"
+    ],
+    "path": "cat-keyboard-walk"
+  },
+  {
+    "id": "dvd-logo-corner-hit",
+    "title": "DVD 屏保正中红心等待机",
+    "description": "一个小方块在屏幕边缘来回反弹，全神贯注等待它完美撞进四个角落的奇迹瞬间",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#7c3aed",
+        "#2563eb"
+      ]
+    },
+    "tags": [
+      "DVD",
+      "屏保",
+      "等待"
+    ],
+    "path": "dvd-logo-corner-hit"
+  },
+  {
+    "id": "matrix-quote-philosopher",
+    "title": "赛博哲人高深废话吐钞机",
+    "description": "“未被运行的代码，在某种程度上比跑起来的程序更为完美”、“Bug 不是错误，是机器的梦”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#10b981",
+        "#059669"
+      ]
+    },
+    "tags": [
+      "黑客帝国",
+      "名言",
+      "哲学"
+    ],
+    "path": "matrix-quote-philosopher"
+  },
+  {
+    "id": "loading-spinners-zoo",
+    "title": "世界百大 Loading 加载动物园",
+    "description": "汇聚 30 种不同风格的转圈、跳动、波纹 Loading，它们最大的共同点是永远不会完成",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#6366f1",
+        "#8b5cf6"
+      ]
+    },
+    "tags": [
+      "Loading",
+      "动画",
+      "动物园"
+    ],
+    "path": "loading-spinners-zoo"
+  },
+  {
+    "id": "fake-error-404-museum",
+    "title": "名垂青史 404 页面大赏",
+    "description": "“该页面由于厌倦了互联网，已隐居山林”、“404：不是页面丢失了，是您走得太远了”",
+    "preview": {
+      "type": "gradient",
+      "colors": [
+        "#ef4444",
+        "#3b82f6"
+      ]
+    },
+    "tags": [
+      "404",
+      "报错",
+      "艺术"
+    ],
+    "path": "fake-error-404-museum"
   }
 ]
